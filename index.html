@@ -1,1 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memoro</title>
 
+  <!-- Global styles -->
+  <link rel="stylesheet" href="style/style.css" />
+
+  <!-- Header-specific styles -->
+  <link rel="stylesheet" href="style/header.css" />
+</head>
+<body>
+
+  <!-- Inject the reusable header -->
+  <script>
+    fetch('components/header.html')
+      .then(res => res.text())
+      .then(data => {
+        document.body.insertAdjacentHTML('afterbegin', data);
+      })
+      .catch(err => console.error('Failed to load header:', err));
+  </script>
+
+</body>
+</html>
