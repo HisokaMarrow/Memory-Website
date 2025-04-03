@@ -1,1 +1,75 @@
+:root {
+  /* Header background and surface */
+  --header-bg: #1c1f26;
+  --header-surface: #252931;
 
+  /* Text colors */
+  --header-text: #f2f2f3;
+  --header-subtext: #9ca3af;
+
+  /* Border */
+  --header-border: #323843;
+
+  /* Accent / primary button */
+  --header-accent: #7c3aed;
+  --header-accent-hover: #5b21b6;
+
+  /* Secondary button / highlight */
+  --header-secondary: #7c3aed;
+  --header-secondary-hover: #5b21b6;
+
+  /* States */
+  --header-success: #22c55e;
+  --header-error: #ef4444;
+}
+
+.main-header {
+  background-color: var(--header-bg);
+  color: var(--header-text);
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--header-border);
+}
+
+.main-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.header-left .logo a {
+  color: var(--header-accent);
+  text-decoration: none;
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.header-center .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  padding: 0;
+  margin: 0;
+}
+
+.header-center .nav-links a {
+  color: var(--header-text);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.header-center .nav-links a:hover {
+  color: var(--header-accent-hover);
+}
+
+.header-right .login-link {
+  color: var(--header-text);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.header-right .login-link:hover {
+  color: var(--header-accent-hover);
+}
