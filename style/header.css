@@ -175,6 +175,7 @@
     height: 3px;
     background-color: var(--header-text);
     border-radius: 2px;
+    z-index: 1060;
   }
 
   /* Side-drawer menu from left */
