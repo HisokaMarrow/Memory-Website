@@ -29,6 +29,7 @@
   padding: 1rem 0;
   border-bottom: 1px solid var(--header-border);
   width: 100%;
+  font-family: 'Poppins', sans-serif;
 }
 
 .main-header .container {
