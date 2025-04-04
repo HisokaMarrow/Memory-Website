@@ -1,1 +1,33 @@
+:root {
+  /* Base Colors */
+  --color-bg: #0f1115;
+  --color-text: #e6e8eb;
+  --color-subtext: #8a8f98;
+  --color-border: #2a2d33;
 
+  /* UI Surfaces */
+  --color-bg-card: #181a1f;
+  --main-box: #252931;
+  --main-option-box-hover: #1d2026;
+
+  /* Accent & States */
+  --color-secondary: #7f5af0;
+  --color-secondary-hover: #6246ea;
+  --color-success: #2dd4bf;
+  --color-error: #f43f5e;
+}
+
+/* Reset and base layout */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+}
