@@ -1,20 +1,30 @@
 <header class="main-header">
   <div class="container">
+    <!-- Logo -->
     <div class="header-left">
       <h1 class="logo"><a href="index.html">Memoro</a></h1>
     </div>
 
-    <nav class="header-center">
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="mind-games.html">Mind Games</a></li>
-        <li><a href="vault.html">The Vault</a></li>
-        <li><a href="ranking.html">Rankings</a></li>
-      </ul>
-    </nav>
+    <!-- Hamburger Button (mobile only) -->
+    <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-    <div class="header-right">
-      <a href="login.html" class="login-link">Login</a>
+    <!-- Navigation + Login (toggles open/closed) -->
+    <div class="header-menu">
+      <nav class="header-center">
+        <ul class="nav-links">
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="mind-games.html">Mind Games</a></li>
+          <li><a href="vault.html">The Vault</a></li>
+          <li><a href="ranking.html">Rankings</a></li>
+        </ul>
+      </nav>
+      <div class="header-right">
+        <a href="login.html" class="login-link">Login</a>
+      </div>
     </div>
   </div>
 </header>
