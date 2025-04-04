@@ -14,6 +14,13 @@
 </head>
 <body>
 
+  <main class="test-scroll-content">
+  <section>
+    <h2 style="padding: 2rem; text-align: center;">Scroll to test sticky header</h2>
+    <div style="height: 2000px;"></div>
+  </section>
+</main>
+
   <!-- Inject the reusable header -->
   <script>
     fetch('components/header.html')
@@ -23,6 +30,8 @@
       })
       .catch(err => console.error('Failed to load header:', err));
   </script>
+
+  
 
 </body>
 </html>
