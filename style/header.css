@@ -97,14 +97,20 @@
   transform: scale(1);
 }
 
-/* ---- Mobile + Hamburger Styles ---- */
+/* ------------------------------
+   Mobile Navigation & Hamburger
+   ------------------------------ */
+
 @media (max-width: 768px) {
-  /* Header Container Positioning */
+
+  /* Ensure the entire header container is positioned
+     so absolutely positioned elements inside it (like the hamburger)
+     are positioned relative to this box */
   .main-header .container {
     position: relative;
   }
 
-  /* Show Hamburger on Mobile */
+  /* Hamburger toggle button (only visible on mobile) */
   .mobile-nav-toggle {
     display: flex;
     flex-direction: column;
@@ -113,12 +119,15 @@
     border: none;
     cursor: pointer;
     padding: 0.5rem;
+
+    /* Position it in the top-right corner of the header */
     position: absolute;
     right: 1.5rem;
     top: 1.2rem;
-    z-index: 1100;
+    z-index: 1100; /* Keep it above the dropdown menu */
   }
 
+  /* Each line of the hamburger */
   .mobile-nav-toggle span {
     display: block;
     width: 25px;
@@ -127,27 +136,27 @@
     border-radius: 2px;
   }
 
-  /* Collapsible Header Menu */
+  /* The entire nav + login wrapper (the collapsible menu) */
   .header-menu {
-    display: none;
+    display: none; /* Hidden by default */
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
     background-color: var(--header-bg);
     position: absolute;
-    top: 100%;
+    top: 100%; /* Right below the header */
     left: 0;
     width: 100%;
     padding: 1rem 1.5rem;
     border-top: 1px solid var(--header-border);
   }
 
-  /* Menu Open State */
+  /* Menu shown when 'open' class is added via JS */
   .header-menu.open {
     display: flex;
   }
 
-  /* Stack nav links vertically */
+  /* Stack navigation links vertically on mobile */
   .header-center .nav-links {
     flex-direction: column;
     gap: 1rem;
