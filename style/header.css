@@ -24,6 +24,7 @@
 }
 
 .main-header {
+  position: sticky;
   background-color: var(--header-bg);
   color: var(--header-text);
   padding: 1rem 0;
