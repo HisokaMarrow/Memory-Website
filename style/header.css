@@ -41,10 +41,6 @@
   padding: 0 1.5rem;
 }
 
-body {
-  font-family: 'Poppins', sans-serif;
-}
-
 .header-left .logo a {
   color: var(--header-accent);
   text-decoration: none;
