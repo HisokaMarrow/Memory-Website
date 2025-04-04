@@ -16,13 +16,30 @@
 
   <!-- Inject the reusable header -->
   <script>
-    fetch('components/header.html')
-      .then(res => res.text())
-      .then(data => {
-        document.body.insertAdjacentHTML('afterbegin', data);
-      })
-      .catch(err => console.error('Failed to load header:', err));
-  </script>
+  // Fetch the reusable header HTML from components/header.html
+  fetch('components/header.html')
+    .then(res => res.text()) // Convert the response to plain text (HTML)
+    .then(data => {
+      // Insert the header at the very top of the <body>
+      document.body.insertAdjacentHTML('afterbegin', data);
+
+      // ========================
+      // MOBILE NAV TOGGLE SCRIPT
+      // ========================
+
+      // Get the hamburger toggle button
+      const toggleBtn = document.querySelector('.mobile-nav-toggle');
+
+      // Get the navigation menu container that wraps nav links and login
+      const menu = document.querySelector('.header-menu');
+
+      // Add a click event to toggle the mobile menu open/closed
+      toggleBtn?.addEventListener('click', () => {
+        menu?.classList.toggle('open'); // Adds/removes the 'open' class
+      });
+    })
+    .catch(err => console.error('Failed to load header:', err));
+</script>
 
   
 
