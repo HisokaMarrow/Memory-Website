@@ -97,43 +97,37 @@
   transform: scale(1);
 }
 
-
-/*----Mobile+Hamburger----*/
-
-/* Hamburger Button */
-
-.mobile-nav-toggle {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
-  margin-left: auto;
-}
-
-.mobile-nav-toggle span {
-  display: block;
-  width: 25px;
-  height: 3px;
-  background-color: var(--header-text);
-  border-radius: 2px;
-}
-
-/* Combined nav + login wrapper */
-.header-menu {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-
-/* Responsive behavior */
+/* ---- Mobile + Hamburger Styles ---- */
 @media (max-width: 768px) {
-  .mobile-nav-toggle {
-    display: flex;
+  /* Header Container Positioning */
+  .main-header .container {
+    position: relative;
   }
 
+  /* Show Hamburger on Mobile */
+  .mobile-nav-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.2rem;
+    z-index: 1100;
+  }
+
+  .mobile-nav-toggle span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--header-text);
+    border-radius: 2px;
+  }
+
+  /* Collapsible Header Menu */
   .header-menu {
     display: none;
     flex-direction: column;
@@ -148,10 +142,12 @@
     border-top: 1px solid var(--header-border);
   }
 
+  /* Menu Open State */
   .header-menu.open {
     display: flex;
   }
 
+  /* Stack nav links vertically */
   .header-center .nav-links {
     flex-direction: column;
     gap: 1rem;
