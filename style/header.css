@@ -205,10 +205,14 @@
     gap: 1rem;
   }
 
-  /* Expand login to full width and align left */
+  /* Divider and aligned login block */
   .header-right {
     width: 100%;
     justify-content: flex-start;
+    padding-left: 0.25rem;
+    border-top: 1px solid var(--header-border);
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
   }
 
   /* Backdrop behind drawer when open */
@@ -236,4 +240,3 @@
     transform: translate(-50%, -50%);
   }
 }
-
