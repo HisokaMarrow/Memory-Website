@@ -1,3 +1,6 @@
+/* ------------------------------
+   Root Variables for Header Theme
+------------------------------ */
 :root {
   /* Header background and surface */
   --header-bg: #1c1f26;
@@ -23,6 +26,10 @@
   --header-error: #ef4444;
 }
 
+
+/* ------------------------------
+   Header Layout (Sticky + Base)
+------------------------------ */
 .main-header {
   position: sticky;
   top: 0;
@@ -44,6 +51,11 @@
   padding: 0 1.5rem;
 }
 
+/* Logo Styling */
+.header-left {
+  flex: 1;
+}
+
 .header-left .logo a {
   color: var(--header-accent);
   text-decoration: none;
@@ -51,6 +63,26 @@
   font-weight: bold;
 }
 
+/* Header Menu Container (nav + login) */
+.header-menu {
+  display: flex;
+  flex: 2;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Login Align Right */
+.header-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+/* ------------------------------
+   Nav Link Styling & Hover Effect
+------------------------------ */
 .header-center .nav-links {
   list-style: none;
   display: flex;
@@ -73,7 +105,7 @@
   z-index: 1;
 }
 
-/* Hover background box (purple) using ::before */
+/* Hover background box using ::before */
 .header-center .nav-links a::before,
 .header-right .login-link::before {
   content: "";
@@ -90,48 +122,54 @@
   z-index: -1;
 }
 
-/* On hover, show the box — but keep text color the same */
+/* Hover Effect */
 .header-center .nav-links a:hover::before,
 .header-right .login-link:hover::before {
   opacity: 1;
   transform: scale(1);
 }
 
-/*----Mobile+Hamburger----*/
 
-/* Hamburger Button */
+/* ------------------------------
+   Mobile Navigation & Toggle
+------------------------------ */
 
+/* Hide toggle button on desktop */
 .mobile-nav-toggle {
   display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
 }
 
-.mobile-nav-toggle span {
-  display: block;
-  width: 25px;
-  height: 3px;
-  background-color: var(--header-text);
-  border-radius: 2px;
-}
-
-/* Combined nav + login wrapper */
-.header-menu {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-
-/* Responsive behavior */
+/* Show hamburger and collapse nav on mobile */
 @media (max-width: 768px) {
-  .mobile-nav-toggle {
-    display: flex;
+  .main-header .container {
+    flex-wrap: wrap;
+    position: relative;
   }
 
+  /* Hamburger Button */
+  .mobile-nav-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    position: absolute;
+    top: 1.2rem;
+    right: 1.5rem;
+    z-index: 1100;
+  }
+
+  .mobile-nav-toggle span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--header-text);
+    border-radius: 2px;
+  }
+
+  /* Mobile dropdown menu styles */
   .header-menu {
     display: none;
     flex-direction: column;
@@ -150,8 +188,15 @@
     display: flex;
   }
 
+  /* Stack nav links in mobile */
   .header-center .nav-links {
     flex-direction: column;
     gap: 1rem;
+  }
+
+  /* Reset login link to full width block */
+  .header-right {
+    width: 100%;
+    justify-content: flex-start;
   }
 }
