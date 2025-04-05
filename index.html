@@ -28,19 +28,18 @@
       document.body.appendChild(backdrop);
 
       // ============ MOBILE NAV TOGGLE LOGIC ============
-
       const toggleBtn = document.querySelector('.mobile-nav-toggle');
       const menu = document.querySelector('.header-menu');
+      const backdrop = document.querySelector('.nav-backdrop');
 
       const toggleMenu = () => {
+        toggleBtn.classList.toggle('open'); // <-- this line enables the X animation
         menu?.classList.toggle('open');
         backdrop.classList.toggle('active');
       };
 
       toggleBtn?.addEventListener('click', toggleMenu);
       backdrop?.addEventListener('click', toggleMenu);
-    })
-    .catch(err => console.error('Failed to load header:', err));
 </script>
 
 
