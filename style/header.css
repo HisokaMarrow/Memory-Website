@@ -1,5 +1,6 @@
 /* ------------------------------
    Root Variables for Header Theme
+   Color palette for header elements
 ------------------------------ */
 :root {
   --header-bg: #1c1f26;
@@ -16,7 +17,8 @@
 }
 
 /* ------------------------------
-   Header Layout (Sticky + Base)
+   Sticky Header Container
+   Sticky layout with padding and background
 ------------------------------ */
 .main-header {
   position: sticky;
@@ -30,15 +32,20 @@
   font-family: 'Poppins', sans-serif;
 }
 
+/* ------------------------------
+   Flex Layout: Desktop Base
+   Controls header item alignment and spacing
+------------------------------ */
 .main-header .container {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }
 
+/* Logo aligned to the left */
 .header-left {
   flex: 1;
 }
@@ -50,22 +57,25 @@
   font-weight: bold;
 }
 
-.header-menu {
+/* Navigation centered horizontally */
+.header-center {
+  flex: 1;
   display: flex;
-  flex: 2;
   justify-content: center;
-  align-items: center;
   gap: 2rem;
 }
 
+/* Login aligned right */
 .header-right {
   flex: 1;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 }
 
 /* ------------------------------
-   Nav Link Styling & Hover Effect
+   Nav Link Base Styles
+   Common link styling + hover background effect
 ------------------------------ */
 .header-center .nav-links {
   list-style: none;
@@ -111,7 +121,8 @@
 }
 
 /* ------------------------------
-   Mobile Navigation & Toggle
+   Mobile Navigation & Behavior
+   Responsive tweaks + drawer setup
 ------------------------------ */
 .mobile-nav-toggle {
   display: none;
@@ -130,6 +141,7 @@
     height: 100%;
   }
 
+  /* Hamburger toggle positioning */
   .mobile-nav-toggle {
     display: flex;
     flex-direction: column;
@@ -154,6 +166,7 @@
     transition: transform 0.3s ease, opacity 0.3s ease;
   }
 
+  /* Animate hamburger into X */
   .mobile-nav-toggle.open span:nth-child(1) {
     transform: rotate(45deg) translateY(6px);
   }
@@ -166,6 +179,7 @@
     transform: rotate(-45deg) translateY(-6px);
   }
 
+  /* Mobile drawer menu */
   .header-menu {
     display: flex;
     flex-direction: column;
@@ -187,11 +201,13 @@
     left: 0;
   }
 
+  /* Stack nav vertically */
   .header-center .nav-links {
     flex-direction: column;
     gap: 1rem;
   }
 
+  /* Center logo in mobile */
   .header-left {
     position: absolute;
     left: 50%;
@@ -199,16 +215,15 @@
     transform: translate(-50%, -50%);
   }
 
-  /* Hide login text on mobile */
+  /* Hide login text in mobile */
   .login-text {
     display: none;
   }
 }
 
 /* ------------------------------
-   Unified Login: Text + Icon (Perfect Alignment)
+   Unified Login: Text + Icon (Aligned)
 ------------------------------ */
-/* Unified Login Button */
 .unified-login {
   display: inline-flex;
   align-items: center;
@@ -218,15 +233,19 @@
   position: relative;
 }
 
-/* Add icon using ::before */
+/* Pseudo-element for icon (login.svg required) */
 .unified-login::before {
   content: '';
   display: inline-block;
   width: 20px;
   height: 20px;
-  background-color: currentColor; /* Inherits text color */
+  background-color: currentColor;
   -webkit-mask: url('icons/login.svg') no-repeat center;
   mask: url('icons/login.svg') no-repeat center;
   -webkit-mask-size: contain;
   mask-size: contain;
+}
+
+.login-text {
+  display: inline;
 }
