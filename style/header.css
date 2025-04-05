@@ -208,23 +208,25 @@
 /* ------------------------------
    Unified Login: Text + Icon (Perfect Alignment)
 ------------------------------ */
+/* Unified Login Button */
 .unified-login {
   display: inline-flex;
-  align-items: center;     /* Vertically center icon + text */
-  gap: 0.5rem;             /* Space between icon and text */
-  line-height: 1;          /* Prevent uneven spacing from font line-height */
-}
-
-.unified-login {
-  display: inline-flex;
-  align-items: center;  /* Center icon + text vertically */
+  align-items: center;
   gap: 0.4rem;
   text-decoration: none;
   line-height: 1;
+  position: relative;
 }
 
-.login-icon svg {
-  display: block;        /* Removes vertical misalignment caused by inline SVG */
+/* Add icon using ::before */
+.unified-login::before {
+  content: '';
+  display: inline-block;
   width: 20px;
   height: 20px;
+  background-color: currentColor; /* Inherits text color */
+  -webkit-mask: url('icons/login.svg') no-repeat center;
+  mask: url('icons/login.svg') no-repeat center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
 }
