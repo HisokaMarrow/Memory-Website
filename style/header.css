@@ -2,30 +2,18 @@
    Root Variables for Header Theme
 ------------------------------ */
 :root {
-  /* Header background and surface */
   --header-bg: #1c1f26;
   --header-surface: #252931;
-
-  /* Text colors */
   --header-text: #f2f2f3;
   --header-subtext: #9ca3af;
-
-  /* Border */
   --header-border: #323843;
-
-  /* Accent / primary button */
   --header-accent: #7c3aed;
   --header-accent-hover: #5b21b6;
-
-  /* Secondary button / highlight */
   --header-secondary: #7c3aed;
   --header-secondary-hover: #5b21b6;
-
-  /* States */
   --header-success: #22c55e;
   --header-error: #ef4444;
 }
-
 
 /* ------------------------------
    Header Layout (Sticky + Base)
@@ -51,7 +39,6 @@
   padding: 0 1.5rem;
 }
 
-/* Logo Styling */
 .header-left {
   flex: 1;
 }
@@ -63,7 +50,6 @@
   font-weight: bold;
 }
 
-/* Header Menu Container (nav + login) */
 .header-menu {
   display: flex;
   flex: 2;
@@ -72,13 +58,11 @@
   gap: 2rem;
 }
 
-/* Login Align Right */
 .header-right {
   flex: 1;
   display: flex;
   justify-content: flex-end;
 }
-
 
 /* ------------------------------
    Nav Link Styling & Hover Effect
@@ -91,7 +75,6 @@
   margin: 0;
 }
 
-/* Shared base styles for links */
 .header-center .nav-links a,
 .header-right .login-link {
   position: relative;
@@ -105,7 +88,6 @@
   z-index: 1;
 }
 
-/* Hover background box using ::before */
 .header-center .nav-links a::before,
 .header-right .login-link::before {
   content: "";
@@ -122,25 +104,20 @@
   z-index: -1;
 }
 
-/* Hover Effect */
 .header-center .nav-links a:hover::before,
 .header-right .login-link:hover::before {
   opacity: 1;
   transform: scale(1);
 }
 
-
 /* ------------------------------
    Mobile Navigation & Toggle
 ------------------------------ */
-
-/* Hide toggle button on desktop */
 .mobile-nav-toggle {
   display: none;
 }
 
 @media (max-width: 768px) {
-  /* Set header height to avoid collapsing */
   .main-header {
     height: 60px;
     min-height: 60px;
@@ -153,7 +130,6 @@
     height: 100%;
   }
 
-  /* Hamburger Button on the left */
   .mobile-nav-toggle {
     display: flex;
     flex-direction: column;
@@ -175,10 +151,21 @@
     height: 3px;
     background-color: var(--header-text);
     border-radius: 2px;
-    z-index: 1060;
+    transition: transform 0.3s ease, opacity 0.3s ease;
   }
 
-  /* Side-drawer menu from left */
+  .mobile-nav-toggle.open span:nth-child(1) {
+    transform: rotate(45deg) translateY(6px);
+  }
+
+  .mobile-nav-toggle.open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-nav-toggle.open span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-6px);
+  }
+
   .header-menu {
     display: flex;
     flex-direction: column;
@@ -200,40 +187,11 @@
     left: 0;
   }
 
-  /* Stack nav links vertically */
   .header-center .nav-links {
     flex-direction: column;
     gap: 1rem;
   }
 
-  /* Divider and aligned login block */
-  .header-right {
-    width: 100%;
-    justify-content: flex-start;
-    padding-left: 0.25rem;
-    border-top: 1px solid var(--header-border);
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-  }
-
-  /* Backdrop behind drawer when open */
-  .nav-backdrop {
-    content: '';
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
-    background-color: rgba(0, 0, 0, 0.4);
-    z-index: 1040;
-  }
-
-  .nav-backdrop.active {
-    display: block;
-  }
-
-  /* Center the logo in mobile view */
   .header-left {
     position: absolute;
     left: 50%;
@@ -241,17 +199,13 @@
     transform: translate(-50%, -50%);
   }
 
-  /* Animate hamburger into X */
-  .mobile-nav-toggle.open span:nth-child(1) {
-    transform: rotate(45deg) translateY(6px);
+  .login-desktop {
+    display: none;
   }
 
-  .mobile-nav-toggle.open span:nth-child(2) {
-    opacity: 0;
-  }
-
-  .mobile-nav-toggle.open span:nth-child(3) {
-    transform: rotate(-45deg) translateY(-6px);
+  .login-mobile {
+    display: inline-flex;
+    align-items: center;
   }
 }
 
@@ -261,15 +215,4 @@
 
 .login-mobile {
   display: none;
-}
-
-@media (max-width: 768px) {
-  .login-desktop {
-    display: none;
-  }
-
-  .login-mobile {
-    display: inline-flex;
-    align-items: center;
-  }
 }
