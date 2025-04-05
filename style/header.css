@@ -240,4 +240,17 @@
     top: 50%;
     transform: translate(-50%, -50%);
   }
+
+  /* Animate hamburger into X */
+  .mobile-nav-toggle.open span:nth-child(1) {
+    transform: rotate(45deg) translateY(6px);
+  }
+
+  .mobile-nav-toggle.open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-nav-toggle.open span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-6px);
+  }
 }
