@@ -206,14 +206,17 @@
 }
 
 /* ------------------------------
-   Unified Login: Text + Icon
+   Unified Login: Text + Icon (Perfect Alignment)
 ------------------------------ */
 .unified-login {
   display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
+  align-items: center;     /* Vertically center icon + text */
+  gap: 0.4rem;             /* Space between icon and text */
+  line-height: 1;          /* Prevent uneven spacing from font line-height */
 }
 
-.login-text {
-  display: inline;
+.unified-login svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;          /* Prevent shrinking if text grows */
 }
