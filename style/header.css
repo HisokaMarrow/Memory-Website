@@ -124,11 +124,13 @@
    Mobile Navigation & Behavior
    Responsive tweaks + drawer setup
 ------------------------------ */
+
 .mobile-nav-toggle {
-  display: none;
+  display: none; /* Hidden on desktop */
 }
 
 @media (max-width: 768px) {
+  /* Mobile header base */
   .main-header {
     height: 60px;
     min-height: 60px;
@@ -141,7 +143,7 @@
     height: 100%;
   }
 
-  /* Hamburger toggle positioning */
+  /* Hamburger button (left) */
   .mobile-nav-toggle {
     display: flex;
     flex-direction: column;
@@ -166,7 +168,7 @@
     transition: transform 0.3s ease, opacity 0.3s ease;
   }
 
-  /* Animate hamburger into X */
+  /* X animation for open state */
   .mobile-nav-toggle.open span:nth-child(1) {
     transform: rotate(45deg) translateY(6px);
   }
@@ -179,12 +181,8 @@
     transform: rotate(-45deg) translateY(-6px);
   }
 
-  /* Mobile drawer menu */
+  /* Mobile drawer (hidden initially) */
   .header-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    background-color: var(--header-bg);
     position: fixed;
     top: 0;
     left: -100%;
@@ -192,6 +190,10 @@
     width: 75%;
     max-width: 320px;
     padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: var(--header-bg);
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.4);
     transition: left 0.3s ease-in-out;
     z-index: 1050;
@@ -201,13 +203,13 @@
     left: 0;
   }
 
-  /* Stack nav vertically */
+  /* Stack nav links vertically */
   .header-center .nav-links {
     flex-direction: column;
     gap: 1rem;
   }
 
-  /* Center logo in mobile */
+  /* Center the logo */
   .header-left {
     position: absolute;
     left: 50%;
@@ -215,37 +217,18 @@
     transform: translate(-50%, -50%);
   }
 
-  /* Hide login text in mobile */
-  .login-text {
-    display: none;
+  /* Place login on the right */
+  .header-right {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
   }
-}
 
-/* ------------------------------
-   Unified Login: Text + Icon (Aligned)
------------------------------- */
-.unified-login {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  text-decoration: none;
-  line-height: 1;
-  position: relative;
-}
-
-/* Pseudo-element for icon (login.svg required) */
-.unified-login::before {
-  content: '';
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background-color: currentColor;
-  -webkit-mask: url('icons/login.svg') no-repeat center;
-  mask: url('icons/login.svg') no-repeat center;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-}
-
-.login-text {
-  display: inline;
+  /* Show login text on mobile */
+  .login-text {
+    display: inline;
+  }
 }
