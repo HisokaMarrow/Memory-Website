@@ -22,26 +22,26 @@
       // Insert the header at the very top of <body>
       document.body.insertAdjacentHTML('afterbegin', data);
 
-      // Inject backdrop after header
-      const backdrop = document.createElement('div');
-      backdrop.classList.add('nav-backdrop');
-      document.body.appendChild(backdrop);
+      // Create and append the backdrop
+      const backdropEl = document.createElement('div');
+      backdropEl.classList.add('nav-backdrop');
+      document.body.appendChild(backdropEl);
 
       // ============ MOBILE NAV TOGGLE LOGIC ============
       const toggleBtn = document.querySelector('.mobile-nav-toggle');
       const menu = document.querySelector('.header-menu');
-      const backdrop = document.querySelector('.nav-backdrop');
 
       const toggleMenu = () => {
-        toggleBtn.classList.toggle('open'); // <-- this line enables the X animation
+        toggleBtn.classList.toggle('open'); // for hamburger-X animation
         menu?.classList.toggle('open');
-        backdrop.classList.toggle('active');
+        backdropEl.classList.toggle('active');
       };
 
       toggleBtn?.addEventListener('click', toggleMenu);
-      backdrop?.addEventListener('click', toggleMenu);
+      backdropEl?.addEventListener('click', toggleMenu);
+    })
+    .catch(err => console.error('Failed to load header:', err));
 </script>
-
 
   
 
