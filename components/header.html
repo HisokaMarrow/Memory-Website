@@ -1,35 +1,33 @@
 <header class="main-header">
   <div class="container">
 
-    <!-- ========== Mobile Hamburger Toggle Button ========== -->
+    <!-- Hamburger (mobile only) -->
     <button class="mobile-nav-toggle" aria-label="Toggle navigation">
       <span></span>
       <span></span>
       <span></span>
     </button>
 
-    <!-- ========== Centered Logo ========== -->
+    <!-- Memoro logo (always visible, left on desktop, center on mobile) -->
     <div class="header-left">
       <h1 class="logo"><a href="index.html">Memoro</a></h1>
     </div>
 
-    <!-- ========== Login (Unified Text + Icon Link) ========== -->
-    <div class="header-right">
-  <a href="login.html" class="login-link unified-login" aria-label="Login">
-    <span class="login-text">Login</span>
-  </a>
-</div>
+    <!-- Navigation links (centered on desktop only) -->
+    <nav class="header-center">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="mind-games.html">Mind Games</a></li>
+        <li><a href="vault.html">The Vault</a></li>
+        <li><a href="ranking.html">Rankings</a></li>
+      </ul>
+    </nav>
 
-    <!-- ========== Main Navigation (Desktop + Mobile Drawer) ========== -->
-    <div class="header-menu">
-      <nav class="header-center">
-        <ul class="nav-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="mind-games.html">Mind Games</a></li>
-          <li><a href="vault.html">The Vault</a></li>
-          <li><a href="ranking.html">Rankings</a></li>
-        </ul>
-      </nav>
+    <!-- Login (text on desktop, icon on mobile) -->
+    <div class="header-right">
+      <a href="login.html" class="login-link unified-login" aria-label="Login">
+        <span class="login-text">Login</span>
+      </a>
     </div>
 
   </div>
