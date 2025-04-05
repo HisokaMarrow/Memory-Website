@@ -214,3 +214,17 @@
   gap: 0.5rem;             /* Space between icon and text */
   line-height: 1;          /* Prevent uneven spacing from font line-height */
 }
+
+.unified-login {
+  display: inline-flex;
+  align-items: center;  /* Center icon + text vertically */
+  gap: 0.4rem;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.login-icon svg {
+  display: block;        /* Removes vertical misalignment caused by inline SVG */
+  width: 20px;
+  height: 20px;
+}
