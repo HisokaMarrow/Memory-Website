@@ -199,20 +199,21 @@
     transform: translate(-50%, -50%);
   }
 
-  .login-desktop {
+  /* Hide login text on mobile */
+  .login-text {
     display: none;
   }
-
-  .login-mobile {
-    display: inline-flex;
-    align-items: center;
-  }
 }
 
-.login-desktop {
+/* ------------------------------
+   Unified Login: Text + Icon
+------------------------------ */
+.unified-login {
   display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
-.login-mobile {
-  display: none;
+.login-text {
+  display: inline;
 }
