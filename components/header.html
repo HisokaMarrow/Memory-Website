@@ -1,30 +1,39 @@
 <header class="main-header">
   <div class="container">
-
-    <div class="header-left">
-      <h1 class="logo"><a href="index.html">Memoro</a></h1>
-    </div>
-
-    <!-- Hamburger -->
+    
+    <!-- Hamburger Button (mobile only) -->
     <button class="mobile-nav-toggle" aria-label="Toggle navigation">
       <span></span>
       <span></span>
       <span></span>
     </button>
 
-    <!-- Wrapper for nav + login -->
+    <!-- Logo in center -->
+    <div class="header-left">
+      <h1 class="logo"><a href="index.html">Memoro</a></h1>
+    </div>
+
+    <!-- Login Icon (visible on all screen sizes) -->
+    <div class="header-right">
+      <a href="login.html" class="login-link" aria-label="Login">
+        <!-- Simple login icon (emoji or SVG) -->
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M10 17v-2h4v2h5V7h-5v2h-4V7a2 2 0 012-2h5a2 2 0 012 2v10a2 2 0 01-2 2h-5a2 2 0 01-2-2z"/>
+          <path d="M3 12l4-4v3h9v2H7v3z"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Navigation Drawer (collapsible) -->
     <div class="header-menu">
       <nav class="header-center">
         <ul class="nav-links">
-          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="index.html">Home</a></li>
           <li><a href="mind-games.html">Mind Games</a></li>
           <li><a href="vault.html">The Vault</a></li>
           <li><a href="ranking.html">Rankings</a></li>
         </ul>
       </nav>
-      <div class="header-right">
-        <a href="login.html" class="login-link">Login</a>
-      </div>
     </div>
 
   </div>
