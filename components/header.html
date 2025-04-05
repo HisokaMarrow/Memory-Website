@@ -1,6 +1,6 @@
 <header class="main-header">
   <div class="container">
-    
+
     <!-- Hamburger Button (mobile only) -->
     <button class="mobile-nav-toggle" aria-label="Toggle navigation">
       <span></span>
@@ -8,15 +8,18 @@
       <span></span>
     </button>
 
-    <!-- Logo in center -->
+    <!-- Logo centered -->
     <div class="header-left">
       <h1 class="logo"><a href="index.html">Memoro</a></h1>
     </div>
 
-    <!-- Login Icon (visible on all screen sizes) -->
+    <!-- Right side login controls -->
     <div class="header-right">
-      <a href="login.html" class="login-link" aria-label="Login">
-        <!-- Simple login icon (emoji or SVG) -->
+      <!-- Desktop: Login Text Link -->
+      <a href="login.html" class="login-link login-desktop">Login</a>
+
+      <!-- Mobile: Login Icon -->
+      <a href="login.html" class="login-link login-mobile" aria-label="Login">
         <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
           <path d="M10 17v-2h4v2h5V7h-5v2h-4V7a2 2 0 012-2h5a2 2 0 012 2v10a2 2 0 01-2 2h-5a2 2 0 01-2-2z"/>
           <path d="M3 12l4-4v3h9v2H7v3z"/>
@@ -24,7 +27,7 @@
       </a>
     </div>
 
-    <!-- Navigation Drawer (collapsible) -->
+    <!-- Navigation Drawer (collapsible in mobile) -->
     <div class="header-menu">
       <nav class="header-center">
         <ul class="nav-links">
