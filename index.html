@@ -72,7 +72,22 @@
     })
     .catch(err => console.error('Failed to load header:', err));
 </script>
-  
 
+<!-- Footer -->
+<div id="site-footer"></div>
+<script>
+  fetch('/components/footer.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('site-footer').innerHTML = html;
+
+      const style = document.createElement('link');
+      style.rel = 'stylesheet';
+      style.href = '/style/footer.css';
+      document.head.appendChild(style);
+    });
+</script>
+
+  
 </body>
 </html>
