@@ -53,17 +53,101 @@
     .catch(err => console.error('Failed to load header:', err));
 </script>
 
+<main class="main-games-wrapper">
 
-<main class="scroll-test">
-  <section>
-    <h2 style="padding: 2rem; text-align: center;">Scroll Test Area</h2>
-    <div style="height: 2000px; background: linear-gradient(#1c1f26, #252931);">
-      <p style="padding: 2rem; color: var(--header-text); text-align: center;">
-        Scroll to test header stickiness and mobile drawer behavior
-      </p>
+  <!-- Memory Games -->
+  <section class="game-section memory">
+    <h2><a href="/pages/memory.html" class="main-section-link">Memory Games ></a></h2>
+    <div class="carousel-wrapper">
+      <button class="carousel-arrow left" data-target="memory-carousel">&lt;</button>
+      <div class="main-carousel" id="memory-carousel"></div>
+      <button class="carousel-arrow right" data-target="memory-carousel">&gt;</button>
     </div>
   </section>
+
+  <!-- Math Games -->
+  <section class="game-section math">
+    <h2><a href="/pages/math.html" class="main-section-link">Math Games ></a></h2>
+    <div class="carousel-wrapper">
+      <button class="carousel-arrow left" data-target="math-carousel">&lt;</button>
+      <div class="main-carousel" id="math-carousel"></div>
+      <button class="carousel-arrow right" data-target="math-carousel">&gt;</button>
+    </div>
+  </section>
+
+  <!-- Riddle Games -->
+  <section class="game-section riddles">
+    <h2><a href="/pages/riddles.html" class="main-section-link">Riddle Games ></a></h2>
+    <div class="carousel-wrapper">
+      <button class="carousel-arrow left" data-target="riddle-carousel">&lt;</button>
+      <div class="main-carousel" id="riddle-carousel"></div>
+      <button class="carousel-arrow right" data-target="riddle-carousel">&gt;</button>
+    </div>
+  </section>
+
 </main>
+
+<script>
+  // Create a single game card element
+  function createGameBox(game) {
+    const box = document.createElement("div");
+    box.className = "main-box";
+    box.innerHTML = `
+      <h3>${game.title}</h3>
+      <p>${game.description}</p>
+      ${
+        game.link?.trim()
+          ? `<a href="${game.link}" class="main-button">Play</a>`
+          : `<a class="main-button disabled">Coming Soon</a>`
+      }
+    `;
+    return box;
+  }
+
+  // Render all games by category
+  function renderGames(games) {
+    const containers = {
+      Memory: document.getElementById("memory-carousel"),
+      Math: document.getElementById("math-carousel"),
+      Riddles: document.getElementById("riddle-carousel")
+    };
+
+    games.forEach(game => {
+      const section = containers[game.category];
+      if (section) {
+        section.appendChild(createGameBox(game));
+      }
+    });
+  }
+
+  // Load games from updated JSON path
+  fetch('/gamescollection/games.json')
+    .then(res => res.json())
+    .then(renderGames)
+    .catch(err => console.error("Failed to load games:", err));
+</script>
+
+<script>
+  // Carousel scroll logic
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
+      const carousel = wrapper.querySelector('.main-carousel');
+      const left = wrapper.querySelector('.carousel-arrow.left');
+      const right = wrapper.querySelector('.carousel-arrow.right');
+
+      const scrollAmount = 320;
+
+      left?.addEventListener('click', () => {
+        carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      });
+
+      right?.addEventListener('click', () => {
+        carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      });
+    });
+  });
+</script>
+
 
 <!-- Footer -->
 <div id="site-footer"></div>
