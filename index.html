@@ -138,7 +138,7 @@
   }
 
   window.addEventListener("load", () => {
-    fetch('/data/games.json')
+    fetch('/gamescollection/games.json')
       .then(res => res.json())
       .then(games => renderDailyPractice(games))
       .catch(err => console.error("❌ Failed to load game data:", err));
