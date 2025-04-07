@@ -212,7 +212,7 @@ main {
 .carousel-arrow {
   flex: 0 0 auto;                /* Keep fixed size, don’t grow/shrink */
   width: 36px;
-  height: 100px;
+  height: 140px;
   background-color: rgba(128, 128, 128, 0.15);  /* Subtle translucent bg */
   color: white;
   font-size: 1.6rem;
