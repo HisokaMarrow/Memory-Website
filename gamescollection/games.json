@@ -1,1 +1,114 @@
-1
+[
+  {
+    "id": "memory_number",
+    "category": "Memory",
+    "title": "Number Memory",
+    "description": "Remember and recall sequences of numbers.",
+    "link": "/pages/memory/numbers/settings.html"
+  },
+  {
+    "id": "memory_words",
+    "category": "Memory",
+    "title": "Word Memory",
+    "description": "Try to remember as many words as you can.",
+    "link": "/pages/memory/words/settings.html"
+  },
+  {
+    "id": "memory_cards",
+    "category": "Memory",
+    "title": "Card Challenge",
+    "description": "Train your memory by recalling the order of shuffled playing cards. A classic test of visual memory and sequencing.",
+    "link": "/pages/memory/cards/settings.html"
+  },
+  {
+    "id": "math_addition",
+    "category": "Math",
+    "title": "Addition Master",
+    "description": "Solve as many addition problems as you can in limited time.",
+    "link": "/pages/math/addition/settings.html"
+  },
+  {
+    "id": "math_subtraction",
+    "category": "Math",
+    "title": "Subtraction Master",
+    "description": "How fast can you solve subtraction problems?",
+    "link": "/pages/math/subtraction/settings.html"
+  },
+  {
+    "id": "math_multiplication",
+    "category": "Math",
+    "title": "Multiplication Master",
+    "description": "Speed through multiplication tasks under pressure.",
+    "link": "/pages/math/multiplication/settings.html"
+  },
+  {
+    "id": "math_division",
+    "category": "Math",
+    "title": "Division Master",
+    "description": "Speed through division tasks under pressure.",
+    "link": "/pages/math/division/settings.html"
+  },
+  {
+    "id": "math_percentage",
+    "category": "Math",
+    "title": "Percentage Master",
+    "description": "Speed through percentage calculation tasks under pressure.",
+    "link": "/pages/math/percentage/settings.html"
+  },
+  {
+    "id": "math_doomsday",
+    "category": "Math",
+    "title": "Doomsday Master",
+    "description": "Practice doomsday calculation formulas for any date.",
+    "link": "/pages/math/doomsday/settings.html"
+  },
+  {
+    "id": "riddle_logic",
+    "category": "Riddles",
+    "title": "Logic Riddles",
+    "description": "Solve tricky logic puzzles and train your brain.",
+    "link": "/pages/riddles/logic/settings.html"
+  },
+  {
+    "id": "riddle_numeric",
+    "category": "Riddles",
+    "title": "Math Riddles",
+    "description": "Use both logic and math to crack these riddles.",
+    "link": "/pages/riddles/numeric/settings.html"
+  },
+  {
+    "id": "riddle_cipher",
+    "category": "Riddles",
+    "title": "Cipher",
+    "description": "Unravel encrypted codes and hidden patterns. This challenge tests your ability to decode messages using logic, intuition, and pattern recognition.",
+    "link": null
+  },
+  {
+    "id": "vault_memory_techniques",
+    "category": "Vault",
+    "title": "Memory Techniques",
+    "description": "Master powerful memory systems like the Major System and Number Shapes. Learn how to turn numbers into vivid, unforgettable images.",
+    "link": "/pages/vault/memory-techniques/memorymnemonics.html"
+  },
+  {
+    "id": "vault_memory_mnemonics",
+    "category": "Vault",
+    "title": "Memory Mnemonics",
+    "description": "Learn how to link cards, facts, or sequences to memorable characters or images. Build faster, stronger associations for recall mastery.",
+    "link": "/pages/vault/memory-mnemonics/associations.html"
+  },
+  {
+    "id": "vault_maths",
+    "category": "Vault",
+    "title": "Maths",
+    "description": "Unlock powerful math strategies and mental shortcuts used by top performers. Explore proven techniques for faster calculations, stronger number sense, and confident problem solving.",
+    "link": "/pages/vault/maths/addition.html"
+  },
+  {
+    "id": "vault_doomsday",
+    "category": "Vault",
+    "title": "Doomsday Calculation",
+    "description": "Learn the Doomsday Algorithm — a mental shortcut that lets you instantly calculate the day of the week for any date. Master this powerful memory-based math trick used by mental athletes and calendar prodigies.",
+    "link": "/pages/vault/doomsday/doomsday.html"
+  }
+]
