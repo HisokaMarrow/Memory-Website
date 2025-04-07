@@ -164,22 +164,26 @@ main {
    ======================================================= */
 .daily-grid {
   display: flex;
-  gap: 1.5rem;
+  flex-wrap: wrap;               /* Allows wrapping on smaller screens */
+  gap: 1.5rem;                   /* Space between items */
+  justify-content: center;       /* Centers the items horizontally */
 }
 
 #gamecardgrid {
   display: flex;
-  gap: 1.5rem;
-  justify-content: center;
+  flex-wrap: wrap;               /* Wraps the items when there's not enough space */
+  gap: 1.5rem;                   /* Space between items */
+  justify-content: center;       /* Centers the items horizontally */
   padding: 1rem 0;
 }
 
 #dailyPracticeBox {
   display: flex;
-  gap: 1rem;
-  justify-content: center;
-  max-width: 960px;
-  margin: 0 auto;
+  flex-wrap: wrap;               /* Allows wrapping on smaller screens */
+  gap: 1rem;                     /* Space between items */
+  justify-content: center;       /* Centers the items horizontally */
+  max-width: 960px;              /* Keeps the grid within a max width */
+  margin: 0 auto;                /* Centers the container */
 }
 
 
