@@ -166,7 +166,6 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
-  justify-content: center;
 }
 
 
@@ -184,7 +183,7 @@ main {
   gap: 1rem;
   text-align: center;
   align-items: center;
-  width: 100%;
+  min-width: 280px;
   max-width: 300px;
   flex: 0 0 auto;
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
@@ -353,5 +352,3 @@ main {
   color: var(--color-text);              /* Input text color */
   font-size: 1rem;                        /* Standard font size */
 }
-
-
