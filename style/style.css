@@ -193,6 +193,7 @@ main {
   align-items: center;
   min-width: 280px;
   max-width: 300px;
+  margin: 0 auto; /* center inside the grid cell */
   flex: 0 0 auto;
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
               box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
