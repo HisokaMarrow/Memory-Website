@@ -205,7 +205,7 @@ main {
   border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 2rem;
-  max-width: 640px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
