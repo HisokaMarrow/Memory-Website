@@ -135,12 +135,11 @@ main {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  text-align: centre;
+  text-align: center
   align-items: center;
   min-width: 280px;      /* Minimum space for each card */
   max-width: 300px;      /* Optional cap to prevent stretching */
   flex: 0 0 auto;        /* Prevent flex-grow/shrink */
-}
 }
 
 .daily-box h3 {
