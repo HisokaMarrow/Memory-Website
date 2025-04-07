@@ -248,3 +248,17 @@ main {
     display: none;
   }
 }
+
+/* ========================
+   Section Title Links (Memoro Colored)
+   ======================== */
+.main-section-link {
+  color: var(--color-secondary);         /* Same as Memoro logo */
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.main-section-link:hover {
+  color: var(--color-secondary-hover);   /* Darker shade for hover */
+}
