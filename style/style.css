@@ -163,27 +163,25 @@ main {
    DAILY CHALLENGE GRID (Index Page)
    ======================================================= */
 .daily-grid {
-  display: flex;
-  flex-wrap: wrap;               /* Allows wrapping on smaller screens */
-  gap: 1.5rem;                   /* Space between items */
-  justify-content: center;       /* Centers the items horizontally */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
 }
 
 #gamecardgrid {
-  display: flex;
-  flex-wrap: wrap;               /* Wraps the items when there's not enough space */
-  gap: 1.5rem;                   /* Space between items */
-  justify-content: center;       /* Centers the items horizontally */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;
   padding: 1rem 0;
 }
 
 #dailyPracticeBox {
-  display: flex;
-  flex-wrap: wrap;               /* Allows wrapping on smaller screens */
-  gap: 1rem;                     /* Space between items */
-  justify-content: center;       /* Centers the items horizontally */
-  max-width: 960px;              /* Keeps the grid within a max width */
-  margin: 0 auto;                /* Centers the container */
+  display: grid;
+  gap: 1rem;
+  justify-content: center;
+  max-width: 960px;
+  margin: 0 auto;
 }
 
 
