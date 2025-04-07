@@ -53,17 +53,45 @@
     .catch(err => console.error('Failed to load header:', err));
 </script>
 
+<main>
+  <section class="page-content hero">
+    <h1 class="main-title">Math Games</h1>
+    <p class="main-subtitle">Sharpen your logic and calculation skills through fun numeric challenges.</p>
+  </section>
 
-<main class="scroll-test">
   <section>
-    <h2 style="padding: 2rem; text-align: center;">Scroll Test Area</h2>
-    <div style="height: 2000px; background: linear-gradient(#1c1f26, #252931);">
-      <p style="padding: 2rem; color: var(--header-text); text-align: center;">
-        Scroll to test header stickiness and mobile drawer behavior
-      </p>
-    </div>
+    <div class="daily-grid" id="gamecardgrid"></div>
   </section>
 </main>
+
+<script>
+  // Load and display math games from games.json
+  fetch('/gamescollection/games.json')
+    .then(res => res.json())
+    .then(games => {
+      const mathGames = games.filter(game => game.category === "Math");
+      const container = document.getElementById("gamecardgrid");
+
+      mathGames.forEach(game => {
+        const card = document.createElement("div");
+        card.className = "daily-box";
+
+        const hasLink = game.link && game.link.trim() !== "";
+        const buttonHTML = hasLink
+          ? `<a href="${game.link}" class="main-button">Play</a>`
+          : `<a class="main-button disabled">Coming Soon</a>`;
+
+        card.innerHTML = `
+          <h3>${game.title}</h3>
+          <p>${game.description}</p>
+          ${buttonHTML}
+        `;
+
+        container.appendChild(card);
+      });
+    })
+    .catch(err => console.error("Failed to load math games:", err));
+</script>
 
 <!-- Footer -->
 <div id="site-footer"></div>
