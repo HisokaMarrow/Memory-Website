@@ -278,3 +278,47 @@ main {
 .main-section-link:hover {
   color: var(--color-secondary-hover);
 }
+
+/* =======================================================
+   LOGIN PAGE FORM STYLES
+   Reusable form layout for login, signup, and auth flows
+   Matches Memoro dark theme with shared spacing, borders,
+   and input/button styling
+   ======================================================= */
+
+.login-container {
+  background-color: var(--color-bg-card); /* Form background */
+  border: 1px solid var(--color-border);  /* Form border */
+  border-radius: 12px;                    /* Rounded corners */
+  padding: 2.5rem;                        /* Inner spacing */
+  max-width: 400px;                       /* Max form width */
+  margin: 0 auto;                         /* Center on page */
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;                            /* Space between fields */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;                            /* Space between label and input */
+}
+
+.form-group label {
+  font-weight: 500;
+  color: var(--color-subtext);           /* Subtle label color */
+}
+
+.form-group input {
+  padding: 0.75rem 1rem;                 /* Input padding */
+  border-radius: 8px;                    /* Input corners */
+  border: 1px solid var(--color-border); /* Input border */
+  background-color: var(--main-box);     /* Input background */
+  color: var(--color-text);              /* Input text color */
+  font-size: 1rem;                        /* Standard font size */
+}
+
+
