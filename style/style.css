@@ -11,8 +11,8 @@
   --main-option-box-hover: #1d2026;
 
   /* Accent & States */
-  --color-secondary: #7f5af0;
-  --color-secondary-hover: #6246ea;
+  --color-secondary: #7c3aed;
+  --color-secondary-hover: #7f5af0;
   --color-success: #2dd4bf;
   --color-error: #f43f5e;
 }
@@ -234,6 +234,7 @@ main {
   overflow-x: auto;             /* Horizontal scrolling */
   scroll-behavior: smooth;      /* Smooth scroll on button click */
   padding: 1rem 0;
+  overflow-x: auto;             /* Enable horizontal scroll */
 }
 
 /* Hide scrollbar in WebKit browsers */
