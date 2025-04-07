@@ -191,3 +191,59 @@ main {
 .main-carousel::-webkit-scrollbar {
   display: none; /* Hide scrollbar for cleaner UI */
 }
+
+/* ========================
+   Carousel Layout (Modern Flow)
+   ======================== */
+
+/* Container that holds arrows + carousel row */
+.carousel-wrapper {
+  display: flex;                  /* Lay arrows and carousel in a row */
+  align-items: center;           /* Vertically align everything */
+  gap: 0.5rem;                   /* Space between arrows and carousel */
+  overflow: hidden;             /* Prevent content from spilling out */
+}
+
+/* Left and right scroll buttons */
+.carousel-arrow {
+  flex: 0 0 auto;                /* Keep fixed size, don’t grow/shrink */
+  width: 36px;
+  height: 100px;
+  background-color: rgba(128, 128, 128, 0.15);  /* Subtle translucent bg */
+  color: white;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Arrow hover effect */
+.carousel-arrow:hover {
+  background-color: rgba(128, 128, 128, 0.25);
+}
+
+/* Scrollable game card row */
+.main-carousel {
+  flex: 1;                       /* Take all remaining space */
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;             /* Horizontal scrolling */
+  scroll-behavior: smooth;      /* Smooth scroll on button click */
+  padding: 1rem 0;
+}
+
+/* Hide scrollbar in WebKit browsers */
+.main-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide arrows on small screens */
+@media (max-width: 768px) {
+  .carousel-arrow {
+    display: none;
+  }
+}
