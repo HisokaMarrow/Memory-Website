@@ -54,16 +54,46 @@
 </script>
 
 
-<main class="scroll-test">
+<main>
+  <section class="page-content hero">
+    <h1 class="main-title">Memory Vault</h1>
+    <p class="main-subtitle">Explore ancient memory systems, mental math tricks, and proven mind techniques.</p>
+  </section>
+
   <section>
-    <h2 style="padding: 2rem; text-align: center;">Scroll Test Area</h2>
-    <div style="height: 2000px; background: linear-gradient(#1c1f26, #252931);">
-      <p style="padding: 2rem; color: var(--header-text); text-align: center;">
-        Scroll to test header stickiness and mobile drawer behavior
-      </p>
-    </div>
+    <div class="daily-grid" id="gamecardgrid"></div>
   </section>
 </main>
+
+<script>
+  // Load and display vault content from games.json
+  fetch('/gamescollection/games.json')
+    .then(res => res.json())
+    .then(games => {
+      const vaultItems = games.filter(game => game.category === "Vault");
+      const container = document.getElementById("gamecardgrid");
+
+      vaultItems.forEach(game => {
+        const card = document.createElement("div");
+        card.className = "daily-box";
+
+        const hasLink = game.link && game.link.trim() !== "";
+        const buttonHTML = hasLink
+          ? `<a href="${game.link}" class="main-button">View</a>`
+          : `<a class="main-button disabled">Coming Soon</a>`;
+
+        card.innerHTML = `
+          <h3>${game.title}</h3>
+          <p>${game.description}</p>
+          ${buttonHTML}
+        `;
+
+        container.appendChild(card);
+      });
+    })
+    .catch(err => console.error("Failed to load vault content:", err));
+</script>
+
 
 <!-- Footer -->
 <div id="site-footer"></div>
