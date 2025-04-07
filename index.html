@@ -73,6 +73,78 @@
     .catch(err => console.error('Failed to load header:', err));
 </script>
 
+<main>
+  <section class="hero">
+    <h1 class="main-title">Unlock the Long-Lost Art of Memory</h1>
+    <p class="main-subtitle">
+      Discover how a powerful memory can improve your learning, creativity, job performance, and even help you reconnect with your past.
+      Dive into ancient techniques used by orators, monks, and memory athletes to develop extraordinary recall.
+    </p>
+  </section>
+
+  <section class="trial-test">
+    <h2 class="section-title">Ready to Test Your Memory?</h2>
+    <p class="section-description">Try out the quick memory test to see how well you remember words!</p>
+    <div class="button-wrapper">
+      <a href="test.html" class="main-button">Start Trial Test</a>
+    </div>
+  </section>
+
+  <section class="daily-practice">
+    <h2 class="section-title">Daily Practice</h2>
+    <p class="section-description">Sharpen your brain with a random set of 3 challenges every time you visit the site.</p>
+    <div class="daily-grid" id="dailyPracticeBox"></div>
+  </section>
+</main>
+
+<script>
+  // Fetch and render 1 random game per category
+  function getCategoryRandomGames(allGames) {
+    const memory = allGames.filter(g => g.category === "Memory");
+    const math = allGames.filter(g => g.category === "Math");
+    const riddles = allGames.filter(g => g.category === "Riddles");
+
+    return [
+      memory[Math.floor(Math.random() * memory.length)],
+      math[Math.floor(Math.random() * memory.length)],
+      riddles[Math.floor(Math.random() * riddles.length)]
+    ];
+  }
+
+  function renderDailyPractice(games) {
+    const container = document.getElementById("dailyPracticeBox");
+    let selectedGames = JSON.parse(sessionStorage.getItem("dailyGames"));
+
+    if (!selectedGames) {
+      selectedGames = getCategoryRandomGames(games);
+      sessionStorage.setItem("dailyGames", JSON.stringify(selectedGames));
+    }
+
+    selectedGames.forEach((game, index) => {
+      const checked = sessionStorage.getItem(`dailyGame_${game.title}`) === "true";
+      const box = document.createElement("div");
+      box.className = "daily-box";
+      box.innerHTML = `
+        <h3>${game.title}</h3>
+        <p>${game.description}</p>
+        <a href="${game.link}" class="main-button">Go to Game</a>
+        <div class="checkbox-complete">
+          <input type="checkbox" id="dailyGameCheck${index}" ${checked ? "checked" : ""} disabled>
+          <label for="dailyGameCheck${index}">Completed</label>
+        </div>
+      `;
+      container.appendChild(box);
+    });
+  }
+
+  window.addEventListener("load", () => {
+    fetch('/data/games.json')
+      .then(res => res.json())
+      .then(games => renderDailyPractice(games))
+      .catch(err => console.error("❌ Failed to load game data:", err));
+  });
+</script>
+
 <!-- Footer -->
 <div id="site-footer"></div>
 <script>
