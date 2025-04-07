@@ -17,7 +17,7 @@
     "id": "memory_cards",
     "category": "Memory",
     "title": "Card Challenge",
-    "description": "Train your memory by recalling the order of shuffled playing cards. A classic test of visual memory and sequencing.",
+    "description": "Train your memory by recalling the order of shuffled playing cards.",
     "link": "/pages/memory/cards/settings.html"
   },
   {
@@ -80,7 +80,7 @@
     "id": "riddle_cipher",
     "category": "Riddles",
     "title": "Cipher",
-    "description": "Unravel encrypted codes and hidden patterns. This challenge tests your ability to decode messages using logic, intuition, and pattern recognition.",
+    "description": "This challenge tests your ability to decode messages using logic and intuition.",
     "link": null
   },
   {
