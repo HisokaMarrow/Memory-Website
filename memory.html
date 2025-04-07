@@ -53,6 +53,45 @@
     .catch(err => console.error('Failed to load header:', err));
 </script>
 
+<main>
+  <section class="page-content hero">
+    <h1 class="main-title">Memory Games</h1>
+    <p class="main-subtitle">Train your memory through fast-paced, fun recall challenges.</p>
+  </section>
+
+  <section>
+    <div class="daily-grid" id="gamecardgrid"></div>
+  </section>
+</main>
+
+<script>
+  // Load and display memory games from games.json
+  fetch('/gamescollection/games.json')
+    .then(res => res.json())
+    .then(games => {
+      const memoryGames = games.filter(game => game.category === "Memory");
+      const container = document.getElementById("gamecardgrid");
+
+      memoryGames.forEach(game => {
+        const card = document.createElement("div");
+        card.className = "daily-box";
+
+        const hasLink = game.link && game.link.trim() !== "";
+        const buttonHTML = hasLink
+          ? `<a href="${game.link}" class="main-button">Play</a>`
+          : `<a class="main-button disabled">Coming Soon</a>`;
+
+        card.innerHTML = `
+          <h3>${game.title}</h3>
+          <p>${game.description}</p>
+          ${buttonHTML}
+        `;
+
+        container.appendChild(card);
+      });
+    })
+    .catch(err => console.error("Failed to load memory games:", err));
+</script>
 
 
 <!-- Footer -->
