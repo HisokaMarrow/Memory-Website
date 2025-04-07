@@ -135,6 +135,29 @@ main {
   margin-top: 1rem;
 }
 
+/* =======================================================
+   GAME START BUTTON — Full width, centered text
+   ======================================================= */
+.game-start-button {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 1rem 1.5rem;
+  background-color: var(--color-secondary);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.125rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 2rem;
+}
+
+.game-start-button:hover {
+  background-color: var(--color-secondary-hover);
+}
+
 
 /* =======================================================
    DAILY CHALLENGE GRID (Index Page)
