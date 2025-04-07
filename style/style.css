@@ -178,7 +178,6 @@ main {
 
 #dailyPracticeBox {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 0.5fr));
   gap: 1rem;
   justify-content: center;
   max-width: 960px;
