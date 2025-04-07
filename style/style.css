@@ -184,7 +184,7 @@ main {
   gap: 1rem;
   text-align: center;
   align-items: center;
-  min-width: 280px;
+  width: 100%;
   max-width: 300px;
   flex: 0 0 auto;
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
