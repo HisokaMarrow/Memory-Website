@@ -163,19 +163,19 @@ main {
    DAILY CHALLENGE GRID (Index Page)
    ======================================================= */
 .daily-grid {
-  display: grid;
+  display: flex;
   gap: 1.5rem;
 }
 
 #gamecardgrid {
-  display: grid;
+  display: flex;
   gap: 1.5rem;
   justify-content: center;
   padding: 1rem 0;
 }
 
 #dailyPracticeBox {
-  display: grid;
+  display: flex;
   gap: 1rem;
   justify-content: center;
   max-width: 960px;
