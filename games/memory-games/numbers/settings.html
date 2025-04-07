@@ -56,6 +56,78 @@
     .catch(err => console.error('Failed to load header:', err));
 </script>
 
+  <main>
+  <div class="login-container">
+    <h1 class="main-title" style="text-align: center;">Number Memory Settings</h1>
+
+    <form id="settings-form" class="login-form">
+      <div class="form-group">
+        <label for="delay">Delay (seconds before number disappears)</label>
+        <input type="number" id="delay" value="3" min="1" />
+      </div>
+
+      <div class="form-group">
+        <label for="rangeMax">Maximum Number (e.g. 99)</label>
+        <input type="number" id="rangeMax" value="99" min="1" />
+      </div>
+
+      <div class="form-group">
+        <label for="testTime">Total Test Duration (seconds)</label>
+        <input type="number" id="testTime" value="60" min="5" />
+      </div>
+
+      <div class="checkbox-complete">
+        <input type="checkbox" id="padZeros" />
+        <label for="padZeros">Use 01–09 instead of 1–9</label>
+      </div>
+
+      <div class="checkbox-complete">
+        <input type="checkbox" id="enableVoice" checked />
+        <label for="enableVoice">Enable Voice Output</label>
+      </div>
+
+      <div class="checkbox-complete">
+        <input type="checkbox" id="speakIndividually" />
+        <label for="speakIndividually">Speak Numbers Individually</label>
+      </div>
+
+      <div class="button-wrapper">
+        <button type="submit" class="main-button" style="width: 100%;">Start Game</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<script>
+  document.getElementById('settings-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const delay = document.getElementById("delay").value;
+    const rangeMax = document.getElementById("rangeMax").value;
+    const testTime = document.getElementById("testTime").value;
+    const padZeros = document.getElementById("padZeros").checked;
+    const enableVoice = document.getElementById("enableVoice").checked;
+    const speakIndividually = document.getElementById("speakIndividually").checked;
+
+    localStorage.setItem("delay", delay);
+    localStorage.setItem("rangeMax", rangeMax);
+    localStorage.setItem("testTime", testTime);
+    localStorage.setItem("padZeros", padZeros);
+    localStorage.setItem("enableVoice", enableVoice);
+    localStorage.setItem("speakIndividually", speakIndividually);
+
+    // Preload speech synthesis
+    if (enableVoice) {
+      const dummy = new SpeechSynthesisUtterance('');
+      window.speechSynthesis.speak(dummy);
+    }
+
+    setTimeout(() => {
+      window.location.href = "game.html";
+    }, 100);
+  });
+</script>
+
 
 <!-- Footer -->
 <div id="site-footer"></div>
