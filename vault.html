@@ -101,18 +101,15 @@
 <!-- Footer -->
 <div id="site-footer"></div>
 <script>
+  // Load reusable footer after its CSS is already in place
   fetch('/components/footer.html')
     .then(res => res.text())
     .then(html => {
       document.getElementById('site-footer').innerHTML = html;
-
-      const style = document.createElement('link');
-      style.rel = 'stylesheet';
-      style.href = '/style/footer.css';
-      document.head.appendChild(style);
-    });
+    })
+    .catch(err => console.error('Failed to load footer:', err));
 </script>
-
+  
 </body>
 </html>
 
