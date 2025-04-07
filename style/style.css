@@ -200,7 +200,7 @@ main {
   gap: 1rem;
   text-align: center;
   align-items: center;
-  min-width: 280px;
+  width: 100%
   max-width: 300px;
   margin: 0 auto; /* center inside the grid cell */
   flex: 0 0 auto;
