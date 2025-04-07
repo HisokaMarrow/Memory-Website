@@ -56,47 +56,46 @@
     .catch(err => console.error('Failed to load header:', err));
 </script>
 
-  <main>
-  <div class="login-container">
-    <h1 class="main-title" style="text-align: center;">Number Memory Settings</h1>
+ <main>
+  <h1 class="main-title" style="text-align: center;">Number Memory Settings</h1>
 
-    <form id="settings-form" class="login-form">
-      <div class="form-group">
-        <label for="delay">Delay (seconds before number disappears)</label>
-        <input type="number" id="delay" value="3" min="1" />
-      </div>
+  <form id="settings-form" class="games-settings-container login-form">
+    <div class="form-group">
+      <label for="delay">Delay (seconds before number disappears)</label>
+      <input type="number" id="delay" value="3" min="1" />
+    </div>
 
-      <div class="form-group">
-        <label for="rangeMax">Maximum Number (e.g. 99)</label>
-        <input type="number" id="rangeMax" value="99" min="1" />
-      </div>
+    <div class="form-group">
+      <label for="rangeMax">Maximum Number (e.g. 99)</label>
+      <input type="number" id="rangeMax" value="99" min="1" />
+    </div>
 
-      <div class="form-group">
-        <label for="testTime">Total Test Duration (seconds)</label>
-        <input type="number" id="testTime" value="60" min="5" />
-      </div>
+    <div class="form-group">
+      <label for="testTime">Total Test Duration (seconds)</label>
+      <input type="number" id="testTime" value="60" min="5" />
+    </div>
 
-      <div class="checkbox-complete">
-        <input type="checkbox" id="padZeros" />
-        <label for="padZeros">Use 01–09 instead of 1–9</label>
-      </div>
+    <div class="checkbox-complete">
+      <input type="checkbox" id="padZeros" />
+      <label for="padZeros">Use 01–09 instead of 1–9</label>
+    </div>
 
-      <div class="checkbox-complete">
-        <input type="checkbox" id="enableVoice" checked />
-        <label for="enableVoice">Enable Voice Output</label>
-      </div>
+    <div class="checkbox-complete">
+      <input type="checkbox" id="enableVoice" checked />
+      <label for="enableVoice">Enable Voice Output</label>
+    </div>
 
-      <div class="checkbox-complete">
-        <input type="checkbox" id="speakIndividually" />
-        <label for="speakIndividually">Speak Numbers Individually</label>
-      </div>
+    <div class="checkbox-complete">
+      <input type="checkbox" id="speakIndividually" />
+      <label for="speakIndividually">Speak Numbers Individually</label>
+    </div>
 
-      <div class="button-wrapper">
-        <a type="submit" class="main-button" style="width: 100%;">Start Game</a>
-      </div>
-    </form>
-  </div>
+    <div class="button-wrapper">
+      <button type="submit" class="main-button" style="width: 100%;">Start Game</button>
+    </div>
+  </form>
 </main>
+
 
 <script>
   document.getElementById('settings-form').addEventListener('submit', (e) => {
