@@ -176,6 +176,16 @@ main {
   padding: 1rem 0;
 }
 
+#dailyPracticeBox {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
 
 /* =======================================================
    SHARED CARD COMPONENT (.daily-box)
