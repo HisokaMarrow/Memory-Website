@@ -168,6 +168,14 @@ main {
   gap: 1.5rem;
 }
 
+#gamecardgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
 
 /* =======================================================
    SHARED CARD COMPONENT (.daily-box)
