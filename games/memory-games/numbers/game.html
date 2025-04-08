@@ -223,9 +223,12 @@
         if (giveUpBtns[k]) giveUpBtns[k].onclick = giveUp;
       }
     }
+    
+    window.togglePause = togglePause;
+window.endEarly = endEarly;
+window.giveUp = giveUp;
+window.dispatchEvent(new Event('gameReady'));
 
-    window.onload = initGameLogic;
-  })();
 </script>
 
 
