@@ -1,3 +1,21 @@
+/* ------------------------------
+   Root Variables for Header Theme
+   Color palette for header elements
+------------------------------ */
+:root {
+  --header-bg: #1c1f26;
+  --header-surface: #252931;
+  --header-text: #f2f2f3;
+  --header-subtext: #9ca3af;
+  --header-border: #323843;
+  --header-accent: #7c3aed;
+  --header-accent-hover: #5b21b6;
+  --header-secondary: #7c3aed;
+  --header-secondary-hover: #5b21b6;
+  --header-success: #22c55e;
+  --header-error: #ef4444;
+}
+
 .game-header {
   position: sticky;
   top: 0;
