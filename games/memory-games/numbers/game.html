@@ -14,91 +14,62 @@
 </head>
 <body>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memoro</title>
+
+  <!-- Global styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/style.css" />
+
+  <!-- Header-specific styles -->
+  <link rel="stylesheet" href="/style/header.css" />
+
+  <!-- Footer-specific styles -->
+  <link rel="stylesheet" href="/style/footer.css" />
+</head>
+<body>
+
 <script>
-  // Load reusable game header from components/game-header.html
-  fetch('/components/gameheader.html')
+  // Load reusable header from components/header.html
+  fetch('/components/header.html')
     .then(res => res.text())
     .then(data => {
-      // Inject the game header at the top of the body
+      // Inject the header at the top of the body
       document.body.insertAdjacentHTML('afterbegin', data);
 
-      // === After the game header is injected ===
+      // === After header is injected ===
 
-      // Timer handling logic (for example, starting timer or pausing it)
-      let timer;
-      let time = 0;
-      let isPaused = false; // Keeps track of whether the game is paused
+      // Create and insert backdrop
+      const backdropEl = document.createElement('div');
+      backdropEl.classList.add('nav-backdrop');
+      document.body.appendChild(backdropEl);
 
-      function updateTimer() {
-        time += 1;
-        const minutes = Math.floor(time / 60);
-        const seconds = time % 60;
-        document.getElementById('timer').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      // Query the toggle button and the nav drawer
+      const toggleBtn = document.querySelector('.mobile-nav-toggle');
+      const menu = document.querySelector('.header-menu');
+
+      // Safety check
+      if (!toggleBtn || !menu) {
+        console.warn("Header elements not found. Check class names in header.html");
+        return;
       }
 
-      function startTimer() {
-        timer = setInterval(updateTimer, 1000);
-      }
+      // Toggle drawer and backdrop visibility
+      const toggleMenu = () => {
+        toggleBtn.classList.toggle('open');    // Animate hamburger to X
+        menu.classList.toggle('open');         // Slide drawer open/closed
+        backdropEl.classList.toggle('active'); // Dim background
+      };
 
-      function pauseTimer() {
-        clearInterval(timer);
-      }
-
-      function resumeTimer() {
-        startTimer();
-      }
-
-      // === Button event handlers ===
-
-      // "Give Up" button (goes to settings page)
-      document.getElementById('give-up-btn').addEventListener('click', () => {
-        window.location.href = '/settings.html';
-      });
-
-      // "End Early" button (goes to results page)
-      document.getElementById('end-early-btn').addEventListener('click', () => {
-        window.location.href = '/results.html';
-      });
-
-      // "Pause" button (pauses the timer)
-      document.getElementById('pause-btn').addEventListener('click', () => {
-        if (isPaused) {
-          // If the game is already paused, resume the game
-          resumeGame();
-        } else {
-          // Otherwise, pause the game
-          pauseGame();
-        }
-      });
-
-      // Function to handle pausing the game
-      function pauseGame() {
-        pauseTimer();
-        isPaused = true;
-        document.getElementById('pause-btn').textContent = 'Resume'; // Change the button text
-        disableGameActions(true); // Disable all other game interactions
-      }
-
-      // Function to handle resuming the game
-      function resumeGame() {
-        resumeTimer();
-        isPaused = false;
-        document.getElementById('pause-btn').textContent = 'Pause'; // Change the button text
-        disableGameActions(false); // Enable all other game interactions
-      }
-
-      // Function to disable or enable all game actions
-      function disableGameActions(disable) {
-        const gameButtons = document.querySelectorAll('.game-header-button');
-        gameButtons.forEach(button => {
-          button.disabled = disable;
-        });
-      }
-
-      // Start the timer when the page loads
-      startTimer();
+      // Event listeners
+      toggleBtn.addEventListener('click', toggleMenu);
+      backdropEl.addEventListener('click', toggleMenu); // close menu when clicking outside
     })
-    .catch(err => console.error('❌ Failed to load game header:', err));
+    .catch(err => console.error('Failed to load header:', err));
 </script>
 
 </body>
