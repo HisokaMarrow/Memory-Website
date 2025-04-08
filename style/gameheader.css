@@ -46,7 +46,6 @@
    Buttons - Desktop & Mobile
 ------------------------------ */
 .game-header button {
-  background-color: var(--header-surface);
   color: var(--header-text);
   border: none;
   padding: 0.5rem 0.8rem;
@@ -71,7 +70,7 @@
   transition: background-color 0.25s ease, transform 0.25s ease;
 }
 
-.game-btn:hover {
+.game-btn: hover {
   background-color: var(--header-accent-hover);
   transform: scale(1.03);
 }
