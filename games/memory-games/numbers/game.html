@@ -14,28 +14,9 @@
 </head>
 <body>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Memoro</title>
-
-  <!-- Global styles -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style/style.css" />
-
-  <!-- Header-specific styles -->
-  <link rel="stylesheet" href="/style/header.css" />
-
-  <!-- Footer-specific styles -->
-  <link rel="stylesheet" href="/style/footer.css" />
-</head>
-<body>
-
 <script>
   // Load reusable header from components/header.html
-  fetch('/components/header.html')
+  fetch('/components/gameheader.html')
     .then(res => res.text())
     .then(data => {
       // Inject the header at the top of the body
