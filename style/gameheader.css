@@ -30,9 +30,6 @@
   border-bottom: 1px solid var(--header-border);
 }
 
-/* ------------------------------
-   Flex Container (Desktop)
------------------------------- */
 .game-container {
   display: flex;
   align-items: center;
@@ -40,25 +37,12 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem;
+  height: 100%;
 }
 
 /* ------------------------------
-   Buttons - Desktop & Mobile
+   Game Buttons (Give Up, Pause, End Early)
 ------------------------------ */
-.game-header button {
-  color: var(--header-text);
-  border: none;
-  padding: 0.5rem 0.8rem;
-  font-size: 1rem;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.25s ease, transform 0.25s ease;
-}
-
-
-/* Only style actual game buttons */
-/* Only style actual game buttons */
 .game-btn {
   background-color: var(--header-surface);
   color: var(--header-text);
@@ -71,12 +55,13 @@
   transition: background-color 0.25s ease, transform 0.25s ease;
 }
 
-.game-btn: hover {
+.game-btn:hover {
   background-color: var(--header-accent-hover);
   transform: scale(1.03);
 }
+
 /* ------------------------------
-   Timer Style
+   Timer Display
 ------------------------------ */
 #game-timer {
   font-size: 1.3rem;
@@ -85,8 +70,36 @@
 }
 
 /* ------------------------------
-   Mobile: Base Layout
+   Flex Layout Zones
 ------------------------------ */
+.game-left,
+.game-center,
+.game-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.game-left {
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.game-center {
+  justify-content: center;
+}
+
+.game-right {
+  justify-content: flex-end;
+}
+
+/* ------------------------------
+   Hamburger (mobile only)
+------------------------------ */
+.game-mobile-toggle {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .game-header {
     height: 60px;
@@ -94,9 +107,8 @@
   }
 
   .game-container {
-    height: 100%;
-    justify-content: center;
     position: relative;
+    justify-content: center;
   }
 
   .game-left,
@@ -111,16 +123,7 @@
     transform: translate(-50%, -50%);
     z-index: 100;
   }
-}
 
-/* ------------------------------
-   Mobile: Hamburger Toggle
------------------------------- */
-.game-mobile-toggle {
-  display: none;
-}
-
-@media (max-width: 768px) {
   .game-mobile-toggle {
     display: flex;
     flex-direction: column;
@@ -134,6 +137,10 @@
     left: 1.5rem;
     transform: translateY(-50%);
     z-index: 1100;
+    height: 25px;
+    justify-content: center;
+    line-height: 0;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .game-mobile-toggle span {
@@ -159,7 +166,7 @@
 }
 
 /* ------------------------------
-   Mobile: Drawer Menu
+   Mobile Drawer Navigation
 ------------------------------ */
 .game-menu {
   position: fixed;
@@ -188,8 +195,14 @@
   margin: 0;
 }
 
-.game-nav-links button {
+.game-nav-links .game-btn {
   width: 100%;
   text-align: left;
-  font-size: 1rem;
+}
+
+@media (min-width: 769px) {
+  .game-menu,
+  .game-mobile-toggle {
+    display: none !important;
+  }
 }
