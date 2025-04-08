@@ -1,31 +1,38 @@
-<header class="main-header">
-  <div class="container">
+<header class="game-header">
+  <div class="game-container">
 
     <!-- Hamburger (mobile only) -->
-    <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+    <button class="game-mobile-toggle" aria-label="Toggle game menu">
       <span></span>
       <span></span>
       <span></span>
     </button>
 
-    <!-- Desktop: Replace Memoro logo with Give Up and End Early buttons -->
-    <div class="header-left">
-      <div class="desktop-buttons">
-        <button id="give-up-btn" class="game-header-button">Give Up</button>
-        <button id="end-early-btn" class="game-header-button">End Early</button>
-      </div>
+    <!-- Game-specific drawer (mobile only) -->
+    <div class="game-menu">
+      <nav class="game-nav">
+        <ul class="game-nav-links">
+          <li><button id="give-up-mobile">Give Up</button></li>
+          <li><button id="end-early-mobile">End Early</button></li>
+          <li><button id="pause-mobile">Pause</button></li>
+        </ul>
+      </nav>
     </div>
 
-    <!-- Navigation drawer (slides in on mobile) -->
-    <div class="header-center">
-      <div class="desktop-buttons">
-        <button id="give-up-btn" class="game-header-button">Pause</button>
-      </div>
+    <!-- Left Controls (desktop) -->
+    <div class="game-left">
+      <button id="give-up">Give Up</button>
+      <button id="end-early">End Early</button>
     </div>
 
-    <!-- Mobile: Replace Memoro logo with timer -->
-    <div class="header-right">
-      <span id="timer" class="game-timer">00:00</span>
+    <!-- Center Timer -->
+    <div class="game-center">
+      <div id="game-timer">00:00</div>
+    </div>
+
+    <!-- Right Controls (desktop) -->
+    <div class="game-right">
+      <button id="pause">Pause</button>
     </div>
   </div>
 </header>
