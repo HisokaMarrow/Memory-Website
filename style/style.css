@@ -226,6 +226,15 @@ main {
   margin: 0 auto;
 }
 
+.game-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+}
+
 /* =======================================================
    CHECKBOX ELEMENT (Used in Daily Practice)
    ======================================================= */
