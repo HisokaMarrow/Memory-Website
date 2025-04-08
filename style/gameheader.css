@@ -1,6 +1,5 @@
 /* ------------------------------
    Root Variables for Header Theme
-   Color palette for header elements
 ------------------------------ */
 :root {
   --header-bg: #1c1f26;
@@ -16,58 +15,71 @@
   --header-error: #ef4444;
 }
 
+/* ------------------------------
+   Sticky Game Header Container
+------------------------------ */
 .game-header {
   position: sticky;
   top: 0;
   z-index: 1000;
+  width: 100%;
   background-color: var(--header-bg);
-  border-bottom: 1px solid var(--header-border);
-  padding: 0.75rem 0;
   color: var(--header-text);
   font-family: 'Poppins', sans-serif;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--header-border);
 }
 
+/* ------------------------------
+   Flex Container (Desktop)
+------------------------------ */
 .game-container {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }
 
-/* Buttons */
+/* ------------------------------
+   Buttons - Desktop & Mobile
+------------------------------ */
 .game-header button {
   background-color: var(--header-surface);
   color: var(--header-text);
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
   border-radius: 6px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.25s ease, transform 0.25s ease;
 }
 
 .game-header button:hover {
   background-color: var(--header-accent-hover);
+  transform: scale(1.03);
 }
 
-/* Timer */
+/* ------------------------------
+   Timer Style
+------------------------------ */
 #game-timer {
-  font-size: 1.4rem;
-  font-weight: bold;
+  font-size: 1.3rem;
+  font-weight: 600;
   color: var(--header-success);
 }
 
-/* Flex layout */
-.game-left, .game-center, .game-right {
+/* ------------------------------
+   Flex Zones
+------------------------------ */
+.game-left,
+.game-center,
+.game-right {
   flex: 1;
   display: flex;
   align-items: center;
-}
-
-.game-center {
-  justify-content: center;
 }
 
 .game-left {
@@ -75,32 +87,51 @@
   gap: 1rem;
 }
 
+.game-center {
+  justify-content: center;
+}
+
 .game-right {
   justify-content: flex-end;
 }
 
-/* Mobile only */
-.game-mobile-toggle {
-  display: none;
-}
-
+/* ------------------------------
+   Mobile: Base Layout
+------------------------------ */
 @media (max-width: 768px) {
+  .game-header {
+    height: 60px;
+    min-height: 60px;
+  }
+
   .game-container {
+    height: 100%;
     justify-content: center;
     position: relative;
   }
 
-  .game-left, .game-right {
+  .game-left,
+  .game-right {
     display: none;
   }
 
   .game-center {
     position: absolute;
     left: 50%;
-    transform: translateX(-50%);
+    top: 50%;
+    transform: translate(-50%, -50%);
     z-index: 100;
   }
+}
 
+/* ------------------------------
+   Mobile: Hamburger Toggle
+------------------------------ */
+.game-mobile-toggle {
+  display: none;
+}
+
+@media (max-width: 768px) {
   .game-mobile-toggle {
     display: flex;
     flex-direction: column;
@@ -108,6 +139,7 @@
     background: none;
     border: none;
     cursor: pointer;
+    padding: 0.5rem;
     position: absolute;
     top: 50%;
     left: 1.5rem;
@@ -116,11 +148,12 @@
   }
 
   .game-mobile-toggle span {
+    display: block;
     width: 25px;
     height: 3px;
     background-color: var(--header-text);
     border-radius: 2px;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
   }
 
   .game-mobile-toggle.open span:nth-child(1) {
@@ -134,55 +167,50 @@
   .game-mobile-toggle.open span:nth-child(3) {
     transform: rotate(-45deg) translateY(-6px);
   }
-
-  .game-menu {
-    position: fixed;
-    top: 0;
-    left: -100%;
-    width: 75%;
-    max-width: 300px;
-    height: 100vh;
-    background-color: var(--header-bg);
-    padding: 2rem 1.5rem;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.4);
-    transition: left 0.3s ease-in-out;
-    z-index: 1050;
-  }
-
-  .game-menu.open {
-    left: 0;
-  }
-
-  .game-nav-links {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-  }
-
-  .game-nav-links button {
-    width: 100%;
-    text-align: left;
-  }
 }
 
-/* Hide mobile drawer completely on desktop */
+/* ------------------------------
+   Mobile: Drawer Menu
+------------------------------ */
+.game-menu {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 75%;
+  max-width: 300px;
+  height: 100vh;
+  padding: 2rem 1.5rem;
+  background-color: var(--header-bg);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.4);
+  transition: left 0.3s ease-in-out;
+  z-index: 1050;
+}
+
+.game-menu.open {
+  left: 0;
+}
+
+.game-nav-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 0;
+  margin: 0;
+}
+
+.game-nav-links button {
+  width: 100%;
+  text-align: left;
+  font-size: 1rem;
+}
+
+/* ------------------------------
+   Hide Mobile Elements on Desktop
+------------------------------ */
 @media (min-width: 769px) {
   .game-menu,
   .game-mobile-toggle {
     display: none !important;
   }
 }
-
-@media (max-width: 768px) {
-  .game-header {
-    height: 60px;
-    min-height: 60px;
-  }
-
-  .game-container {
-    height: 100%;
-  }
-}
-
