@@ -225,12 +225,11 @@
     }
     
     window.togglePause = togglePause;
-window.endEarly = endEarly;
-window.giveUp = giveUp;
-window.dispatchEvent(new Event('gameReady'));
-
+    window.endEarly = endEarly;
+    window.giveUp = giveUp;
+    window.dispatchEvent(new Event('gameReady'));
+  })(); // ← closes the main function
 </script>
-
 
 
 
