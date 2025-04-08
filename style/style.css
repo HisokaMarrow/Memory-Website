@@ -241,6 +241,27 @@ main {
   max-width: 600px;
   margin: 0 auto;
 }
+/* =======================================================
+   Numbers Styling
+   ======================================================= */
+#countdown {
+  font-size: 4rem;
+  font-weight: 700;
+  margin-top: 1rem;
+}
+
+#countdownLabel {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--header-subtext); /* optional for styling */
+}
+
+#output {
+  font-size: 5rem;
+  font-weight: 800;
+  margin-top: 1.5rem;
+  letter-spacing: 2px;
+}
 
 /* =======================================================
    CHECKBOX ELEMENT (Used in Daily Practice)
