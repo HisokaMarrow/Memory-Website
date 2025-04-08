@@ -124,7 +124,6 @@
    Mobile Navigation & Behavior
    Responsive tweaks + drawer setup
 ------------------------------ */
-
 .mobile-nav-toggle {
   display: none; /* Hidden on desktop */
 }
@@ -230,5 +229,18 @@
   /* Show login text on mobile */
   .login-text {
     display: inline;
+  }
+
+  /* Show timer in the header-center */
+  .header-center .header-links {
+    display: none;
+  }
+
+  /* Mobile: Timer in the center */
+  .game-timer {
+    font-size: 1.5rem;
+    color: var(--header-text);
+    text-align: center;
+    width: 100%;
   }
 }
