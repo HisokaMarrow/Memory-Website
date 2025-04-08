@@ -40,15 +40,20 @@
         backdrop.addEventListener('click', toggleMenu);
       }
 
-      // Hook up button actions
-      document.getElementById('give-up')?.addEventListener('click', () => alert('Give Up clicked'));
-      document.getElementById('end-early')?.addEventListener('click', () => alert('End Early clicked'));
-      document.getElementById('pause')?.addEventListener('click', () => alert('Pause clicked'));
-
-      document.getElementById('give-up-mobile')?.addEventListener('click', () => alert('Give Up clicked'));
-      document.getElementById('end-early-mobile')?.addEventListener('click', () => alert('End Early clicked'));
-      document.getElementById('pause-mobile')?.addEventListener('click', () => alert('Pause clicked'));
-    })
+     function bindHeaderButtons() {
+  if (typeof window.togglePause === 'function') {
+    document.getElementById('pause')?.addEventListener('click', window.togglePause);
+    document.getElementById('pause-mobile')?.addEventListener('click', window.togglePause);
+  }
+  if (typeof window.endEarly === 'function') {
+    document.getElementById('end-early')?.addEventListener('click', window.endEarly);
+    document.getElementById('end-early-mobile')?.addEventListener('click', window.endEarly);
+  }
+  if (typeof window.giveUp === 'function') {
+    document.getElementById('give-up')?.addEventListener('click', window.giveUp);
+    document.getElementById('give-up-mobile')?.addEventListener('click', window.giveUp);
+  }
+}
     .catch(err => console.error('Failed to load game header:', err));
 </script>
 
