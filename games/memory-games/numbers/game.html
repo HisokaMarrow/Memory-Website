@@ -228,6 +228,7 @@
     window.endEarly = endEarly;
     window.giveUp = giveUp;
     window.dispatchEvent(new Event('gameReady'));
+    window.onload = initGameLogic;
   })(); // ← closes the main function
 </script>
 
