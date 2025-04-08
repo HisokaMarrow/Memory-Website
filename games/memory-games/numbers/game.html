@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memoro</title>
+
+  <!-- Global styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/style.css" />
+
+  <!-- Game header styles -->
+  <link rel="stylesheet" href="/style/gameheader.css" /> <!-- Added this line -->
+</head>
+<body>
+
+<script>
+  // Load reusable game header from components/game-header.html
+  fetch('/components/gameheader.html')
+    .then(res => res.text())
+    .then(data => {
+      // Inject the game header at the top of the body
+      document.body.insertAdjacentHTML('afterbegin', data);
+
+      // === After the game header is injected ===
+
+      // Timer handling logic (for example, starting timer or pausing it)
+      let timer;
+      let time = 0;
+
+      function updateTimer() {
+        time += 1;
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+        document.getElementById('timer').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      }
+
+      function startTimer() {
+        timer = setInterval(updateTimer, 1000);
+      }
+
+      function pauseTimer() {
+        clearInterval(timer);
+      }
+
+      // === Button event handlers ===
+
+      // "Give Up" button (goes to settings page)
+      document.getElementById('give-up-btn').addEventListener('click', () => {
+        window.location.href = '/settings.html';
+      });
+
+      // "End Early" button (goes to results page)
+      document.getElementById('end-early-btn').addEventListener('click', () => {
+        window.location.href = '/results.html';
+      });
+
+      // "Pause" button (pauses the timer)
+      document.getElementById('pause-btn').addEventListener('click', () => {
+        pauseTimer();
+      });
+
+      // Start the timer when the page loads
+      startTimer();
+    })
+    .catch(err => console.error('Failed to load game header:', err));
+</script>
+
+</body>
+</html>
