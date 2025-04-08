@@ -1,18 +1,24 @@
 <header class="game-header">
   <div class="container">
 
-    <!-- Left side: Give Up and End Early buttons -->
-    <div class="header-left">
-      <button id="give-up-btn" class="game-header-button">Give Up</button>
-      <button id="end-early-btn" class="game-header-button">End Early</button>
+    <!-- Hamburger (mobile only) -->
+    <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <!-- Navigation drawer (slides in on mobile) -->
+    <div class="header-menu">
+      <nav class="header-center">
+        <ul class="nav-links">
+          <li><button id="give-up-btn" class="game-header-button">Give Up</button></li>
+          <li><button id="end-early-btn" class="game-header-button">End Early</button></li>
+        </ul>
+      </nav>
     </div>
 
-    <!-- Center: Pause button -->
-    <div class="header-center">
-      <button id="pause-btn" class="game-header-button">Pause</button>
-    </div>
-
-    <!-- Right side: Timer -->
+    <!-- Timer (centered on mobile) -->
     <div class="header-right">
       <span id="timer" class="game-timer">00:00</span>
     </div>
