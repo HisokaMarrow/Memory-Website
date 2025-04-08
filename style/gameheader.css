@@ -58,7 +58,8 @@
 
 
 /* Only style actual game buttons */
-.game-btn {
+/* Only style actual game buttons */
+.game-header btn {
   background-color: var(--header-surface);
   color: var(--header-text);
   border: none;
@@ -70,11 +71,10 @@
   transition: background-color 0.25s ease, transform 0.25s ease;
 }
 
-.game-btn: hover {
+.game-header btn: hover {
   background-color: var(--header-accent-hover);
   transform: scale(1.03);
 }
-
 /* ------------------------------
    Timer Style
 ------------------------------ */
