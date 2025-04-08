@@ -8,25 +8,24 @@
       <span></span>
     </button>
 
-    <!-- Memoro logo -->
+    <!-- Desktop: Replace Memoro logo with Give Up and End Early buttons -->
     <div class="header-left">
-      <h1 class="logo"><a href="/index.html">Memoro</a></h1>
+      <div class="desktop-buttons">
+        <button id="give-up-btn" class="game-header-button">Give Up</button>
+        <button id="end-early-btn" class="game-header-button">End Early</button>
+      </div>
     </div>
 
     <!-- Navigation drawer (slides in on mobile) -->
-    <div class="header-menu">
-      <nav class="header-center">
-        <ul class="nav-links">
-          <li><a href="/index.html">Give Up</a></li>
-          <li><a href="/mind-games.html">End Early</a></li>
-          <li><a href="/vault.html">Pause</a></li>
-        </ul>
-      </nav>
+    <div class="header-center">
+      <div class="desktop-buttons">
+        <button id="give-up-btn" class="game-header-button">Pause</button>
+      </div>
     </div>
 
-    <!-- Login link (always visible) -->
+    <!-- Mobile: Replace Memoro logo with timer -->
     <div class="header-right">
-      <a href="/login.html" class="login-link">Timer</a>
+      <span id="timer" class="game-timer">00:00</span>
     </div>
   </div>
 </header>
