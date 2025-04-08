@@ -234,6 +234,13 @@ main {
   justify-content: center;
   min-height: 60vh;
   text-align: center;
+  background-color: var(--surface-secondary); /* gray */
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 /* =======================================================
