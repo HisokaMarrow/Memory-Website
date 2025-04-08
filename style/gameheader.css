@@ -1,371 +1,150 @@
-/* =======================================================
-   GLOBAL VARIABLES: Color Palette & Theme
-   ======================================================= */
-:root {
-  /* Base Colors */
-  --color-bg: #0f1115;
-  --color-text: #e6e8eb;
-  --color-subtext: #8a8f98;
-  --color-border: #2a2d33;
-
-  /* UI Surfaces */
-  --color-bg-card: #181a1f;
-  --main-box: #252931;
-  --main-option-box-hover: #1d2026;
-
-  /* Accent & States */
-  --color-secondary: #7c3aed;
-  --color-secondary-hover: #7f5af0;
-  --color-success: #2dd4bf;
-  --color-error: #f43f5e;
-}
-
-
-/* =======================================================
-   RESET & BASE LAYOUT
-   ======================================================= */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  width: 100%;
-  height: 100%;
-  background-color: var(--color-bg);
+.game-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: var(--header-bg);
+  border-bottom: 1px solid var(--header-border);
+  padding: 0.75rem 0;
+  color: var(--header-text);
   font-family: 'Poppins', sans-serif;
-  color: var(--color-text);
-  line-height: 1.6;
 }
 
-
-/* =======================================================
-   TYPOGRAPHY
-   ======================================================= */
-.page-content p {
-  color: var(--color-subtext);
-  max-width: 700px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.page-content h1,
-.page-content h2,
-.page-content h3 {
-  font-weight: 600;
-  color: var(--color-text);
-}
-
-
-/* =======================================================
-   LAYOUT CONTAINERS
-   ======================================================= */
-main {
-  padding: 4rem 1.5rem;
-  max-width: 960px;
-  margin: 0 auto;
+.game-container {
   display: flex;
-  flex-direction: column;
-  gap: 4rem;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
-
-/* =======================================================
-   HERO SECTION
-   ======================================================= */
-.hero {
-  text-align: center;
-}
-
-.main-title {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.main-subtitle {
-  font-size: 1.125rem;
-  color: var(--color-subtext);
-}
-
-
-/* =======================================================
-   SECTION BLOCKS (Reusable)
-   ======================================================= */
-.trial-test,
-.daily-practice {
-  background-color: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: center;
-}
-
-.section-title {
-  font-size: 1.75rem;
-  margin-bottom: 1rem;
-}
-
-.section-description {
-  font-size: 1rem;
-  color: var(--color-subtext);
-  margin-bottom: 1.5rem;
-}
-
-
-/* =======================================================
-   BUTTONS
-   ======================================================= */
-.main-button {
-  display: inline-block;
-  background-color: var(--color-secondary);
-  color: #fff;
-  text-decoration: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-}
-
-.main-button:hover {
-  background-color: var(--color-secondary-hover);
-}
-
-.button-wrapper {
-  margin-top: 1rem;
-}
-
-/* =======================================================
-   GAME START BUTTON — Full width, centered text
-   ======================================================= */
-.game-start-button {
-  display: block;
-  width: 100%;
-  text-align: center;
-  padding: 1rem 1.5rem;
-  background-color: var(--color-secondary);
-  color: #fff;
-  font-weight: 600;
-  font-size: 1.125rem;
+/* Buttons */
+.game-header button {
+  background-color: var(--header-surface);
+  color: var(--header-text);
   border: none;
-  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 2rem;
 }
 
-.game-start-button:hover {
-  background-color: var(--color-secondary-hover);
+.game-header button:hover {
+  background-color: var(--header-accent-hover);
 }
 
-
-/* =======================================================
-   DAILY CHALLENGE GRID (Index Page)
-   ======================================================= */
-.daily-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
+/* Timer */
+#game-timer {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--header-success);
 }
 
-#gamecardgrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-  justify-content: center;
-  padding: 1rem 0;
-}
-
-#dailyPracticeBox {
-  display: grid;
-  gap: 1rem;
-  justify-content: center;
-  max-width: 960px;
-  margin: 0 auto;
-}
-
-
-/* =======================================================
-   SHARED CARD COMPONENT (.daily-box)
-   Used on both Index and Mind Games
-   ======================================================= */
-.daily-box {
-  background-color: var(--main-box);
-  padding: 1.5rem;
-  border-radius: 10px;
-  border: 1px solid var(--color-border);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  text-align: center;
-  align-items: center;
-  width: 100%;
-  max-width: 300px;
-  margin: 0 auto; /* center inside the grid cell */
-  flex: 0 0 auto;
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.daily-box h3 {
-  font-size: 1.25rem;
-  color: var(--color-text);
-}
-
-.daily-box:hover {
-  transform: scale(1.03);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
-}
-
-.games-settings-container {
-  background-color: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 2rem;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-/* =======================================================
-   CHECKBOX ELEMENT (Used in Daily Practice)
-   ======================================================= */
-.checkbox-complete {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  color: var(--color-subtext);
-}
-
-.checkbox-complete input[type="checkbox"] {
-  accent-color: var(--color-success);
-  width: 16px;
-  height: 16px;
-}
-
-
-/* =======================================================
-   MIND GAMES CAROUSEL SECTION
-   ======================================================= */
-.game-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.game-section h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
-
-/* Carousel layout */
-.carousel-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  overflow: hidden;
-}
-
-
-/* Carousel scrolling row */
-.main-carousel {
-  display: flex;
-  flex-wrap: nowrap;
+/* Flex layout */
+.game-left, .game-center, .game-right {
   flex: 1;
-  gap: 1rem;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  padding: 1rem 0;
+  display: flex;
+  align-items: center;
 }
 
-.main-carousel::-webkit-scrollbar {
+.game-center {
+  justify-content: center;
+}
+
+.game-left {
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.game-right {
+  justify-content: flex-end;
+}
+
+/* Mobile only */
+.game-mobile-toggle {
   display: none;
 }
 
-
-/* Carousel Arrows */
-.carousel-arrow {
-  flex: 0 0 auto;
-  width: 36px;
-  height: 140px;
-  background-color: rgba(128, 128, 128, 0.15);
-  color: white;
-  font-size: 1.6rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.carousel-arrow:hover {
-  background-color: rgba(128, 128, 128, 0.25);
-}
-
-
-/* Responsive: Hide arrows on mobile */
 @media (max-width: 768px) {
-  .carousel-arrow {
+  .game-container {
+    justify-content: center;
+    position: relative;
+  }
+
+  .game-left, .game-right {
     display: none;
   }
-}
 
+  .game-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+  }
 
-/* =======================================================
-   SECTION TITLE LINKS (e.g. "Memory Games >")
-   ======================================================= */
-.main-section-link {
-  color: var(--color-secondary);
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.3s ease;
-}
+  .game-mobile-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    left: 1.5rem;
+    transform: translateY(-50%);
+    z-index: 1100;
+  }
 
-.main-section-link:hover {
-  color: var(--color-secondary-hover);
-}
+  .game-mobile-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: var(--header-text);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
 
-/* =======================================================
-   LOGIN PAGE FORM STYLES
-   Reusable form layout for login, signup, and auth flows
-   Matches Memoro dark theme with shared spacing, borders,
-   and input/button styling
-   ======================================================= */
+  .game-mobile-toggle.open span:nth-child(1) {
+    transform: rotate(45deg) translateY(6px);
+  }
 
-.login-container {
-  background-color: var(--color-bg-card); /* Form background */
-  border: 1px solid var(--color-border);  /* Form border */
-  border-radius: 12px;                    /* Rounded corners */
-  padding: 2.5rem;                        /* Inner spacing */
-  max-width: 400px;                       /* Max form width */
-  margin: 0 auto;                         /* Center on page */
-}
+  .game-mobile-toggle.open span:nth-child(2) {
+    opacity: 0;
+  }
 
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;                            /* Space between fields */
-}
+  .game-mobile-toggle.open span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-6px);
+  }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;                            /* Space between label and input */
-}
+  .game-menu {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 75%;
+    max-width: 300px;
+    height: 100vh;
+    background-color: var(--header-bg);
+    padding: 2rem 1.5rem;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.4);
+    transition: left 0.3s ease-in-out;
+    z-index: 1050;
+  }
 
-.form-group label {
-  font-weight: 500;
-  color: var(--color-subtext);           /* Subtle label color */
-}
+  .game-menu.open {
+    left: 0;
+  }
 
-.form-group input {
-  padding: 0.75rem 1rem;                 /* Input padding */
-  border-radius: 8px;                    /* Input corners */
-  border: 1px solid var(--color-border); /* Input border */
-  background-color: var(--main-box);     /* Input background */
-  color: var(--color-text);              /* Input text color */
-  font-size: 1rem;                        /* Standard font size */
+  .game-nav-links {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .game-nav-links button {
+    width: 100%;
+    text-align: left;
+  }
 }
