@@ -59,7 +59,6 @@
 
 .game-header button:hover {
   background-color: var(--header-accent-hover);
-  transform: scale(1.03);
 }
 
 /* ------------------------------
@@ -69,30 +68,6 @@
   font-size: 1.3rem;
   font-weight: 600;
   color: var(--header-success);
-}
-
-/* ------------------------------
-   Flex Zones
------------------------------- */
-.game-left,
-.game-center,
-.game-right {
-  flex: 1;
-  display: flex;
-  align-items: center;
-}
-
-.game-left {
-  justify-content: flex-start;
-  gap: 1rem;
-}
-
-.game-center {
-  justify-content: center;
-}
-
-.game-right {
-  justify-content: flex-end;
 }
 
 /* ------------------------------
@@ -203,14 +178,4 @@
   width: 100%;
   text-align: left;
   font-size: 1rem;
-}
-
-/* ------------------------------
-   Hide Mobile Elements on Desktop
------------------------------- */
-@media (min-width: 769px) {
-  .game-menu,
-  .game-mobile-toggle {
-    display: none !important;
-  }
 }
