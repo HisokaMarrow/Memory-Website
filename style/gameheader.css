@@ -127,47 +127,9 @@
 /* ------------------------------
    Mobile: Hamburger Toggle
 ------------------------------ */
-.game-mobile-toggle {
-  display: none;
-}
 
-@media (max-width: 768px) {
-  .game-mobile-toggle {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    position: absolute;
-    top: 50%;
-    left: 1.5rem;
-    transform: translateY(-50%);
-    z-index: 1100;
-  }
 
-  .game-mobile-toggle span {
-    display: block;
-    width: 25px;
-    height: 3px;
-    background-color: var(--header-text);
-    border-radius: 2px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-  }
-
-  .game-mobile-toggle.open span:nth-child(1) {
-    transform: rotate(45deg) translateY(6px);
-  }
-
-  .game-mobile-toggle.open span:nth-child(2) {
-    opacity: 0;
-  }
-
-  .game-mobile-toggle.open span:nth-child(3) {
-    transform: rotate(-45deg) translateY(-6px);
-  }
-}
+ 
 
 /* ------------------------------
    Mobile: Drawer Menu
