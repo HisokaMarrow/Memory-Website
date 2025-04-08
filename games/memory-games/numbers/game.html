@@ -18,18 +18,18 @@
   // Load reusable game header
   fetch('/components/gameheader.html')
     .then(res => res.text())
-    .then(data => {
+    .then(function (data) {
       document.body.insertAdjacentHTML('afterbegin', data);
 
       // Backdrop for mobile
-      const backdrop = document.createElement('div');
+      var backdrop = document.createElement('div');
       backdrop.classList.add('nav-backdrop');
       document.body.appendChild(backdrop);
 
-      const toggleBtn = document.querySelector('.game-mobile-toggle');
-      const menu = document.querySelector('.game-menu');
+      var toggleBtn = document.querySelector('.game-mobile-toggle');
+      var menu = document.querySelector('.game-menu');
 
-      const toggleMenu = () => {
+      var toggleMenu = function () {
         toggleBtn.classList.toggle('open');
         menu.classList.toggle('open');
         backdrop.classList.toggle('active');
@@ -40,22 +40,30 @@
         backdrop.addEventListener('click', toggleMenu);
       }
 
-     function bindHeaderButtons() {
-  if (typeof window.togglePause === 'function') {
-    document.getElementById('pause')?.addEventListener('click', window.togglePause);
-    document.getElementById('pause-mobile')?.addEventListener('click', window.togglePause);
-  }
-  if (typeof window.endEarly === 'function') {
-    document.getElementById('end-early')?.addEventListener('click', window.endEarly);
-    document.getElementById('end-early-mobile')?.addEventListener('click', window.endEarly);
-  }
-  if (typeof window.giveUp === 'function') {
-    document.getElementById('give-up')?.addEventListener('click', window.giveUp);
-    document.getElementById('give-up-mobile')?.addEventListener('click', window.giveUp);
-  }
-}
-    .catch(err => console.error('Failed to load game header:', err));
+      // Define the button hook function
+      function bindHeaderButtons() {
+        if (typeof window.togglePause === 'function') {
+          document.getElementById('pause')?.addEventListener('click', window.togglePause);
+          document.getElementById('pause-mobile')?.addEventListener('click', window.togglePause);
+        }
+        if (typeof window.endEarly === 'function') {
+          document.getElementById('end-early')?.addEventListener('click', window.endEarly);
+          document.getElementById('end-early-mobile')?.addEventListener('click', window.endEarly);
+        }
+        if (typeof window.giveUp === 'function') {
+          document.getElementById('give-up')?.addEventListener('click', window.giveUp);
+          document.getElementById('give-up-mobile')?.addEventListener('click', window.giveUp);
+        }
+      }
+
+      // Delay just enough for game.js to load and attach window methods
+      setTimeout(bindHeaderButtons, 300);
+    })
+    .catch(function (err) {
+      console.error('Failed to load game header:', err);
+    });
 </script>
+
 
 
 <main class="main-container">
