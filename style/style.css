@@ -177,6 +177,7 @@ main {
 }
 
 #dailyPracticeBox {
+  background-color: var(--color-bg-card);
   display: grid;
   gap: 1rem;
   justify-content: center;
