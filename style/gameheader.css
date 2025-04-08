@@ -35,14 +35,15 @@
   gap: 1rem;
 }
 
+/* Game header buttons — use main-button styles as base */
 .game-header-button {
+  display: inline-block;
   background-color: var(--color-secondary);
   color: #fff;
-  border: none;
+  text-decoration: none;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   font-weight: 600;
-  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
