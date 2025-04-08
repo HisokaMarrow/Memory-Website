@@ -16,27 +16,16 @@
       </div>
     </div>
 
-    <!-- Desktop: Pause button centered -->
+    <!-- Navigation drawer (slides in on mobile) -->
     <div class="header-center">
-      <button id="pause-btn" class="game-header-button">Pause</button>
+      <div class="desktop-buttons">
+        <button id="give-up-btn" class="game-header-button">Pause</button>
+      </div>
     </div>
 
-    <!-- Desktop: Timer -->
+    <!-- Mobile: Replace Memoro logo with timer -->
     <div class="header-right">
       <span id="timer" class="game-timer">00:00</span>
     </div>
-
-  </div>
-
-  <!-- Navigation drawer (only shown on mobile) -->
-  <div class="header-menu">
-    <nav class="header-center">
-      <ul class="nav-links">
-        <!-- These buttons will only appear on mobile, inside the navigation drawer -->
-        <li><button id="give-up-btn-mobile" class="game-header-button">Give Up</button></li>
-        <li><button id="end-early-btn-mobile" class="game-header-button">End Early</button></li>
-        <li><button id="pause-btn-mobile" class="game-header-button">Pause</button></li>
-      </ul>
-    </nav>
   </div>
 </header>
