@@ -1,48 +1,31 @@
 /* =======================================================
-   GLOBAL VARIABLES: Color Palette & Theme
+   01 - Root Variables
    ======================================================= */
 :root {
-  /* Base Colors */
   --color-bg: #0f1115;
   --color-text: #e6e8eb;
   --color-subtext: #8a8f98;
   --color-border: #2a2d33;
 
-  /* UI Surfaces */
   --color-bg-card: #181a1f;
   --main-box: #252931;
   --main-option-box-hover: #1d2026;
 
-  /* Accent & States */
   --color-secondary: #7c3aed;
   --color-secondary-hover: #7f5af0;
   --color-success: #2dd4bf;
   --color-error: #f43f5e;
 }
 
-
 /* =======================================================
-   RESET & BASE LAYOUT
+   02 - Font & Typography
    ======================================================= */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 html, body {
-  width: 100%;
-  height: 100%;
-  background-color: var(--color-bg);
   font-family: 'Poppins', sans-serif;
   color: var(--color-text);
   line-height: 1.6;
 }
 
-
-/* =======================================================
-   TYPOGRAPHY
-   ======================================================= */
 .page-content p {
   color: var(--color-subtext);
   max-width: 700px;
@@ -57,27 +40,6 @@ html, body {
   color: var(--color-text);
 }
 
-
-/* =======================================================
-   LAYOUT CONTAINERS
-   ======================================================= */
-main {
-  padding: 4rem 1.5rem;
-  max-width: 960px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
-}
-
-
-/* =======================================================
-   HERO SECTION
-   ======================================================= */
-.hero {
-  text-align: center;
-}
-
 .main-title {
   font-size: 2.5rem;
   margin-bottom: 1rem;
@@ -88,17 +50,31 @@ main {
   color: var(--color-subtext);
 }
 
+/* =======================================================
+   03 - Base Reset & Box Model
+   ======================================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg);
+}
 
 /* =======================================================
-   SECTION BLOCKS (Reusable)
+   04 - Layout Containers
    ======================================================= */
-.trial-test,
-.daily-practice {
-  background-color: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: center;
+main {
+  padding: 4rem 1.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
 }
 
 .section-title {
@@ -112,9 +88,40 @@ main {
   margin-bottom: 1.5rem;
 }
 
+/* =======================================================
+   05 - Grid Systems
+   ======================================================= */
+.daily-grid,
+#gamecardgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+#gamecardgrid {
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+#dailyPracticeBox {
+  background-color: var(--color-bg-card);
+  display: grid;
+  gap: 1rem;
+  justify-content: center;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 1rem;
+  justify-items: center;
+  width: 100%;
+}
 
 /* =======================================================
-   BUTTONS
+   06 - Buttons
    ======================================================= */
 .main-button {
   display: inline-block;
@@ -135,9 +142,6 @@ main {
   margin-top: 1rem;
 }
 
-/* =======================================================
-   GAME START BUTTON — Full width, centered text
-   ======================================================= */
 .game-start-button {
   display: block;
   width: 100%;
@@ -158,37 +162,8 @@ main {
   background-color: var(--color-secondary-hover);
 }
 
-
 /* =======================================================
-   DAILY CHALLENGE GRID (Index Page)
-   ======================================================= */
-.daily-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-}
-
-#gamecardgrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-  justify-content: center;
-  padding: 1rem 0;
-}
-
-#dailyPracticeBox {
-  background-color: var(--color-bg-card);
-  display: grid;
-  gap: 1rem;
-  justify-content: center;
-  max-width: 960px;
-  margin: 0 auto;
-}
-
-
-/* =======================================================
-   SHARED CARD COMPONENT (.daily-box)
-   Used on both Index and Mind Games
+   07 - Cards & Boxes
    ======================================================= */
 .daily-box {
   background-color: var(--main-box);
@@ -202,10 +177,9 @@ main {
   align-items: center;
   width: 100%;
   max-width: 300px;
-  margin: 0 auto; /* center inside the grid cell */
+  margin: 0 auto;
   flex: 0 0 auto;
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
 .daily-box h3 {
@@ -218,12 +192,12 @@ main {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
 }
 
-.games-settings-container {
+.games-settings-container,
+.game-display {
   background-color: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 2rem;
-  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -233,16 +207,13 @@ main {
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-color: var(--color-bg-card);
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   width: 100%;
   max-width: 600px;
-  margin: 0 auto;
 }
+
 /* =======================================================
-   Numbers Styling
+   08 - Game Elements
    ======================================================= */
 #countdown {
   font-size: 4rem;
@@ -253,7 +224,7 @@ main {
 #countdownLabel {
   font-size: 2rem;
   font-weight: 600;
-  color: var(--header-subtext); /* optional for styling */
+  color: var(--color-subtext);
 }
 
 #output {
@@ -264,39 +235,90 @@ main {
 }
 
 /* =======================================================
-   CHECKBOX ELEMENT (Used in Daily Practice)
+   09 - Inputs & Forms
    ======================================================= */
-.checkbox-complete {
+.input-box {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 2px solid var(--color-border);
+  background-color: var(--main-box);
+  color: var(--color-text);
+  font-size: 1.25rem;
+  width: 80px;
+  text-align: center;
+}
+
+.input-box.correct {
+  border-color: var(--color-success);
+}
+
+.input-box.incorrect {
+  border-color: var(--color-error);
+}
+
+.login-container {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 2.5rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.login-form {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
   gap: 0.5rem;
-  font-size: 0.9rem;
+}
+
+.form-group label {
+  font-weight: 500;
   color: var(--color-subtext);
 }
 
-.checkbox-complete input[type="checkbox"] {
-  accent-color: var(--color-success);
-  width: 16px;
-  height: 16px;
+.form-group input {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: var(--main-box);
+  color: var(--color-text);
+  font-size: 1rem;
 }
-
 
 /* =======================================================
-   MIND GAMES CAROUSEL SECTION
+   10 - Results Page Styling
    ======================================================= */
-.game-section {
+.input-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  align-items: center;
+  gap: 0.25rem;
 }
 
-.game-section h2 {
-  font-size: 1.5rem;
+.correct-answer {
+  font-size: 0.875rem;
+  color: var(--color-subtext);
+}
+
+.result-summary {
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.result-summary .highlight {
+  color: var(--color-secondary);
   font-weight: 600;
 }
 
-
-/* Carousel layout */
+/* =======================================================
+   11 - Carousel / Scrollable UI
+   ======================================================= */
 .carousel-wrapper {
   display: flex;
   align-items: center;
@@ -304,8 +326,6 @@ main {
   overflow: hidden;
 }
 
-
-/* Carousel scrolling row */
 .main-carousel {
   display: flex;
   flex-wrap: nowrap;
@@ -320,8 +340,6 @@ main {
   display: none;
 }
 
-
-/* Carousel Arrows */
 .carousel-arrow {
   flex: 0 0 auto;
   width: 36px;
@@ -342,17 +360,8 @@ main {
   background-color: rgba(128, 128, 128, 0.25);
 }
 
-
-/* Responsive: Hide arrows on mobile */
-@media (max-width: 768px) {
-  .carousel-arrow {
-    display: none;
-  }
-}
-
-
 /* =======================================================
-   SECTION TITLE LINKS (e.g. "Memory Games >")
+   12 - Section Links & Navigation
    ======================================================= */
 .main-section-link {
   color: var(--color-secondary);
@@ -365,93 +374,25 @@ main {
   color: var(--color-secondary-hover);
 }
 
-/* =======================================================
-   LOGIN PAGE FORM STYLES
-   Reusable form layout for login, signup, and auth flows
-   Matches Memoro dark theme with shared spacing, borders,
-   and input/button styling
-   ======================================================= */
-
-.login-container {
-  background-color: var(--color-bg-card); /* Form background */
-  border: 1px solid var(--color-border);  /* Form border */
-  border-radius: 12px;                    /* Rounded corners */
-  padding: 2.5rem;                        /* Inner spacing */
-  max-width: 400px;                       /* Max form width */
-  margin: 0 auto;                         /* Center on page */
-}
-
-.login-form {
+.checkbox-complete {
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;                            /* Space between fields */
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;                            /* Space between label and input */
-}
-
-.form-group label {
-  font-weight: 500;
-  color: var(--color-subtext);           /* Subtle label color */
-}
-
-.form-group input {
-  padding: 0.75rem 1rem;                 /* Input padding */
-  border-radius: 8px;                    /* Input corners */
-  border: 1px solid var(--color-border); /* Input border */
-  background-color: var(--main-box);     /* Input background */
-  color: var(--color-text);              /* Input text color */
-  font-size: 1rem;                        /* Standard font size */
-}
-
-.results-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 1rem;
-  justify-items: center;
-  width: 100%;
-}
-
-.input-wrapper {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.25rem;
-}
-
-.input-box {
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  border: 2px solid var(--color-border);
-  background-color: var(--main-box);
-  color: var(--color-text);
-  font-size: 1.25rem;
-  width: 80px;
-  text-align: center;
-}
-
-.input-box.correct {
-  border-color: var(--color-success);
-}
-
-.input-box.incorrect {
-  border-color: var(--color-error);
-}
-
-.correct-answer {
-  font-size: 0.875rem;
+  gap: 0.5rem;
+  font-size: 0.9rem;
   color: var(--color-subtext);
 }
 
-.result-summary {
-  text-align: center;
-  font-size: 1.2rem;
+.checkbox-complete input[type="checkbox"] {
+  accent-color: var(--color-success);
+  width: 16px;
+  height: 16px;
 }
 
-.result-summary .highlight {
-  color: var(--color-secondary);
-  font-weight: 600;
+/* =======================================================
+   13 - Media Queries (Responsive)
+   ======================================================= */
+@media (max-width: 768px) {
+  .carousel-arrow {
+    display: none;
+  }
 }
