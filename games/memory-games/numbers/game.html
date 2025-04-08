@@ -16,7 +16,7 @@
 
 <script>
   // Load reusable game header from components/game-header.html
-  fetch('/components/gameheader.html')
+  fetch('/components/game-header.html')
     .then(res => res.text())
     .then(data => {
       // Inject the game header at the top of the body
@@ -27,6 +27,7 @@
       // Timer handling logic (for example, starting timer or pausing it)
       let timer;
       let time = 0;
+      let isPaused = false; // Keeps track of whether the game is paused
 
       function updateTimer() {
         time += 1;
@@ -43,6 +44,10 @@
         clearInterval(timer);
       }
 
+      function resumeTimer() {
+        startTimer();
+      }
+
       // === Button event handlers ===
 
       // "Give Up" button (goes to settings page)
@@ -57,26 +62,38 @@
 
       // "Pause" button (pauses the timer)
       document.getElementById('pause-btn').addEventListener('click', () => {
-        pauseTimer();
+        if (isPaused) {
+          // If the game is already paused, resume the game
+          resumeGame();
+        } else {
+          // Otherwise, pause the game
+          pauseGame();
+        }
       });
 
-      // Hamburger menu (for mobile)
-      const toggleBtn = document.querySelector('.mobile-nav-toggle');
-      const menu = document.querySelector('.header-menu');
-      const backdropEl = document.createElement('div');
-      backdropEl.classList.add('nav-backdrop');
-      document.body.appendChild(backdropEl);
+      // Function to handle pausing the game
+      function pauseGame() {
+        pauseTimer();
+        isPaused = true;
+        document.getElementById('pause-btn').textContent = 'Resume'; // Change the button text
+        disableGameActions(true); // Disable all other game interactions
+      }
 
-      // Toggle the navigation menu and backdrop visibility
-      const toggleMenu = () => {
-        toggleBtn.classList.toggle('open');
-        menu.classList.toggle('open');
-        backdropEl.classList.toggle('active');
-      };
+      // Function to handle resuming the game
+      function resumeGame() {
+        resumeTimer();
+        isPaused = false;
+        document.getElementById('pause-btn').textContent = 'Pause'; // Change the button text
+        disableGameActions(false); // Enable all other game interactions
+      }
 
-      // Event listener for hamburger button and backdrop
-      toggleBtn.addEventListener('click', toggleMenu);
-      backdropEl.addEventListener('click', toggleMenu); // Close menu when clicking outside
+      // Function to disable or enable all game actions
+      function disableGameActions(disable) {
+        const gameButtons = document.querySelectorAll('.game-header-button');
+        gameButtons.forEach(button => {
+          button.disabled = disable;
+        });
+      }
 
       // Start the timer when the page loads
       startTimer();
