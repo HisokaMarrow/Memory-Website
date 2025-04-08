@@ -16,16 +16,26 @@
       </div>
     </div>
 
-    <!-- Navigation drawer (slides in on mobile) -->
+    <!-- Mobile: Replace Memoro logo with Pause button in the center -->
     <div class="header-center">
-      <div class="desktop-buttons">
-        <button id="give-up-btn" class="game-header-button">Pause</button>
-      </div>
+      <button id="pause-btn" class="game-header-button">Pause</button>
     </div>
 
-    <!-- Mobile: Replace Memoro logo with timer -->
+    <!-- Mobile: Timer centered -->
     <div class="header-right">
       <span id="timer" class="game-timer">00:00</span>
     </div>
+
+  </div>
+
+  <!-- Navigation drawer (slides in on mobile) -->
+  <div class="header-menu">
+    <nav class="header-center">
+      <ul class="nav-links">
+        <li><button id="give-up-btn" class="game-header-button">Give Up</button></li>
+        <li><button id="end-early-btn" class="game-header-button">End Early</button></li>
+        <li><button id="pause-btn" class="game-header-button">Pause</button></li>
+      </ul>
+    </nav>
   </div>
 </header>
