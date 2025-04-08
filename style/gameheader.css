@@ -29,10 +29,15 @@
 .header-center {
   flex-grow: 1;
   justify-content: center;
+  position: relative; /* Keeps the pause button centered */
 }
 
 .header-right {
   gap: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Keeps the timer on the right */
+  min-width: 80px; /* Ensure timer container has minimum width */
 }
 
 /* Game header buttons — use main-button styles as base */
@@ -52,7 +57,10 @@
   background-color: var(--color-secondary-hover);
 }
 
+/* Timer styling */
 .game-timer {
   font-size: 1.25rem;
   color: var(--color-text);
+  min-width: 70px; /* Fixed width to prevent shift due to changing time */
+  text-align: center; /* Center the time text */
 }
