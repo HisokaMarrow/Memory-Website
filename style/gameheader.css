@@ -1,1 +1,56 @@
-1
+.game-header {
+  display: flex;
+  justify-content: space-between; /* Distribute buttons and timer across the width */
+  align-items: center;            /* Center vertically */
+  padding: 1rem;
+  background-color: var(--color-bg-card); /* Matches the background of your game */
+  border-bottom: 1px solid var(--color-border); /* Border to separate the header from the content */
+}
+
+.game-header .container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px; /* Ensures the header is contained and centered */
+  margin: 0 auto;
+}
+
+.header-left,
+.header-center,
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-left {
+  gap: 1rem;
+}
+
+.header-center {
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.header-right {
+  gap: 1rem;
+}
+
+.game-header-button {
+  background-color: var(--color-secondary);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.game-header-button:hover {
+  background-color: var(--color-secondary-hover);
+}
+
+.game-timer {
+  font-size: 1.25rem;
+  color: var(--color-text);
+}
