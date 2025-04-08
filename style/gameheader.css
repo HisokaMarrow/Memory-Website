@@ -166,3 +166,12 @@
     text-align: left;
   }
 }
+
+/* Hide mobile drawer completely on desktop */
+@media (min-width: 769px) {
+  .game-menu,
+  .game-mobile-toggle {
+    display: none !important;
+  }
+}
+
