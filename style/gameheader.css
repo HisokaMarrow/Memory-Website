@@ -43,6 +43,17 @@
 /* ------------------------------
    Game Buttons (Give Up, Pause, End Early)
 ------------------------------ */
+.game-header button {
+  color: var(--header-text);
+  border: none;
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
 .game-btn {
   background-color: var(--header-surface);
   color: var(--header-text);
@@ -96,10 +107,6 @@
 /* ------------------------------
    Hamburger (mobile only)
 ------------------------------ */
-.game-mobile-toggle {
-  display: none;
-}
-
 @media (max-width: 768px) {
   .game-header {
     height: 60px;
@@ -124,6 +131,12 @@
     z-index: 100;
   }
 
+/* ------------------------------
+   Mobile: Hamburger Toggle
+------------------------------ */
+.game-mobile-toggle {
+  display: none;
+}
   .game-mobile-toggle {
     display: flex;
     flex-direction: column;
@@ -137,10 +150,6 @@
     left: 1.5rem;
     transform: translateY(-50%);
     z-index: 1100;
-    height: 25px;
-    justify-content: center;
-    line-height: 0;
-    -webkit-tap-highlight-color: transparent;
   }
 
   .game-mobile-toggle span {
@@ -164,7 +173,7 @@
     transform: rotate(-45deg) translateY(-6px);
   }
 }
-
+  
 /* ------------------------------
    Mobile Drawer Navigation
 ------------------------------ */
@@ -173,7 +182,7 @@
   top: 0;
   left: -100%;
   width: 75%;
-  max-width: 300px;
+  max-width: 170px;
   height: 100vh;
   padding: 2rem 1.5rem;
   background-color: var(--header-bg);
@@ -193,11 +202,13 @@
   gap: 1.2rem;
   padding: 0;
   margin: 0;
+  margin-top: 2rem;
+  margin-left: 1.5rem
 }
 
 .game-nav-links .game-btn {
+  
   width: 100%;
-  text-align: left;
 }
 
 @media (min-width: 769px) {
