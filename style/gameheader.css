@@ -57,8 +57,23 @@
   transition: background-color 0.25s ease, transform 0.25s ease;
 }
 
-.game-header button:hover {
+
+/* Only style actual game buttons */
+.game-btn {
+  background-color: var(--header-surface);
+  color: var(--header-text);
+  border: none;
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.game-btn:hover {
   background-color: var(--header-accent-hover);
+  transform: scale(1.03);
 }
 
 /* ------------------------------
