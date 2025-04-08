@@ -1,78 +1,149 @@
-.game-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  background-color: var(--color-bg-card);
-  border-bottom: 1px solid var(--color-border);
+/* ------------------------------
+   Root Variables for Header Theme
+   Color palette for header elements
+------------------------------ */
+:root {
+  --header-bg: #1c1f26;
+  --header-surface: #252931;
+  --header-text: #f2f2f3;
+  --header-subtext: #9ca3af;
+  --header-border: #323843;
+  --header-accent: #7c3aed;
+  --header-accent-hover: #5b21b6;
+  --header-secondary: #7c3aed;
+  --header-secondary-hover: #5b21b6;
+  --header-success: #22c55e;
+  --header-error: #ef4444;
 }
 
-.game-header .container {
-  display: flex;
-  justify-content: space-between;
+/* ------------------------------
+   Sticky Header Container
+   Sticky layout with padding and background
+------------------------------ */
+.main-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: var(--header-bg);
+  color: var(--header-text);
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--header-border);
   width: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ------------------------------
+   Flex Layout: Desktop Base
+   Controls header item alignment and spacing
+------------------------------ */
+.main-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
-.header-left,
-.header-center,
-.header-right {
-  display: flex;
-  align-items: center;
-}
-
+/* Logo aligned to the left */
 .header-left {
   flex: 1;
-  gap: 1rem;
 }
 
+.header-left .logo a {
+  color: var(--header-accent);
+  text-decoration: none;
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+/* Navigation centered horizontally */
 .header-center {
-  flex-grow: 1;
+  flex: 1.4;
+  display: flex;
   justify-content: center;
-  position: relative;
+  gap: 2rem;
 }
 
+/* Login aligned right */
 .header-right {
   flex: 1;
-  justify-content: flex-end;
   display: flex;
+  justify-content: flex-end;
   align-items: center;
 }
 
-/* Game header buttons */
-.game-header-button {
+/* ------------------------------
+   Nav Link Base Styles
+   Common link styling + hover background effect
+------------------------------ */
+.header-center .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  padding: 0;
+  margin: 0;
+}
+
+.header-center .nav-links a,
+.header-right .login-link {
+  position: relative;
   display: inline-block;
-  background-color: var(--color-secondary);
-  color: #fff;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  font-weight: 500;
   text-decoration: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
+  color: var(--header-text);
+  transition: color 0.25s ease;
+  z-index: 1;
 }
 
-.game-header-button:hover {
-  background-color: var(--color-secondary-hover);
+.header-center .nav-links a::before,
+.header-right .login-link::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--header-accent);
+  border-radius: 6px;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: -1;
 }
 
-/* Timer styling */
-.game-timer {
-  font-size: 1.5rem;
-  color: var(--color-text);
-  min-width: 70px;
-  text-align: center;
+.header-center .nav-links a:hover::before,
+.header-right .login-link:hover::before {
+  opacity: 1;
+  transform: scale(1);
 }
 
-/* Mobile Header */
+/* ------------------------------
+   Mobile Navigation & Behavior
+   Responsive tweaks + drawer setup
+------------------------------ */
+
+.mobile-nav-toggle {
+  display: none; /* Hidden on desktop */
+}
+
 @media (max-width: 768px) {
-  /* Hide non-essential elements on mobile */
-  .header-left,
-  .header-right {
-    display: none;
+  /* Mobile header base */
+  .main-header {
+    height: 60px;
+    min-height: 60px;
   }
 
-  /* Hamburger button */
+  .main-header .container {
+    flex-wrap: wrap;
+    position: relative;
+    justify-content: center;
+    height: 100%;
+  }
+
+  /* Hamburger button (left) */
   .mobile-nav-toggle {
     display: flex;
     flex-direction: column;
@@ -110,7 +181,7 @@
     transform: rotate(-45deg) translateY(-6px);
   }
 
-  /* Navigation drawer for mobile */
+  /* Mobile drawer (hidden initially) */
   .header-menu {
     position: fixed;
     top: 0;
@@ -132,19 +203,32 @@
     left: 0;
   }
 
-  /* Center the timer on mobile */
-  .header-center {
-    justify-content: center;
-  }
-
-  /* Show navigation links on mobile */
+  /* Stack nav links vertically */
   .header-center .nav-links {
     flex-direction: column;
     gap: 1rem;
   }
 
-  /* Display pause button on mobile */
-  .game-header-button {
-    width: 100%; /* Make buttons full width inside the drawer */
+  /* Center the logo */
+  .header-left {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Place login on the right */
+  .header-right {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+  }
+
+  /* Show login text on mobile */
+  .login-text {
+    display: inline;
   }
 }
