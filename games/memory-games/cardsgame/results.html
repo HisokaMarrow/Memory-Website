@@ -77,14 +77,36 @@
   
 <script>
   let originalOrder = [];
-  let userOrder = [];
+  let shuffledCards = [];
 
   const resultsArea = document.getElementById('resultsArea');
   const carousel = document.getElementById('carousel');
   const summary = document.getElementById('summary');
 
-  function renderDraggableCards(cards) {
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  function renderDropZones(count) {
     resultsArea.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const slot = document.createElement('div');
+      slot.className = 'drop-slot';
+      slot.dataset.index = i;
+
+      slot.addEventListener('dragover', e => e.preventDefault());
+      slot.addEventListener('drop', handleDrop);
+
+      resultsArea.appendChild(slot);
+    }
+  }
+
+  function renderCarousel(cards) {
+    carousel.innerHTML = '';
     cards.forEach(card => {
       const img = document.createElement('img');
       img.src = `/assets/png/${card}.png`;
@@ -94,54 +116,40 @@
       img.dataset.card = card;
 
       img.addEventListener('dragstart', dragStart);
-      img.addEventListener('dragover', dragOver);
-      img.addEventListener('drop', dropCard);
-      img.addEventListener('dragenter', e => e.preventDefault());
 
-      resultsArea.appendChild(img);
+      carousel.appendChild(img);
     });
   }
 
   function dragStart(e) {
     e.dataTransfer.setData('card', e.target.dataset.card);
-    e.dataTransfer.setData('index', [...e.target.parentNode.children].indexOf(e.target));
   }
 
-  function dragOver(e) {
-    e.preventDefault();
-  }
+  function handleDrop(e) {
+    const card = e.dataTransfer.getData('card');
+    if (!card) return;
 
-  function dropCard(e) {
-    e.preventDefault();
-    const draggedCard = e.dataTransfer.getData('card');
-    const fromIndex = parseInt(e.dataTransfer.getData('index'));
-    const toIndex = [...resultsArea.children].indexOf(e.target);
+    const slot = e.target;
 
-    // Swap
-    const cards = [...resultsArea.children];
-    const draggedEl = cards[fromIndex];
-    cards.splice(fromIndex, 1);
-    cards.splice(toIndex, 0, draggedEl);
+    // Prevent multiple cards in one slot
+    if (slot.querySelector('img')) return;
 
-    resultsArea.innerHTML = '';
-    cards.forEach(card => resultsArea.appendChild(card));
-  }
+    const img = document.createElement('img');
+    img.src = `/assets/png/${card}.png`;
+    img.alt = card;
+    img.className = 'memory-card small';
+    img.dataset.card = card;
 
-  function renderCarousel(cards) {
-    carousel.innerHTML = '';
-    cards.forEach(card => {
-      const img = document.createElement('img');
-      img.src = `/assets/png/${card}.png`;
-      img.alt = card;
-      img.className = 'memory-card';
-      carousel.appendChild(img);
-    });
+    slot.appendChild(img);
   }
 
   function checkAnswers() {
-    const userCards = [...resultsArea.children].map(card => card.dataset.card);
-    let correctCount = 0;
+    const userCards = [...resultsArea.children].map(slot => {
+      const img = slot.querySelector('img');
+      return img ? img.dataset.card : null;
+    });
 
+    let correctCount = 0;
     userCards.forEach((card, idx) => {
       if (card === originalOrder[idx]) correctCount++;
     });
@@ -157,13 +165,14 @@
     window.location.href = 'settings.html';
   }
 
-  // On load
   window.onload = () => {
     originalOrder = JSON.parse(localStorage.getItem("cardSequence") || "[]");
-    renderDraggableCards(originalOrder);
-    renderCarousel(originalOrder);
+    shuffledCards = shuffle([...originalOrder]);
+    renderDropZones(originalOrder.length);
+    renderCarousel(shuffledCards);
   };
 </script>
+
 
 
 <!-- Footer -->
