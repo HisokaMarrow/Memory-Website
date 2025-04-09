@@ -369,6 +369,14 @@ main {
   font-size: 1rem;
 }
 
+.input-row {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
 
 /* =======================================================
    10 - Results Page Styling
@@ -492,6 +500,13 @@ main {
   accent-color: var(--color-success);
   width: 16px;
   height: 16px;
+}
+
+.form-group,
+.checkbox-settings {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* =======================================================
