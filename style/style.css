@@ -17,6 +17,7 @@
   --color-error: #f43f5e;
 }
 
+
 /* =======================================================
    02 - Font & Typography
    ======================================================= */
@@ -50,6 +51,18 @@ html, body {
   color: var(--color-subtext);
 }
 
+.section-title {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.section-description {
+  font-size: 1rem;
+  color: var(--color-subtext);
+  margin-bottom: 1.5rem;
+}
+
+
 /* =======================================================
    03 - Base Reset & Box Model
    ======================================================= */
@@ -65,6 +78,7 @@ html, body {
   background-color: var(--color-bg);
 }
 
+
 /* =======================================================
    04 - Layout Containers
    ======================================================= */
@@ -77,28 +91,24 @@ main {
   gap: 4rem;
 }
 
-.section-title {
-  font-size: 1.75rem;
-  margin-bottom: 1rem;
+.hero {
+  text-align: center;
 }
 
-.section-description {
-  font-size: 1rem;
-  color: var(--color-subtext);
-  margin-bottom: 1.5rem;
-}
 
 /* =======================================================
    05 - Grid Systems
    ======================================================= */
-.daily-grid,
-#gamecardgrid {
+.daily-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
 }
 
 #gamecardgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
   justify-content: center;
   padding: 1rem 0;
 }
@@ -119,6 +129,7 @@ main {
   justify-items: center;
   width: 100%;
 }
+
 
 /* =======================================================
    06 - Buttons
@@ -162,18 +173,12 @@ main {
   background-color: var(--color-secondary-hover);
 }
 
+
 /* =======================================================
    07 - Cards & Boxes
    ======================================================= */
-.trial-test
-  background-color: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: center;
-}
-
-.daily-practice
+.trial-test,
+.daily-practice {
   background-color: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: 12px;
@@ -195,7 +200,8 @@ main {
   max-width: 300px;
   margin: 0 auto;
   flex: 0 0 auto;
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .daily-box h3 {
@@ -208,12 +214,12 @@ main {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
 }
 
-.games-settings-container,
-.game-display {
+.games-settings-container {
   background-color: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 2rem;
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -223,10 +229,15 @@ main {
   align-items: center;
   justify-content: center;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background-color: var(--color-bg-card);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   width: 100%;
   max-width: 600px;
+  margin: 0 auto;
 }
+
 
 /* =======================================================
    08 - Game Elements
@@ -240,7 +251,7 @@ main {
 #countdownLabel {
   font-size: 2rem;
   font-weight: 600;
-  color: var(--color-subtext);
+  color: var(--header-subtext);
 }
 
 #output {
@@ -249,6 +260,7 @@ main {
   margin-top: 1.5rem;
   letter-spacing: 2px;
 }
+
 
 /* =======================================================
    09 - Inputs & Forms
@@ -307,6 +319,7 @@ main {
   font-size: 1rem;
 }
 
+
 /* =======================================================
    10 - Results Page Styling
    ======================================================= */
@@ -332,9 +345,21 @@ main {
   font-weight: 600;
 }
 
+
 /* =======================================================
    11 - Carousel / Scrollable UI
    ======================================================= */
+.game-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.game-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
 .carousel-wrapper {
   display: flex;
   align-items: center;
@@ -376,6 +401,7 @@ main {
   background-color: rgba(128, 128, 128, 0.25);
 }
 
+
 /* =======================================================
    12 - Section Links & Navigation
    ======================================================= */
@@ -403,6 +429,7 @@ main {
   width: 16px;
   height: 16px;
 }
+
 
 /* =======================================================
    13 - Media Queries (Responsive)
