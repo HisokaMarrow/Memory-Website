@@ -1,1 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memoro</title>
 
+  <!-- Global styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/style.css" />
+
+  <!-- Header-specific styles -->
+  <link rel="stylesheet" href="/style/header.css" />
+
+  <!-- Footer-specific styles -->
+  <link rel="stylesheet" href="/style/footer.css" />
+</head>
+<body>
+
+<script>
+  // Load reusable header from components/header.html
+  fetch('/components/header.html')
+    .then(res => res.text())
+    .then(data => {
+      // Inject the header at the top of the body
+      document.body.insertAdjacentHTML('afterbegin', data);
+
+      // === After header is injected ===
+
+      // Create and insert backdrop
+      const backdropEl = document.createElement('div');
+      backdropEl.classList.add('nav-backdrop');
+      document.body.appendChild(backdropEl);
+
+      // Query the toggle button and the nav drawer
+      const toggleBtn = document.querySelector('.mobile-nav-toggle');
+      const menu = document.querySelector('.header-menu');
+
+      // Safety check
+      if (!toggleBtn || !menu) {
+        console.warn("Header elements not found. Check class names in header.html");
+        return;
+      }
+
+      // Toggle drawer and backdrop visibility
+      const toggleMenu = () => {
+        toggleBtn.classList.toggle('open');    // Animate hamburger to X
+        menu.classList.toggle('open');         // Slide drawer open/closed
+        backdropEl.classList.toggle('active'); // Dim background
+      };
+
+      // Event listeners
+      toggleBtn.addEventListener('click', toggleMenu);
+      backdropEl.addEventListener('click', toggleMenu); // close menu when clicking outside
+    })
+    .catch(err => console.error('Failed to load header:', err));
+</script>
+
+
+<!-- Footer -->
+<div id="site-footer"></div>
+<script>
+  // Load reusable footer after its CSS is already in place
+  fetch('/components/footer.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('site-footer').innerHTML = html;
+    })
+    .catch(err => console.error('Failed to load footer:', err));
+</script>
+
+</body>
+</html>
