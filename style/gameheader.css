@@ -75,7 +75,7 @@
    Timer Display
 ------------------------------ */
 #game-timer {
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   font-weight: 600;
   color: var(--header-success);
 }
