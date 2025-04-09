@@ -1,1 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memoro</title>
 
+  <!-- Global styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/style.css" />
+
+  <!-- Header-specific styles -->
+  <link rel="stylesheet" href="/style/header.css" />
+
+  <!-- Footer-specific styles -->
+  <link rel="stylesheet" href="/style/footer.css" />
+</head>
+<body>
+
+<script>
+  // Load reusable header from components/header.html
+  fetch('/components/header.html')
+    .then(res => res.text())
+    .then(data => {
+      // Inject the header at the top of the body
+      document.body.insertAdjacentHTML('afterbegin', data);
+
+      // === After header is injected ===
+
+      // Create and insert backdrop
+      const backdropEl = document.createElement('div');
+      backdropEl.classList.add('nav-backdrop');
+      document.body.appendChild(backdropEl);
+
+      // Query the toggle button and the nav drawer
+      const toggleBtn = document.querySelector('.mobile-nav-toggle');
+      const menu = document.querySelector('.header-menu');
+
+      // Safety check
+      if (!toggleBtn || !menu) {
+        console.warn("Header elements not found. Check class names in header.html");
+        return;
+      }
+
+      // Toggle drawer and backdrop visibility
+      const toggleMenu = () => {
+        toggleBtn.classList.toggle('open');    // Animate hamburger to X
+        menu.classList.toggle('open');         // Slide drawer open/closed
+        backdropEl.classList.toggle('active'); // Dim background
+      };
+
+      // Event listeners
+      toggleBtn.addEventListener('click', toggleMenu);
+      backdropEl.addEventListener('click', toggleMenu); // close menu when clicking outside
+    })
+    .catch(err => console.error('Failed to load header:', err));
+</script>
+
+<main class="main-container">
+  <div class="game-display">
+    <h2 class="main-title">Rebuild the Correct Card Order</h2>
+    <div id="resultsArea" class="results-grid" style="margin: 2rem 0;"></div>
+
+    <h3 class="main-subtitle" style="text-align:center;">All Cards Used</h3>
+    <div id="carousel" class="card-carousel"></div>
+
+    <div class="game-results-buttons-block">
+      <button class="game-results-buttons" onclick="checkAnswers()">Check</button>
+      <button class="game-results-buttons" onclick="tryAgain()">Try Again</button>
+      <button class="game-results-buttons" onclick="backtogames()">Back To Games</button>
+    </div>
+
+    <div id="summary" class="result-summary" style="margin-top: 2rem;"></div>
+  </div>
+</main>
+
+  
+<script>
+  let originalOrder = [];
+  let userOrder = [];
+
+  const resultsArea = document.getElementById('resultsArea');
+  const carousel = document.getElementById('carousel');
+  const summary = document.getElementById('summary');
+
+  function renderDraggableCards(cards) {
+    resultsArea.innerHTML = '';
+    cards.forEach(card => {
+      const img = document.createElement('img');
+      img.src = `/assets/png/${card}.png`;
+      img.alt = card;
+      img.className = 'memory-card draggable';
+      img.draggable = true;
+      img.dataset.card = card;
+
+      img.addEventListener('dragstart', dragStart);
+      img.addEventListener('dragover', dragOver);
+      img.addEventListener('drop', dropCard);
+      img.addEventListener('dragenter', e => e.preventDefault());
+
+      resultsArea.appendChild(img);
+    });
+  }
+
+  function dragStart(e) {
+    e.dataTransfer.setData('card', e.target.dataset.card);
+    e.dataTransfer.setData('index', [...e.target.parentNode.children].indexOf(e.target));
+  }
+
+  function dragOver(e) {
+    e.preventDefault();
+  }
+
+  function dropCard(e) {
+    e.preventDefault();
+    const draggedCard = e.dataTransfer.getData('card');
+    const fromIndex = parseInt(e.dataTransfer.getData('index'));
+    const toIndex = [...resultsArea.children].indexOf(e.target);
+
+    // Swap
+    const cards = [...resultsArea.children];
+    const draggedEl = cards[fromIndex];
+    cards.splice(fromIndex, 1);
+    cards.splice(toIndex, 0, draggedEl);
+
+    resultsArea.innerHTML = '';
+    cards.forEach(card => resultsArea.appendChild(card));
+  }
+
+  function renderCarousel(cards) {
+    carousel.innerHTML = '';
+    cards.forEach(card => {
+      const img = document.createElement('img');
+      img.src = `/assets/png/${card}.png`;
+      img.alt = card;
+      img.className = 'memory-card';
+      carousel.appendChild(img);
+    });
+  }
+
+  function checkAnswers() {
+    const userCards = [...resultsArea.children].map(card => card.dataset.card);
+    let correctCount = 0;
+
+    userCards.forEach((card, idx) => {
+      if (card === originalOrder[idx]) correctCount++;
+    });
+
+    summary.innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
+  }
+
+  function tryAgain() {
+    window.location.href = 'game.html';
+  }
+
+  function backtogames() {
+    window.location.href = 'settings.html';
+  }
+
+  // On load
+  window.onload = () => {
+    originalOrder = JSON.parse(localStorage.getItem("cardSequence") || "[]");
+    renderDraggableCards(originalOrder);
+    renderCarousel(originalOrder);
+  };
+</script>
+
+
+<!-- Footer -->
+<div id="site-footer"></div>
+<script>
+  // Load reusable footer after its CSS is already in place
+  fetch('/components/footer.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('site-footer').innerHTML = html;
+    })
+    .catch(err => console.error('Failed to load footer:', err));
+</script>
+
+</body>
+</html>
