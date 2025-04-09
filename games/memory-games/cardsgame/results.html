@@ -60,10 +60,10 @@
   <div class="game-display">
     <h2 class="main-title">Rebuild the Correct Card Order</h2>
 
-    <!-- Drop Zones -->
+    <!-- Drop Slots -->
     <div id="resultsArea" class="results-grid" style="margin: 2rem 0;"></div>
 
-    <!-- Carousel with Arrows -->
+    <!-- Carousel Section (same structure as mind games) -->
     <h3 class="main-subtitle" style="text-align:center;">All Cards Used</h3>
     <div class="carousel-wrapper">
       <button class="cards-carousel-arrow" onclick="scrollCarousel(-1)">◀</button>
@@ -78,7 +78,6 @@
       <button class="game-results-buttons" onclick="backtogames()">Back To Games</button>
     </div>
 
-    <!-- Result Summary -->
     <div id="summary" class="result-summary" style="margin-top: 2rem;"></div>
   </div>
 </main>
@@ -136,8 +135,10 @@
   }
 
   function renderCarousel(cards) {
-    carousel.innerHTML = '';
-    cards.forEach(card => {
+    carousel.innerHTML = ''; // Clear before render
+    const sorted = sortBySuitOrder(cards);
+
+    sorted.forEach(card => {
       const img = document.createElement('img');
       img.src = `/assets/png/${getCardFilename(card)}`;
       img.alt = card;
@@ -159,7 +160,7 @@
     if (!card) return;
 
     const slot = e.target;
-    if (slot.querySelector('img')) return; // Prevent overwrite
+    if (slot.querySelector('img')) return; // prevent duplicate in slot
 
     const img = document.createElement('img');
     img.src = `/assets/png/${getCardFilename(card)}`;
@@ -201,10 +202,9 @@
     originalOrder = JSON.parse(localStorage.getItem("cardSequence") || "[]");
     shuffledCards = shuffle([...originalOrder]);
     renderDropZones(originalOrder.length);
-    renderCarousel(sortBySuitOrder(shuffledCards));
+    renderCarousel(shuffledCards);
   };
 </script>
-
 
 
 <!-- Footer -->
