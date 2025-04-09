@@ -98,9 +98,7 @@
 
 
 <script>
-  document.getElementById('settings-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-
+  document.querySelector('.game-start-button').addEventListener('click', () => {
     const delay = document.getElementById("delay").value;
     const rangeMax = document.getElementById("rangeMax").value;
     const testTime = document.getElementById("testTime").value;
@@ -126,7 +124,6 @@
     }, 100);
   });
 </script>
-
 
 <!-- Footer -->
 <div id="site-footer"></div>
