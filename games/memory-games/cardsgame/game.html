@@ -82,16 +82,19 @@
   const countdownLabel = document.getElementById('countdownLabel');
   const startBtn = document.getElementById('startButton');
 
-  const allSuits = ['C', 'D', 'H', 'S']; // Clubs, Diamonds, Hearts, Spades
+  const allSuits = ['C', 'D', 'H', 'S'];
   const allRanks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 
   const deckCount = parseInt(localStorage.getItem("cardDeckCount")) || 1;
   const timeLimit = parseInt(localStorage.getItem("cardTimeLimit")) || 30;
+  const cardInterval = parseFloat(localStorage.getItem("cardInterval")) || 2; // in seconds
 
   let cardSequence = [];
   let isPaused = false;
   let pauseResolve = null;
   let countdownValue = 3;
+  let startTime = null;
+  let currentIndex = 0;
 
   function generateDeck() {
     const singleDeck = [];
@@ -116,7 +119,7 @@
     for (let i = 0; i < deckCount; i++) {
       fullDeck = fullDeck.concat(generateDeck());
     }
-    return shuffle(fullDeck).slice(0, 10); // Display only 10 cards max for now
+    return shuffle(fullDeck).slice(0, 52); // max 52 cards for now
   }
 
   function getCardFilename(code) {
@@ -134,18 +137,43 @@
     return `${ranks[rank]}_of_${suits[suit]}.png`;
   }
 
-  function displayCards(cards) {
+  function showCard(index) {
     output.innerHTML = '';
     output.style.display = 'flex';
-    output.classList.add('card-grid');
-    cards.forEach(card => {
-      const img = document.createElement('img');
-      const filename = getCardFilename(card);
-      img.src = `/assets/png/${filename}`;
-      img.alt = card;
-      img.className = 'memory-card';
-      output.appendChild(img);
-    });
+    output.classList.remove('card-grid');
+
+    const card = cardSequence[index];
+    const img = document.createElement('img');
+    const filename = getCardFilename(card);
+    img.src = `/assets/png/${filename}`;
+    img.alt = card;
+    img.className = 'memory-card';
+    output.appendChild(img);
+  }
+
+  async function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function beginGame() {
+    cardSequence = getShuffledCards();
+    startTime = Date.now();
+
+    while (currentIndex < cardSequence.length) {
+      if (isPaused) {
+        await waitWhilePaused();
+      }
+
+      const elapsed = (Date.now() - startTime) / 1000;
+      if (elapsed >= timeLimit) break;
+
+      showCard(currentIndex);
+      currentIndex++;
+      await wait(cardInterval * 1000);
+    }
+
+    localStorage.setItem("cardSequence", JSON.stringify(cardSequence.slice(0, currentIndex)));
+    window.location.href = "results.html";
   }
 
   function startCountdown(callback) {
@@ -165,16 +193,6 @@
         }
       }
     }, 1000);
-  }
-
-  function beginGame() {
-    cardSequence = getShuffledCards();
-    displayCards(cardSequence);
-
-    setTimeout(() => {
-      localStorage.setItem("cardSequence", JSON.stringify(cardSequence));
-      window.location.href = "results.html";
-    }, timeLimit * 1000);
   }
 
   function waitWhilePaused() {
@@ -198,7 +216,7 @@
   }
 
   function endEarly() {
-    localStorage.setItem("cardSequence", JSON.stringify(cardSequence));
+    localStorage.setItem("cardSequence", JSON.stringify(cardSequence.slice(0, currentIndex)));
     window.location.href = "results.html";
   }
 
@@ -210,7 +228,6 @@
     startBtn.addEventListener('click', () => startCountdown(beginGame));
   }
 
-  // Expose methods globally for header interaction
   window.togglePause = togglePause;
   window.endEarly = endEarly;
   window.giveUp = giveUp;
@@ -218,6 +235,7 @@
   window.onload = initGameLogic;
 })();
 </script>
+
 
 
   
