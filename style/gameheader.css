@@ -211,6 +211,22 @@
   width: 100%;
 }
 
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.memory-card {
+  width: 80px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+
 @media (min-width: 769px) {
   .game-menu,
   .game-mobile-toggle {
