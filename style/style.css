@@ -444,6 +444,9 @@ main {
   align-items: center;
   gap: 0.5rem;
   overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .cards-main-carousel {
@@ -454,7 +457,10 @@ main {
   overflow-x: auto;
   scroll-behavior: smooth;
   padding: 1rem 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
+
 
 .cards-main-carousel::-webkit-scrollbar {
   display: none;
