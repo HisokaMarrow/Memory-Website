@@ -175,7 +175,7 @@ main {
   background-color: var(--color-secondary-hover);
 }
 
-.game-gamestar-button {
+.game-gamestart-button {
   display: block;
   width: 60%;
   text-align: center;
@@ -188,10 +188,9 @@ main {
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 2rem;
 }
 
-.game-gamestar-button:hover {
+.game-gamestart-button:hover {
   background-color: var(--color-secondary-hover);
 }
 
