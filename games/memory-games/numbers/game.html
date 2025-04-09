@@ -148,6 +148,8 @@
       countdownEl.style.display = "block";
       label.style.display = "block";
 
+      document.getElementById("startButton").style.display = "none";
+
       var interval = setInterval(function () {
         if (!isPaused) {
           countdownEl.innerText = countdownValue;
