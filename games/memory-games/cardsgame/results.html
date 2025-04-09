@@ -59,21 +59,26 @@
 <main class="main-container">
   <div class="game-display">
     <h2 class="main-title">Rebuild the Correct Card Order</h2>
+
+    <!-- Drop Zones -->
     <div id="resultsArea" class="results-grid" style="margin: 2rem 0;"></div>
 
+    <!-- Carousel with Arrows -->
     <h3 class="main-subtitle" style="text-align:center;">All Cards Used</h3>
     <div class="carousel-wrapper">
-      <button class="cards-carousel-arrow left" onclick="scrollCarousel(-1)">◀</button>
-      <div id="carousel" class="card-carousel"></div>
-      <button class="cards-carousel-arrow right" onclick="scrollCarousel(1)">▶</button>
+      <button class="cards-carousel-arrow" onclick="scrollCarousel(-1)">◀</button>
+      <div id="carousel" class="main-carousel"></div>
+      <button class="cards-carousel-arrow" onclick="scrollCarousel(1)">▶</button>
     </div>
 
+    <!-- Buttons -->
     <div class="game-results-buttons-block">
       <button class="game-results-buttons" onclick="checkAnswers()">Check</button>
       <button class="game-results-buttons" onclick="tryAgain()">Try Again</button>
       <button class="game-results-buttons" onclick="backtogames()">Back To Games</button>
     </div>
 
+    <!-- Result Summary -->
     <div id="summary" class="result-summary" style="margin-top: 2rem;"></div>
   </div>
 </main>
@@ -110,8 +115,8 @@
   function sortBySuitOrder(cards) {
     const suitOrder = { S: 0, H: 1, C: 2, D: 3 };
     return cards.slice().sort((a, b) => {
-      const [_, suitA] = a.match(/([SHCD])$/);
-      const [__, suitB] = b.match(/([SHCD])$/);
+      const [, suitA] = a.match(/([SHCD])$/);
+      const [, suitB] = b.match(/([SHCD])$/);
       return suitOrder[suitA] - suitOrder[suitB];
     });
   }
@@ -154,8 +159,7 @@
     if (!card) return;
 
     const slot = e.target;
-
-    if (slot.querySelector('img')) return; // Only one card per slot
+    if (slot.querySelector('img')) return; // Prevent overwrite
 
     const img = document.createElement('img');
     img.src = `/assets/png/${getCardFilename(card)}`;
@@ -200,6 +204,7 @@
     renderCarousel(sortBySuitOrder(shuffledCards));
   };
 </script>
+
 
 
 <!-- Footer -->
