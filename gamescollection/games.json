@@ -18,7 +18,7 @@
     "category": "Memory",
     "title": "Card Challenge",
     "description": "Train your memory by recalling the order of shuffled playing cards.",
-    "link": "/pages/memory/cards/settings.html"
+    "link": "/games/memory-games/cardsgame/settings.html"
   },
   {
     "id": "math_addition",
