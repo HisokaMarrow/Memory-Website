@@ -9,6 +9,7 @@
 
   --color-bg-card: #181a1f;
   --main-box: #252931;
+  --main-game-card: #272c38;
   --main-option-box-hover: #1d2026;
 
   --color-secondary: #7c3aed;
@@ -186,8 +187,9 @@ main {
   text-align: center;
 }
 
-.game-cards {                                     /-------Games cards section I.e ( Numbers, addition, memory techniques )---------------/
-  background-color: var(--main-box);
+/*-------Games cards section I.e ( Numbers, addition, memory techniques )---------------*/
+.game-cards {                                     
+  background-color: var(--main-game-card);
   padding: 1.5rem;
   border-radius: 10px;
   border: 1px solid var(--color-border);
