@@ -179,6 +179,7 @@ main {
 /* =======================================================
    07 - Cards & Boxes
    ======================================================= */
+/*-------Trial test and daily practice container---------------*/
 .trial-test,
 .daily-practice {
   background-color: var(--color-bg-card);
