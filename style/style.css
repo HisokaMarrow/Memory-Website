@@ -433,6 +433,19 @@ main {
   height: 16px;
 }
 
+.checkbox-settings {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-subtext);
+}
+
+.checkbox-settings input[type="checkbox"] {
+  accent-color: var(--color-success);
+  width: 16px;
+  height: 16px;
+}
 
 /* =======================================================
    13 - Media Queries (Responsive)
