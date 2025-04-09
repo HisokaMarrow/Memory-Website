@@ -56,7 +56,7 @@
     .catch(err => console.error('Failed to load header:', err));
 </script>
 
-  <main>
+ <main>
   <h1 class="main-title" style="text-align: center;">Card Memory Settings</h1>
 
   <section class="games-settings-container">
@@ -71,6 +71,11 @@
         <label for="timeLimit">Time Limit (sec)</label>
         <input type="number" id="timeLimit" value="30" min="5" />
       </div>
+
+      <div class="form-group">
+        <label for="cardInterval">Card Interval (sec)</label>
+        <input type="number" id="cardInterval" value="2" min="1" />
+      </div>
     </div>
 
     <div class="button-wrapper">
@@ -84,12 +89,12 @@
   document.querySelector('.game-start-button').addEventListener('click', () => {
     const deckCount = document.getElementById("deckCount").value;
     const timeLimit = document.getElementById("timeLimit").value;
+    const cardInterval = document.getElementById("cardInterval").value;
 
-    // Store values in localStorage
     localStorage.setItem("cardDeckCount", deckCount);
     localStorage.setItem("cardTimeLimit", timeLimit);
+    localStorage.setItem("cardInterval", cardInterval);
 
-    // Redirect to card game page
     setTimeout(() => {
       window.location.href = "game.html";
     }, 100);
