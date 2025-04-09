@@ -64,7 +64,7 @@
     <div class="game-results-buttons-block">
       <button class="game-results-buttons" onclick="checkAnswers()">Check</button>
       <button class="game-results-buttons" onclick="tryAgain()">Try Again</button>
-      <button href="/memory-games" class="game-results-buttons">Back to Games</button>
+      <button class="game-results-buttons" onclick="backtogames()">Try Again</button>
     </div>
 
     <div id="summary" class="result-summary" style="margin-top: 2rem;"></div>
@@ -124,6 +124,10 @@
 
   function tryAgain() {
     window.location.href = "settings.html";
+  }
+
+   function backtogames() {
+    window.location.href = "memory.html";
   }
 
   renderInputs();
