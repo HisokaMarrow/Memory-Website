@@ -135,6 +135,10 @@ main {
 /* =======================================================
    06 - Buttons
    ======================================================= */
+.button-wrapper {
+  margin-top: 1rem;
+}
+
 .main-button {
   display: inline-block;
   background-color: var(--color-secondary);
@@ -150,9 +154,6 @@ main {
   background-color: var(--color-secondary-hover);
 }
 
-.button-wrapper {
-  margin-top: 1rem;
-}
 
 .game-start-button {
   display: block;
