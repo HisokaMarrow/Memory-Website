@@ -439,6 +439,27 @@ main {
   display: none;
 }
 
+.cards-carousel-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+.cards-main-carousel {
+  display: flex;
+  flex-wrap: nowrap;
+  flex: 1;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1rem 0;
+}
+
+.cards-main-carousel::-webkit-scrollbar {
+  display: none;
+}
+
 .carousel-arrow {
   flex: 0 0 auto;
   width: 36px;
