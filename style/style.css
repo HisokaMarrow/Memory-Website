@@ -509,6 +509,39 @@ main {
   flex-direction: column;
 }
 
+.drop-slot {
+  width: 80px;
+  height: 120px;
+  border: 2px dashed #999;
+  border-radius: 8px;
+  margin: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#resultsArea {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+
+#carousel {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 1rem;
+  border-top: 2px solid #444;
+  margin-top: 1rem;
+}
+
+.memory-card.small {
+  width: 80px;
+  height: auto;
+}
+
 /* =======================================================
    13 - Media Queries (Responsive)
    ======================================================= */
