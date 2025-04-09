@@ -166,6 +166,7 @@ main {
    07 - Cards & Boxes
    ======================================================= */
 .trial-test
+  background-color: var(--color-bg-card);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -177,6 +178,7 @@ main {
 }
 
 .daily-practice
+  background-color: var(--color-bg-card);
   display: flex;
   flex-direction: column;
   align-items: center;
