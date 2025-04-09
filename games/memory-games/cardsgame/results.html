@@ -62,7 +62,11 @@
     <div id="resultsArea" class="results-grid" style="margin: 2rem 0;"></div>
 
     <h3 class="main-subtitle" style="text-align:center;">All Cards Used</h3>
-    <div id="carousel" class="card-carousel"></div>
+    <div class="carousel-wrapper">
+      <button class="cards-carousel-arrow left" onclick="scrollCarousel(-1)">◀</button>
+      <div id="carousel" class="card-carousel"></div>
+      <button class="cards-carousel-arrow right" onclick="scrollCarousel(1)">▶</button>
+    </div>
 
     <div class="game-results-buttons-block">
       <button class="game-results-buttons" onclick="checkAnswers()">Check</button>
@@ -74,7 +78,6 @@
   </div>
 </main>
 
-  
 <script>
   let originalOrder = [];
   let shuffledCards = [];
@@ -83,12 +86,34 @@
   const carousel = document.getElementById('carousel');
   const summary = document.getElementById('summary');
 
+  function getCardFilename(code) {
+    const suits = { C: 'clubs', D: 'diamonds', H: 'hearts', S: 'spades' };
+    const ranks = {
+      A: 'ace', J: 'jack', Q: 'queen', K: 'king',
+      '10': '10', '9': '9', '8': '8', '7': '7',
+      '6': '6', '5': '5', '4': '4', '3': '3', '2': '2'
+    };
+    const match = code.match(/^([0-9]{1,2}|[AJQK])([CDHS])$/);
+    if (!match) return null;
+    const [_, rank, suit] = match;
+    return `${ranks[rank]}_of_${suits[suit]}.png`;
+  }
+
   function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+  }
+
+  function sortBySuitOrder(cards) {
+    const suitOrder = { S: 0, H: 1, C: 2, D: 3 };
+    return cards.slice().sort((a, b) => {
+      const [_, suitA] = a.match(/([SHCD])$/);
+      const [__, suitB] = b.match(/([SHCD])$/);
+      return suitOrder[suitA] - suitOrder[suitB];
+    });
   }
 
   function renderDropZones(count) {
@@ -109,14 +134,13 @@
     carousel.innerHTML = '';
     cards.forEach(card => {
       const img = document.createElement('img');
-      img.src = `/assets/png/${card}.png`;
+      img.src = `/assets/png/${getCardFilename(card)}`;
       img.alt = card;
       img.className = 'memory-card draggable';
       img.draggable = true;
       img.dataset.card = card;
 
       img.addEventListener('dragstart', dragStart);
-
       carousel.appendChild(img);
     });
   }
@@ -131,11 +155,10 @@
 
     const slot = e.target;
 
-    // Prevent multiple cards in one slot
-    if (slot.querySelector('img')) return;
+    if (slot.querySelector('img')) return; // Only one card per slot
 
     const img = document.createElement('img');
-    img.src = `/assets/png/${card}.png`;
+    img.src = `/assets/png/${getCardFilename(card)}`;
     img.alt = card;
     img.className = 'memory-card small';
     img.dataset.card = card;
@@ -165,14 +188,18 @@
     window.location.href = 'settings.html';
   }
 
+  function scrollCarousel(dir) {
+    const scrollAmount = 150;
+    carousel.scrollLeft += dir * scrollAmount;
+  }
+
   window.onload = () => {
     originalOrder = JSON.parse(localStorage.getItem("cardSequence") || "[]");
     shuffledCards = shuffle([...originalOrder]);
     renderDropZones(originalOrder.length);
-    renderCarousel(shuffledCards);
+    renderCarousel(sortBySuitOrder(shuffledCards));
   };
 </script>
-
 
 
 <!-- Footer -->
