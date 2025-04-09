@@ -144,9 +144,7 @@
     function startCountdown(callback) {
       var countdownEl = document.getElementById("countdown");
       var label = document.getElementById("countdownLabel");
-      var goWrapper = document.getElementById("goWrapper");
 
-      goWrapper.style.display = "none";
       countdownEl.style.display = "block";
       label.style.display = "block";
 
@@ -205,32 +203,25 @@
         };
       }
 
-      // Bind header controls
       var pauseBtns = [document.getElementById("pause"), document.getElementById("pause-mobile")];
       var endBtns = [document.getElementById("end-early"), document.getElementById("end-early-mobile")];
       var giveUpBtns = [document.getElementById("give-up"), document.getElementById("give-up-mobile")];
 
-      for (var i = 0; i < pauseBtns.length; i++) {
-        if (pauseBtns[i]) pauseBtns[i].onclick = togglePause;
-      }
-      for (var j = 0; j < endBtns.length; j++) {
-        if (endBtns[j]) endBtns[j].onclick = endEarly;
-      }
-      for (var k = 0; k < giveUpBtns.length; k++) {
-        if (giveUpBtns[k]) giveUpBtns[k].onclick = giveUp;
-      }
+      pauseBtns.forEach(btn => btn && (btn.onclick = togglePause));
+      endBtns.forEach(btn => btn && (btn.onclick = endEarly));
+      giveUpBtns.forEach(btn => btn && (btn.onclick = giveUp));
     }
-    
+
+    // Expose methods globally for header interaction
     window.togglePause = togglePause;
     window.endEarly = endEarly;
     window.giveUp = giveUp;
     window.dispatchEvent(new Event('gameReady'));
+
+    // Initialize the game once the page loads
     window.onload = initGameLogic;
-  })(); // ← closes the main function
+  })();
 </script>
-
-
-
   
 </body>
 </html>
