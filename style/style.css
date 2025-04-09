@@ -194,6 +194,14 @@ main {
   background-color: var(--color-secondary-hover);
 }
 
+.game-results-buttons-block {
+  display: flex;
+  justify-content: center; /* center them horizontally */
+  gap: 1rem; /* space between buttons */
+  flex-wrap: wrap; /* optional: wrap on smaller screens */
+  margin-top: 2rem;
+}
+
 .game-results-buttons {
   display: block;
   text-align: center;
