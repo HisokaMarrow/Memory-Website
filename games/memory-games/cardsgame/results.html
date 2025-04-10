@@ -117,106 +117,101 @@
   }
 
   function renderDropZones(count) {
-  resultsArea.innerHTML = '';
-  for (let i = 0; i < count; i++) {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'drop-wrapper'; // like input-wrapper
+    resultsArea.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'drop-wrapper';
 
-    const slot = document.createElement('div');
-    slot.className = 'drop-slot';
-    slot.dataset.index = i;
-    slot.addEventListener('dragover', e => e.preventDefault());
-    slot.addEventListener('drop', handleDrop);
+      const slot = document.createElement('div');
+      slot.className = 'drop-slot';
+      slot.dataset.index = i;
+      slot.addEventListener('dragover', e => e.preventDefault());
+      slot.addEventListener('drop', handleDrop);
 
-    const label = document.createElement('div');
-    label.className = 'correct-answer-label';
-    label.textContent = '';
+      const label = document.createElement('div');
+      label.className = 'correct-answer-label';
+      label.textContent = '';
 
-    wrapper.appendChild(slot);
-    wrapper.appendChild(label);
-    resultsArea.appendChild(wrapper);
+      wrapper.appendChild(slot);
+      wrapper.appendChild(label);
+      resultsArea.appendChild(wrapper);
+    }
   }
-}
-
 
   function renderCarousel(cards) {
-  carousel.innerHTML = '';
+    carousel.innerHTML = '';
 
-  cards.forEach(card => {
-    const fileName = getCardFilename(card);
-    if (!fileName) return;
+    cards.forEach(card => {
+      const fileName = getCardFilename(card);
+      if (!fileName) return;
 
-    const img = document.createElement('img');
-    img.src = `/assets/png/${fileName}`;
-    img.alt = card;
-    img.className = 'memory-card draggable';
-    img.dataset.card = card;
+      const img = document.createElement('img');
+      img.src = `/assets/png/${fileName}`;
+      img.alt = card;
+      img.className = 'memory-card draggable';
+      img.dataset.card = card;
 
-    const wrapper = document.createElement('div');
-    wrapper.className = 'card-wrapper';
-    wrapper.style.minWidth = '80px';
-    wrapper.appendChild(img);
+      const wrapper = document.createElement('div');
+      wrapper.className = 'card-wrapper';
+      wrapper.style.minWidth = '80px';
+      wrapper.appendChild(img);
 
-    // ✅ Unified drag support
-    enableDragEvents(wrapper, img);
+      enableDragEvents(wrapper, img);
+      carousel.appendChild(wrapper);
+    });
+  }
 
-    carousel.appendChild(wrapper);
-  });
-}
+  function enableDragEvents(wrapper, imgElement) {
+    wrapper.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('card', imgElement.dataset.card);
+      e.dataTransfer.setDragImage(getDragImageWithBackground(imgElement), 0, 0);
+    });
 
+    let longPressTimer = null;
+    wrapper.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      longPressTimer = setTimeout(() => {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.setData('card', imgElement.dataset.card);
+        const event = new DragEvent('dragstart', {
+          bubbles: true,
+          cancelable: true,
+          dataTransfer: dataTransfer
+        });
+        wrapper.dispatchEvent(event);
+      }, 2000);
+    });
 
-function renderCarousel(cards) {
-  carousel.innerHTML = '';
-
-  cards.forEach(card => {
-    const fileName = getCardFilename(card);
-    if (!fileName) return;
-
-    const img = document.createElement('img');
-    img.src = `/assets/png/${fileName}`;
-    img.alt = card;
-    img.className = 'memory-card draggable';
-    img.dataset.card = card;
-
-    const wrapper = document.createElement('div');
-    wrapper.className = 'card-wrapper';
-    wrapper.style.minWidth = '80px';
-    wrapper.appendChild(img);
-
-    // ✅ Unified drag support
-    enableDragEvents(wrapper, img);
-
-    carousel.appendChild(wrapper);
-  });
-}
+    wrapper.addEventListener('touchend', () => {
+      clearTimeout(longPressTimer);
+    });
+  }
 
   function handleDrop(e) {
-  const card = e.dataTransfer.getData('card');
-  if (!card) return;
+    const card = e.dataTransfer.getData('card');
+    if (!card) return;
 
-  const slot = e.target.closest('.drop-slot');
-  if (!slot) return;
+    const slot = e.target.closest('.drop-slot');
+    if (!slot) return;
 
-  const fileName = getCardFilename(card);
-  if (!fileName) return;
+    const fileName = getCardFilename(card);
+    if (!fileName) return;
 
-  // Remove existing card if there's one already
-  const existing = slot.querySelector('.card-wrapper');
-  if (existing) existing.remove();
+    const existing = slot.querySelector('.card-wrapper');
+    if (existing) existing.remove();
 
-  const img = document.createElement('img');
-  img.src = `/assets/png/${fileName}`;
-  img.alt = card;
-  img.className = 'memory-card small';
-  img.dataset.card = card;
+    const img = document.createElement('img');
+    img.src = `/assets/png/${fileName}`;
+    img.alt = card;
+    img.className = 'memory-card small';
+    img.dataset.card = card;
 
-  const wrapper = document.createElement('div');
-  wrapper.className = 'card-wrapper';
-  wrapper.appendChild(img);
+    const wrapper = document.createElement('div');
+    wrapper.className = 'card-wrapper';
+    wrapper.appendChild(img);
 
-  slot.appendChild(wrapper);
-}
-
+    slot.appendChild(wrapper);
+  }
 
   function getDragImageWithBackground(imgElement) {
     const size = 100;
@@ -231,30 +226,30 @@ function renderCarousel(cards) {
     return canvas;
   }
 
-function checkAnswers() {
-  const wrappers = [...document.querySelectorAll('.drop-wrapper')];
-  let correctCount = 0;
+  function checkAnswers() {
+    const wrappers = [...document.querySelectorAll('.drop-wrapper')];
+    let correctCount = 0;
 
-  wrappers.forEach((wrapper, idx) => {
-    const slot = wrapper.querySelector('.drop-slot');
-    const label = wrapper.querySelector('.correct-answer-label');
-    const img = slot.querySelector('img');
-    const card = img ? img.dataset.card : null;
+    wrappers.forEach((wrapper, idx) => {
+      const slot = wrapper.querySelector('.drop-slot');
+      const label = wrapper.querySelector('.correct-answer-label');
+      const img = slot.querySelector('img');
+      const card = img ? img.dataset.card : null;
 
-    slot.classList.remove('correct', 'incorrect');
-    label.textContent = '';
+      slot.classList.remove('correct', 'incorrect');
+      label.textContent = '';
 
-    if (card === originalOrder[idx]) {
-      slot.classList.add('correct');
-      correctCount++;
-    } else {
-      slot.classList.add('incorrect');
-      label.textContent = originalOrder[idx]; // e.g., QH
-    }
-  });
+      if (card === originalOrder[idx]) {
+        slot.classList.add('correct');
+        correctCount++;
+      } else {
+        slot.classList.add('incorrect');
+        label.textContent = originalOrder[idx];
+      }
+    });
 
-  summary.innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
-}
+    summary.innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
+  }
 
   function tryAgain() {
     window.location.href = 'game.html';
@@ -275,7 +270,6 @@ function checkAnswers() {
     renderCarousel(generateFullDeckOrdered());
   };
 </script>
-
 <!-- Footer -->
 <div id="site-footer"></div>
 <script>
