@@ -151,6 +151,13 @@
     // === Desktop Drag ===
     wrapper.addEventListener('dragstart', (e) => dragStart(e, img));
 
+    wrapper.addEventListener('dragstart', (e) => dragStart(e, img));
+
+function dragStart(e, imgElement) {
+  e.dataTransfer.setData('card', imgElement.dataset.card);
+  e.dataTransfer.setDragImage(getDragImageWithBackground(imgElement), 0, 0);
+}
+
     // === Mobile Long Press ===
     let longPressTimer = null;
 
@@ -219,9 +226,9 @@
     return canvas;
   }
 
- function checkAnswers() {
+function checkAnswers() {
   const userCards = [...resultsArea.children].map((slot, idx) => {
-    slot.classList.remove('correct', 'incorrect'); // Reset any previous highlights
+    slot.classList.remove('correct', 'incorrect'); // Reset
 
     const img = slot.querySelector('img');
     const card = img ? img.dataset.card : null;
@@ -229,13 +236,22 @@
     if (card === originalOrder[idx]) {
       slot.classList.add('correct');
     } else {
-      slot.classList.add('incorrect'); // Also marks empty slots as incorrect
+      slot.classList.add('incorrect');
+
+      // Add correct answer below
+      const label = document.createElement('div');
+      label.className = 'correct-answer-label';
+      label.innerText = originalOrder[idx]; // e.g., QH, 5C
+      // Remove previous label if rechecking
+      const existing = slot.querySelector('.correct-answer-label');
+      if (existing) existing.remove();
+      slot.appendChild(label);
     }
 
     return card;
   });
 
-  let correctCount = userCards.reduce((count, card, idx) => {
+  const correctCount = userCards.reduce((count, card, idx) => {
     return card === originalOrder[idx] ? count + 1 : count;
   }, 0);
 
