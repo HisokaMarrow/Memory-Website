@@ -227,8 +227,13 @@ function dragStart(e, imgElement) {
   }
 
 function checkAnswers() {
-  const userCards = [...resultsArea.children].map((slot, idx) => {
-    slot.classList.remove('correct', 'incorrect'); // Reset
+  const userCards = [...resultsArea.children].map((wrapper, idx) => {
+    const slot = wrapper.querySelector('.drop-slot');
+    const label = wrapper.querySelector('.correct-answer-label');
+
+    // Reset styles
+    slot.classList.remove('correct', 'incorrect');
+    label.textContent = '';
 
     const img = slot.querySelector('img');
     const card = img ? img.dataset.card : null;
@@ -237,15 +242,7 @@ function checkAnswers() {
       slot.classList.add('correct');
     } else {
       slot.classList.add('incorrect');
-
-      // Add correct answer below
-      const label = document.createElement('div');
-      label.className = 'correct-answer-label';
-      label.innerText = originalOrder[idx]; // e.g., QH, 5C
-      // Remove previous label if rechecking
-      const existing = slot.querySelector('.correct-answer-label');
-      if (existing) existing.remove();
-      slot.appendChild(label);
+      label.textContent = originalOrder[idx]; // Show "QH", "5C", etc.
     }
 
     return card;
@@ -257,6 +254,7 @@ function checkAnswers() {
 
   summary.innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
 }
+
 
   function tryAgain() {
     window.location.href = 'game.html';
