@@ -347,18 +347,16 @@ main {
 
 .drop-slot.correct {
   border-color: var(--color-success);
-  background-color: rgba(76, 175, 80, 0.1);
-  border-width: 2px !important;
-  border-style: solid !important;
-  border-image: initial !important;
+  border-width: 2px;
+  border-style: solid;
+  border-image: initial;
 }
 
 .drop-slot.incorrect {
   border-color: var(--color-error);
-  background-color: rgba(76, 175, 80, 0.1);
-  border-width: 2px !important;
-  border-style: solid !important;
-  border-image: initial !important;
+  border-width: 2px;
+  border-style: solid;
+  border-image: initial;
 }
 
 /* =======================================================
