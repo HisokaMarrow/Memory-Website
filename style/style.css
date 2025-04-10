@@ -359,6 +359,21 @@ main {
   border-image: initial;
 }
 
+.drop-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.correct-answer-label {
+  font-size: 0.85rem;
+  color: red;
+  font-weight: 600;
+  margin-top: 4px;
+  min-height: 1em;
+  text-align: center;
+}
+
 /* =======================================================
    10 - Log-in
    ======================================================= */
