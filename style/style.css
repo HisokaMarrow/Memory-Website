@@ -311,6 +311,17 @@ main {
   letter-spacing: 2px;
 }
 
+.drop-slot {
+  width: 80px;
+  height: 120px;
+  border: 2px dashed #999;
+  border-radius: 8px;
+  margin: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 /* =======================================================
    09 - Inputs & Forms
@@ -336,10 +347,18 @@ main {
 
 .drop-slot.correct {
   border-color: var(--color-success);
+  background-color: rgba(76, 175, 80, 0.1);
+  border-width: 2px !important;
+  border-style: solid !important;
+  border-image: initial !important;
 }
 
 .drop-slot.incorrect {
   border-color: var(--color-error);
+  background-color: rgba(76, 175, 80, 0.1);
+  border-width: 2px !important;
+  border-style: solid !important;
+  border-image: initial !important;
 }
 
 /* =======================================================
@@ -518,7 +537,7 @@ main {
 }
 
 /* =======================================================
-   13 - Section Links & Navigation
+   13 - Settings and results
    ======================================================= */
 .main-section-link {
   color: var(--color-secondary);
@@ -566,16 +585,7 @@ main {
   flex-direction: column;
 }
 
-.drop-slot {
-  width: 80px;
-  height: 120px;
-  border: 2px dashed #999;
-  border-radius: 8px;
-  margin: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+
 
 #resultsArea {
   display: flex;
@@ -585,6 +595,9 @@ main {
   margin-bottom: 2rem;
 }
 
+/* =======================================================
+   14 - Carusel and cards
+   ======================================================= */
 #carousel {
   display: flex;
   overflow-x: auto;
