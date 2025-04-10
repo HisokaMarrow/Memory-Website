@@ -117,18 +117,27 @@
   }
 
   function renderDropZones(count) {
-    resultsArea.innerHTML = '';
-    for (let i = 0; i < count; i++) {
-      const slot = document.createElement('div');
-      slot.className = 'drop-slot';
-      slot.dataset.index = i;
+  resultsArea.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'drop-wrapper'; // like input-wrapper
 
-      slot.addEventListener('dragover', e => e.preventDefault());
-      slot.addEventListener('drop', handleDrop);
+    const slot = document.createElement('div');
+    slot.className = 'drop-slot';
+    slot.dataset.index = i;
+    slot.addEventListener('dragover', e => e.preventDefault());
+    slot.addEventListener('drop', handleDrop);
 
-      resultsArea.appendChild(slot);
-    }
+    const label = document.createElement('div');
+    label.className = 'correct-answer-label';
+    label.textContent = '';
+
+    wrapper.appendChild(slot);
+    wrapper.appendChild(label);
+    resultsArea.appendChild(wrapper);
   }
+}
+
 
   function renderCarousel(cards) {
   carousel.innerHTML = '';
@@ -227,57 +236,29 @@ function dragStart(e, imgElement) {
   }
 
 function checkAnswers() {
-  const userCards = [...resultsArea.children].map((slot, idx) => {
-    slot.classList.remove('correct', 'incorrect');
+  const wrappers = [...document.querySelectorAll('.drop-wrapper')];
+  let correctCount = 0;
 
+  wrappers.forEach((wrapper, idx) => {
+    const slot = wrapper.querySelector('.drop-slot');
+    const label = wrapper.querySelector('.correct-answer-label');
     const img = slot.querySelector('img');
     const card = img ? img.dataset.card : null;
 
-    // Remove any existing label
-    const existingLabel = slot.querySelector('.correct-answer-label');
-    if (existingLabel) existingLabel.remove();
+    slot.classList.remove('correct', 'incorrect');
+    label.textContent = '';
 
     if (card === originalOrder[idx]) {
       slot.classList.add('correct');
+      correctCount++;
     } else {
       slot.classList.add('incorrect');
-
-      const label = document.createElement('div');
-      label.className = 'correct-answer-label';
-      label.innerText = originalOrder[idx]; // e.g., QH, 5C
-      label.style.textAlign = 'center';
-      label.style.marginTop = '4px';
-      label.style.fontSize = '0.85rem';
-      label.style.color = 'red';
-
-      // Wrap slot and label in a flex container for vertical layout
-      const wrapper = document.createElement('div');
-      wrapper.className = 'slot-with-label';
-      wrapper.style.display = 'flex';
-      wrapper.style.flexDirection = 'column';
-      wrapper.style.alignItems = 'center';
-
-      // Move existing children to wrapper
-      const currentContent = [...slot.childNodes];
-      currentContent.forEach(child => wrapper.appendChild(child));
-
-      wrapper.appendChild(label);
-
-      // Clear slot and append wrapper
-      slot.innerHTML = '';
-      slot.appendChild(wrapper);
+      label.textContent = originalOrder[idx]; // e.g., QH
     }
-
-    return card;
   });
-
-  const correctCount = userCards.reduce((count, card, idx) => {
-    return card === originalOrder[idx] ? count + 1 : count;
-  }, 0);
 
   summary.innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
 }
-
 
   function tryAgain() {
     window.location.href = 'game.html';
