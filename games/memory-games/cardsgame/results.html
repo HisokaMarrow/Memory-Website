@@ -194,19 +194,28 @@
     return canvas;
   }
 
-  function checkAnswers() {
-    const userCards = [...resultsArea.children].map(slot => {
-      const img = slot.querySelector('img');
-      return img ? img.dataset.card : null;
-    });
+ function checkAnswers() {
+  const userCards = [...resultsArea.children].map((slot, idx) => {
+    slot.classList.remove('correct', 'incorrect'); // Reset any previous highlights
 
-    let correctCount = 0;
-    userCards.forEach((card, idx) => {
-      if (card === originalOrder[idx]) correctCount++;
-    });
+    const img = slot.querySelector('img');
+    const card = img ? img.dataset.card : null;
 
-    summary.innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
-  }
+    if (card === originalOrder[idx]) {
+      slot.classList.add('correct');
+    } else {
+      slot.classList.add('incorrect'); // Also marks empty slots as incorrect
+    }
+
+    return card;
+  });
+
+  let correctCount = userCards.reduce((count, card, idx) => {
+    return card === originalOrder[idx] ? count + 1 : count;
+  }, 0);
+
+  summary.innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
+}
 
   function tryAgain() {
     window.location.href = 'game.html';
