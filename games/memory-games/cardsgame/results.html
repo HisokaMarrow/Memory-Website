@@ -59,125 +59,98 @@
 <main class="main-container">
   <div class="game-display">
     <h2 class="main-title">Rebuild the Correct Card Order</h2>
-
-    <!-- Drop Slots -->
     <div id="resultsArea" class="results-grid" style="margin: 2rem 0;"></div>
 
-    <!-- Carousel -->
-    <h3 class="main-subtitle" style="text-align:center;">All Cards</h3>
+    <h3 class="main-subtitle" style="text-align:center;">All Cards Used</h3>
     <div class="cards-carousel-wrapper">
-      <button class="cards-carousel-arrow" onclick="scrollCarousel(-1)">&lt;</button>
+      <button class="cards-carousel-arrow" onclick="scrollCarousel(-1)">◀</button>
       <div id="carousel" class="cards-main-carousel"></div>
-      <button class="cards-carousel-arrow" onclick="scrollCarousel(1)">&gt;</button>
+      <button class="cards-carousel-arrow" onclick="scrollCarousel(1)">▶</button>
     </div>
 
-    <!-- Buttons -->
     <div class="game-results-buttons-block">
       <button class="game-results-buttons" onclick="checkAnswers()">Check</button>
       <button class="game-results-buttons" onclick="tryAgain()">Try Again</button>
       <button class="game-results-buttons" onclick="backtogames()">Back To Games</button>
     </div>
 
-    <!-- Result Summary -->
     <div id="summary" class="result-summary" style="margin-top: 2rem;"></div>
   </div>
 </main>
 
 <script>
-  let originalOrder = [];
+const originalOrder = JSON.parse(localStorage.getItem("cardSequence") || "[]");
 
-  const resultsArea = document.getElementById('resultsArea');
-  const carousel = document.getElementById('carousel');
-  const summary = document.getElementById('summary');
+function getCardFilename(code) {
+  const suits = { C: 'clubs', D: 'diamonds', H: 'hearts', S: 'spades' };
+  const ranks = {
+    A: 'ace', J: 'jack', Q: 'queen', K: 'king',
+    '10': '10', '9': '9', '8': '8', '7': '7',
+    '6': '6', '5': '5', '4': '4', '3': '3', '2': '2'
+  };
+  const match = code.match(/^([0-9]{1,2}|[AJQK])([CDHS])$/);
+  if (!match) return null;
+  const [_, rank, suit] = match;
+  return `${ranks[rank]}_of_${suits[suit]}.png`;
+}
 
-  const allSuits = ['S', 'H', 'C', 'D'];
-  const allRanks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+function renderDropZones(count) {
+  const container = document.getElementById("resultsArea");
+  container.innerHTML = "";
 
-  function getCardFilename(code) {
-    const suits = { C: 'clubs', D: 'diamonds', H: 'hearts', S: 'spades' };
-    const ranks = {
-      A: 'ace', J: 'jack', Q: 'queen', K: 'king',
-      '10': '10', '9': '9', '8': '8', '7': '7',
-      '6': '6', '5': '5', '4': '4', '3': '3', '2': '2'
-    };
-    const match = code.match(/^([0-9]{1,2}|[AJQK])([CDHS])$/);
-    if (!match) return null;
-    const [_, rank, suit] = match;
-    return `${ranks[rank]}_of_${suits[suit]}.png`;
+  for (let i = 0; i < count; i++) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "drop-wrapper";
+
+    const slot = document.createElement("div");
+    slot.className = "drop-slot";
+    slot.dataset.index = i;
+    slot.addEventListener("dragover", e => e.preventDefault());
+    slot.addEventListener("drop", handleDrop);
+
+    const label = document.createElement("div");
+    label.className = "correct-answer-label";
+    label.textContent = "";
+
+    wrapper.appendChild(slot);
+    wrapper.appendChild(label);
+    container.appendChild(wrapper);
   }
+}
 
-  function generateFullDeckOrdered() {
-    const ordered = [];
-    for (let suit of allSuits) {
-      for (let rank of allRanks) {
-        ordered.push(`${rank}${suit}`);
-      }
-    }
-    return ordered;
-  }
-
-  function renderDropZones(count) {
-    resultsArea.innerHTML = '';
-    for (let i = 0; i < count; i++) {
-      const slot = document.createElement('div');
-      slot.className = 'drop-slot';
-      slot.dataset.index = i;
-
-      slot.addEventListener('dragover', e => e.preventDefault());
-      slot.addEventListener('drop', handleDrop);
-
-      resultsArea.appendChild(slot);
-    }
-  }
-
-  function renderCarousel(cards) {
-  carousel.innerHTML = '';
+function renderCarousel(cards) {
+  const carousel = document.getElementById("carousel");
+  carousel.innerHTML = "";
 
   cards.forEach(card => {
     const fileName = getCardFilename(card);
-    if (!fileName) return;
-
-    const img = document.createElement('img');
+    const img = document.createElement("img");
     img.src = `/assets/png/${fileName}`;
     img.alt = card;
-    img.className = 'memory-card draggable';
+    img.className = "memory-card";
+    img.draggable = true;
     img.dataset.card = card;
 
-    const wrapper = document.createElement('div');
-    wrapper.className = 'card-wrapper';
-    wrapper.style.minWidth = '80px';
+    const wrapper = document.createElement("div");
+    wrapper.className = "card-wrapper";
     wrapper.appendChild(img);
 
-    // === Desktop Drag ===
     wrapper.addEventListener('dragstart', (e) => dragStart(e, img));
 
-    wrapper.addEventListener('dragstart', (e) => dragStart(e, img));
-
-function dragStart(e, imgElement) {
-  e.dataTransfer.setData('card', imgElement.dataset.card);
-  e.dataTransfer.setDragImage(getDragImageWithBackground(imgElement), 0, 0);
-}
-
-    // === Mobile Long Press ===
     let longPressTimer = null;
-
     wrapper.addEventListener('touchstart', (e) => {
-      e.preventDefault(); // Prevent accidental scroll
+      e.preventDefault();
       longPressTimer = setTimeout(() => {
-        // Manually trigger drag
         const dataTransfer = new DataTransfer();
         dataTransfer.setData('card', img.dataset.card);
-
         const event = new DragEvent('dragstart', {
           bubbles: true,
           cancelable: true,
           dataTransfer: dataTransfer
         });
-
         wrapper.dispatchEvent(event);
-      }, 2000); // 2 seconds hold
+      }, 2000);
     });
-
     wrapper.addEventListener('touchend', () => {
       clearTimeout(longPressTimer);
     });
@@ -185,46 +158,46 @@ function dragStart(e, imgElement) {
     carousel.appendChild(wrapper);
   });
 }
-  function dragStart(e, imgElement) {
-    e.dataTransfer.setData('card', imgElement.dataset.card);
-    e.dataTransfer.setDragImage(getDragImageWithBackground(imgElement), 0, 0);
-  }
 
-  function handleDrop(e) {
-    const card = e.dataTransfer.getData('card');
-    if (!card) return;
+function dragStart(e, imgElement) {
+  e.dataTransfer.setData('card', imgElement.dataset.card);
+  e.dataTransfer.setDragImage(getDragImageWithBackground(imgElement), 0, 0);
+}
 
-    const slot = e.target.closest('.drop-slot');
-    if (!slot || slot.querySelector('.card-wrapper')) return;
+function getDragImageWithBackground(imgElement) {
+  const size = 100;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size * 1.4;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
+  return canvas;
+}
 
-    const fileName = getCardFilename(card);
-    if (!fileName) return;
+function handleDrop(e) {
+  const card = e.dataTransfer.getData('card');
+  if (!card) return;
 
-    const img = document.createElement('img');
-    img.src = `/assets/png/${fileName}`;
-    img.alt = card;
-    img.className = 'memory-card small';
-    img.dataset.card = card;
+  const slot = e.target.closest('.drop-slot');
+  if (!slot || slot.querySelector('.card-wrapper')) return;
 
-    const wrapper = document.createElement('div');
-    wrapper.className = 'card-wrapper';
-    wrapper.appendChild(img);
+  const fileName = getCardFilename(card);
+  if (!fileName) return;
 
-    slot.appendChild(wrapper);
-  }
+  const img = document.createElement('img');
+  img.src = `/assets/png/${fileName}`;
+  img.alt = card;
+  img.className = 'memory-card small';
+  img.dataset.card = card;
 
-  function getDragImageWithBackground(imgElement) {
-    const size = 100;
-    const canvas = document.createElement('canvas');
-    canvas.width = size;
-    canvas.height = size * 1.4;
+  const wrapper = document.createElement('div');
+  wrapper.className = 'card-wrapper';
+  wrapper.appendChild(img);
 
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
-    return canvas;
-  }
+  slot.appendChild(wrapper);
+}
 
 function checkAnswers() {
   const wrappers = [...document.querySelectorAll('.drop-wrapper')];
@@ -234,7 +207,7 @@ function checkAnswers() {
     const slot = wrapper.querySelector('.drop-slot');
     const label = wrapper.querySelector('.correct-answer-label');
 
-    if (!slot || !label) return; // Prevent null errors
+    if (!slot || !label) return;
 
     const img = slot.querySelector('img');
     const card = img ? img.dataset.card : null;
@@ -251,33 +224,38 @@ function checkAnswers() {
     }
   });
 
-  const correctCount = userCards.reduce((count, card, idx) => {
-    return card === originalOrder[idx] ? count + 1 : count;
-  }, 0);
-
-  summary.innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
+  document.getElementById("summary").innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
 }
 
+function tryAgain() {
+  window.location.href = 'game.html';
+}
 
-  function tryAgain() {
-    window.location.href = 'game.html';
+function backtogames() {
+  window.location.href = 'settings.html';
+}
+
+window.onload = () => {
+  renderDropZones(originalOrder.length);
+  const allSuits = ['S', 'H', 'C', 'D'];
+  const allRanks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+  const fullDeck = [];
+  allSuits.forEach(suit => {
+    allRanks.forEach(rank => {
+      fullDeck.push(`${rank}${suit}`);
+    });
+  });
+  renderCarousel(fullDeck);
+};
+
+function scrollCarousel(dir) {
+  const carousel = document.getElementById("carousel");
+  if (carousel) {
+    carousel.scrollLeft += dir * 150;
   }
-
-  function backtogames() {
-    window.location.href = 'settings.html';
-  }
-
-  function scrollCarousel(dir) {
-    const scrollAmount = 150;
-    carousel.scrollLeft += dir * scrollAmount;
-  }
-
-  window.onload = () => {
-    originalOrder = JSON.parse(localStorage.getItem("cardSequence") || "[]");
-    renderDropZones(originalOrder.length);
-    renderCarousel(generateFullDeckOrdered());
-  };
+}
 </script>
+
 
 <!-- Footer -->
 <div id="site-footer"></div>
