@@ -588,6 +588,12 @@ main {
   height: auto;
 }
 
+.card-container {
+  background-color: white;
+  padding: 8px;
+  border-radius: 8px;
+}
+
 /* =======================================================
    13 - Media Queries (Responsive)
    ======================================================= */
