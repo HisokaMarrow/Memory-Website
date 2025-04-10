@@ -58,8 +58,15 @@
 
 <main class="main-container">
   <div class="game-display">
-    <h2 class="main-title">What Numbers Do You Remember?</h2>
+    <h2 class="main-title">Rebuild the Correct Card Order</h2>
     <div id="resultsArea" class="results-grid" style="margin: 2rem 0;"></div>
+
+    <h3 class="main-subtitle" style="text-align:center;">All Cards Used</h3>
+    <div class="cards-carousel-wrapper">
+      <button class="cards-carousel-arrow" onclick="scrollCarousel(-1)">◀</button>
+      <div id="carousel" class="cards-main-carousel"></div>
+      <button class="cards-carousel-arrow" onclick="scrollCarousel(1)">▶</button>
+    </div>
 
     <div class="game-results-buttons-block">
       <button class="game-results-buttons" onclick="checkAnswers()">Check</button>
@@ -72,67 +79,180 @@
 </main>
 
 <script>
-  const generatedNumbers = JSON.parse(localStorage.getItem("generatedNumbers") || "[]");
+const originalOrder = JSON.parse(localStorage.getItem("cardSequence") || "[]");
 
-  function renderInputs() {
-    const container = document.getElementById("resultsArea");
-    container.innerHTML = "";
+function getCardFilename(code) {
+  const suits = { C: 'clubs', D: 'diamonds', H: 'hearts', S: 'spades' };
+  const ranks = {
+    A: 'ace', J: 'jack', Q: 'queen', K: 'king',
+    '10': '10', '9': '9', '8': '8', '7': '7',
+    '6': '6', '5': '5', '4': '4', '3': '3', '2': '2'
+  };
+  const match = code.match(/^([0-9]{1,2}|[AJQK])([CDHS])$/);
+  if (!match) return null;
+  const [_, rank, suit] = match;
+  return `${ranks[rank]}_of_${suits[suit]}.png`;
+}
 
-    generatedNumbers.forEach(() => {
-      const wrapper = document.createElement("div");
-      wrapper.className = "input-wrapper";
+function renderDropZones(count) {
+  const container = document.getElementById("resultsArea");
+  container.innerHTML = "";
 
-      const input = document.createElement("input");
-      input.type = "text";
-      input.maxLength = 4;
-      input.className = "input-box";
-      input.placeholder = "____";
+  for (let i = 0; i < count; i++) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "drop-wrapper";
 
-      const correctLabel = document.createElement("div");
-      correctLabel.className = "correct-answer";
+    const slot = document.createElement("div");
+    slot.className = "drop-slot";
+    slot.dataset.index = i;
+    slot.addEventListener("dragover", e => e.preventDefault());
+    slot.addEventListener("drop", handleDrop);
 
-      wrapper.appendChild(input);
-      wrapper.appendChild(correctLabel);
-      container.appendChild(wrapper);
+    const label = document.createElement("div");
+    label.className = "correct-answer-label";
+    label.textContent = "";
+
+    wrapper.appendChild(slot);
+    wrapper.appendChild(label);
+    container.appendChild(wrapper);
+  }
+}
+
+function renderCarousel(cards) {
+  const carousel = document.getElementById("carousel");
+  carousel.innerHTML = "";
+
+  cards.forEach(card => {
+    const fileName = getCardFilename(card);
+    const img = document.createElement("img");
+    img.src = `/assets/png/${fileName}`;
+    img.alt = card;
+    img.className = "memory-card";
+    img.draggable = true;
+    img.dataset.card = card;
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "card-wrapper";
+    wrapper.appendChild(img);
+
+    // === Desktop Drag ===
+    wrapper.addEventListener('dragstart', (e) => dragStart(e, img));
+
+    // === Mobile Long Press ===
+    let longPressTimer = null;
+    wrapper.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      longPressTimer = setTimeout(() => {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.setData('card', img.dataset.card);
+        const event = new DragEvent('dragstart', {
+          bubbles: true,
+          cancelable: true,
+          dataTransfer: dataTransfer
+        });
+        wrapper.dispatchEvent(event);
+      }, 2000);
     });
-  }
-
-  function checkAnswers() {
-    const inputs = document.querySelectorAll(".input-box");
-    let correct = 0;
-
-    inputs.forEach((input, i) => {
-      const wrapper = input.parentElement;
-      const correctAnswer = generatedNumbers[i].toString();
-
-      if (input.value.trim() === correctAnswer) {
-        input.classList.add("correct");
-        input.classList.remove("incorrect");
-        wrapper.querySelector(".correct-answer").textContent = "";
-        correct++;
-      } else {
-        input.classList.add("incorrect");
-        input.classList.remove("correct");
-        wrapper.querySelector(".correct-answer").textContent = `Correct: ${correctAnswer}`;
-      }
+    wrapper.addEventListener('touchend', () => {
+      clearTimeout(longPressTimer);
     });
 
-    const percent = Math.round((correct / generatedNumbers.length) * 100);
-    document.getElementById("summary").innerHTML =
-      `You got <span class="highlight">${correct}</span> out of ${generatedNumbers.length} correct (${percent}%)`;
-  }
+    carousel.appendChild(wrapper);
+  });
+}
 
-  function tryAgain() {
-    window.location.href = "settings.html";
-  }
+function dragStart(e, imgElement) {
+  e.dataTransfer.setData('card', imgElement.dataset.card);
+  e.dataTransfer.setDragImage(getDragImageWithBackground(imgElement), 0, 0);
+}
 
-   function backtogames() {
-    window.location.href = "/memory.html";
-  }
+function getDragImageWithBackground(imgElement) {
+  const size = 100;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size * 1.4;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
+  return canvas;
+}
 
-  renderInputs();
-  sessionStorage.setItem("dailyGame_Number Memory", "true");
+function handleDrop(e) {
+  const card = e.dataTransfer.getData('card');
+  if (!card) return;
+
+  const slot = e.target.closest('.drop-slot');
+  if (!slot || slot.querySelector('.card-wrapper')) return;
+
+  const fileName = getCardFilename(card);
+  if (!fileName) return;
+
+  const img = document.createElement('img');
+  img.src = `/assets/png/${fileName}`;
+  img.alt = card;
+  img.className = 'memory-card small';
+  img.dataset.card = card;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'card-wrapper';
+  wrapper.appendChild(img);
+
+  slot.appendChild(wrapper);
+}
+
+function checkAnswers() {
+  const wrappers = [...document.querySelectorAll('.drop-wrapper')];
+  let correctCount = 0;
+
+  wrappers.forEach((wrapper, idx) => {
+    const slot = wrapper.querySelector('.drop-slot');
+    const label = wrapper.querySelector('.correct-answer-label');
+    const img = slot.querySelector('img');
+    const card = img ? img.dataset.card : null;
+
+    slot.classList.remove('correct', 'incorrect');
+    label.textContent = '';
+
+    if (card === originalOrder[idx]) {
+      slot.classList.add('correct');
+      correctCount++;
+    } else {
+      slot.classList.add('incorrect');
+      label.textContent = originalOrder[idx];
+    }
+  });
+
+  document.getElementById("summary").innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
+}
+
+function tryAgain() {
+  window.location.href = 'game.html';
+}
+
+function backtogames() {
+  window.location.href = 'settings.html';
+}
+
+window.onload = () => {
+  renderDropZones(originalOrder.length);
+  const allSuits = ['S', 'H', 'C', 'D'];
+  const allRanks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+  const fullDeck = [];
+  allSuits.forEach(suit => {
+    allRanks.forEach(rank => {
+      fullDeck.push(`${rank}${suit}`);
+    });
+  });
+  renderCarousel(fullDeck);
+};
+
+function scrollCarousel(dir) {
+  const carousel = document.querySelector('.cards-main-carousel');
+  carousel.scrollLeft += dir * 150;
+}
 </script>
+
 
 <!-- Footer -->
 <div id="site-footer"></div>
