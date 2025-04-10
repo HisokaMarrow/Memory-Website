@@ -151,19 +151,22 @@
     });
 
     let longPressTimer = null;
-    wrapper.addEventListener('touchstart', e => {
-      if (!e.target.closest('.draggable')) return;
-      longPressTimer = setTimeout(() => {
-        const dataTransfer = new DataTransfer();
-        dataTransfer.setData('card', imgElement.dataset.card);
-        const event = new DragEvent('dragstart', {
-          bubbles: true,
-          cancelable: true,
-          dataTransfer: dataTransfer
-        });
-        wrapper.dispatchEvent(event);
-      }, 2000);
+    wrapper.addEventListener('touchstart', (e) => {
+  e.preventDefault(); // Stop image popup
+  imgElement.style.touchAction = 'none'; // Prevent zoom or fullscreen preview
+
+  longPressTimer = setTimeout(() => {
+    const dataTransfer = new DataTransfer();
+    dataTransfer.setData('card', imgElement.dataset.card);
+    const event = new DragEvent('dragstart', {
+      bubbles: true,
+      cancelable: true,
+      dataTransfer: dataTransfer
     });
+    wrapper.dispatchEvent(event);
+  }, 2000);
+});
+
     wrapper.addEventListener('touchend', () => clearTimeout(longPressTimer));
     wrapper.addEventListener('touchmove', () => clearTimeout(longPressTimer));
   }
