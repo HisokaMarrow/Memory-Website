@@ -644,6 +644,10 @@ main {
   height: auto;
   display: block;
   border-radius: 6px;
+  touch-action: none; /* Prevent Safari image preview on long tap */
+  -webkit-user-drag: none; /* Prevent default dragging in Safari */
+}
+
 }
 .memory-card.small {
   width: 60px; /* adjust as needed */
