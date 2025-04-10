@@ -228,24 +228,44 @@ function dragStart(e, imgElement) {
 
 function checkAnswers() {
   const userCards = [...resultsArea.children].map((slot, idx) => {
-    slot.classList.remove('correct', 'incorrect'); // Reset
+    slot.classList.remove('correct', 'incorrect');
 
     const img = slot.querySelector('img');
     const card = img ? img.dataset.card : null;
+
+    // Remove any existing label
+    const existingLabel = slot.querySelector('.correct-answer-label');
+    if (existingLabel) existingLabel.remove();
 
     if (card === originalOrder[idx]) {
       slot.classList.add('correct');
     } else {
       slot.classList.add('incorrect');
 
-      // Add correct answer below
       const label = document.createElement('div');
       label.className = 'correct-answer-label';
       label.innerText = originalOrder[idx]; // e.g., QH, 5C
-      // Remove previous label if rechecking
-      const existing = slot.querySelector('.correct-answer-label');
-      if (existing) existing.remove();
-      slot.appendChild(label);
+      label.style.textAlign = 'center';
+      label.style.marginTop = '4px';
+      label.style.fontSize = '0.85rem';
+      label.style.color = 'red';
+
+      // Wrap slot and label in a flex container for vertical layout
+      const wrapper = document.createElement('div');
+      wrapper.className = 'slot-with-label';
+      wrapper.style.display = 'flex';
+      wrapper.style.flexDirection = 'column';
+      wrapper.style.alignItems = 'center';
+
+      // Move existing children to wrapper
+      const currentContent = [...slot.childNodes];
+      currentContent.forEach(child => wrapper.appendChild(child));
+
+      wrapper.appendChild(label);
+
+      // Clear slot and append wrapper
+      slot.innerHTML = '';
+      slot.appendChild(wrapper);
     }
 
     return card;
@@ -257,6 +277,7 @@ function checkAnswers() {
 
   summary.innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
 }
+
 
   function tryAgain() {
     window.location.href = 'game.html';
