@@ -157,47 +157,38 @@
     wrapper.style.minWidth = '80px';
     wrapper.appendChild(img);
 
-    // === Desktop Drag ===
-    wrapper.addEventListener('dragstart', (e) => dragStart(e, img));
-
-    wrapper.addEventListener('dragstart', (e) => dragStart(e, img));
-
-function dragStart(e, imgElement) {
-  e.dataTransfer.setData('card', imgElement.dataset.card);
-  e.dataTransfer.setDragImage(getDragImageWithBackground(imgElement), 0, 0);
-}
-
-    // === Mobile Long Press ===
-    let longPressTimer = null;
-
-    wrapper.addEventListener('touchstart', (e) => {
-      e.preventDefault(); // Prevent accidental scroll
-      longPressTimer = setTimeout(() => {
-        // Manually trigger drag
-        const dataTransfer = new DataTransfer();
-        dataTransfer.setData('card', img.dataset.card);
-
-        const event = new DragEvent('dragstart', {
-          bubbles: true,
-          cancelable: true,
-          dataTransfer: dataTransfer
-        });
-
-        wrapper.dispatchEvent(event);
-      }, 2000); // 2 seconds hold
-    });
-
-    wrapper.addEventListener('touchend', () => {
-      clearTimeout(longPressTimer);
-    });
+    // ✅ Unified drag support
+    enableDragEvents(wrapper, img);
 
     carousel.appendChild(wrapper);
   });
 }
-  function dragStart(e, imgElement) {
-    e.dataTransfer.setData('card', imgElement.dataset.card);
-    e.dataTransfer.setDragImage(getDragImageWithBackground(imgElement), 0, 0);
-  }
+
+
+function renderCarousel(cards) {
+  carousel.innerHTML = '';
+
+  cards.forEach(card => {
+    const fileName = getCardFilename(card);
+    if (!fileName) return;
+
+    const img = document.createElement('img');
+    img.src = `/assets/png/${fileName}`;
+    img.alt = card;
+    img.className = 'memory-card draggable';
+    img.dataset.card = card;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'card-wrapper';
+    wrapper.style.minWidth = '80px';
+    wrapper.appendChild(img);
+
+    // ✅ Unified drag support
+    enableDragEvents(wrapper, img);
+
+    carousel.appendChild(wrapper);
+  });
+}
 
   function handleDrop(e) {
   const card = e.dataTransfer.getData('card');
