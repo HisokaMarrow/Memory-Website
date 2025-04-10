@@ -136,6 +136,7 @@
     return `${ranks[rank]}_of_${suits[suit]}.png`;
   }
 
+  // Show the current card with white background wrapper
   function showCard(index) {
     output.innerHTML = '';
     output.style.display = 'flex';
@@ -147,7 +148,12 @@
     img.src = `/assets/png/${filename}`;
     img.alt = card;
     img.className = 'memory-card';
-    output.appendChild(img);
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'card-wrapper';
+    wrapper.appendChild(img);
+
+    output.appendChild(wrapper);
   }
 
   async function wait(ms) {
@@ -194,28 +200,27 @@
     window.location.href = "results.html";
   }
 
- function startCountdown(callback) {
-      var countdownEl = document.getElementById("countdown");
-      var label = document.getElementById("countdownLabel");
+  function startCountdown(callback) {
+    const countdownEl = document.getElementById("countdown");
+    const label = document.getElementById("countdownLabel");
 
-      countdownEl.style.display = "block";
-      label.style.display = "block";
+    countdownEl.style.display = "block";
+    label.style.display = "block";
+    startBtn.style.display = "none";
 
-      document.getElementById("startButton").style.display = "none";
-
-      var interval = setInterval(function () {
-        if (!isPaused) {
-          countdownEl.innerText = countdownValue;
-          countdownValue--;
-          if (countdownValue < 0) {
-            clearInterval(interval);
-            countdownEl.style.display = "none";
-            label.style.display = "none";
-            callback();
-          }
+    const interval = setInterval(() => {
+      if (!isPaused) {
+        countdownEl.innerText = countdownValue;
+        countdownValue--;
+        if (countdownValue < 0) {
+          clearInterval(interval);
+          countdownEl.style.display = "none";
+          label.style.display = "none";
+          callback();
         }
-      }, 1000);
-    }
+      }
+    }, 1000);
+  }
 
   function waitWhilePaused() {
     return new Promise(resolve => {
@@ -258,7 +263,6 @@
   window.onload = initGameLogic;
 })();
 </script>
-
 
 
 
