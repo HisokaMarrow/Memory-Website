@@ -56,6 +56,34 @@
     .catch(err => console.error('Failed to load header:', err));
 </script>
 
+<main class="main-container">
+  <div class="game-display">
+    <h2 class="main-title">Rebuild the Correct Card Order</h2>
+
+    <!-- Drop Slots -->
+    <div id="resultsArea" class="results-grid" style="margin: 2rem 0;"></div>
+
+    <!-- Carousel (fixed) -->
+    <h3 class="main-subtitle" style="text-align:center;">All Cards Used</h3>
+    <div class="cards-carousel-wrapper">
+      <button class="cards-carousel-arrow" onclick="scrollCarousel(-1)">&lt</button>
+      <div id="carousel" class="cards-main-carousel"></div>
+      <button class="cards-carousel-arrow" onclick="scrollCarousel(1)">&gt</button>
+    </div>
+
+    <!-- Buttons -->
+    <div class="game-results-buttons-block">
+      <button class="game-results-buttons" onclick="checkAnswers()">Check</button>
+      <button class="game-results-buttons" onclick="tryAgain()">Try Again</button>
+      <button class="game-results-buttons" onclick="backtogames()">Back To Games</button>
+    </div>
+
+    <!-- Result Summary -->
+    <div id="summary" class="result-summary" style="margin-top: 2rem;"></div>
+  </div>
+</main>
+
+
 <script>
   let originalOrder = [];
 
