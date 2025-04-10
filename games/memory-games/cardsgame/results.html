@@ -227,25 +227,28 @@ function dragStart(e, imgElement) {
   }
 
 function checkAnswers() {
-  const userCards = [...resultsArea.children].map((wrapper, idx) => {
+  const wrappers = [...document.querySelectorAll('.drop-wrapper')];
+  let correctCount = 0;
+
+  wrappers.forEach((wrapper, idx) => {
     const slot = wrapper.querySelector('.drop-slot');
     const label = wrapper.querySelector('.correct-answer-label');
 
-    // Reset styles
-    slot.classList.remove('correct', 'incorrect');
-    label.textContent = '';
+    if (!slot || !label) return; // Prevent null errors
 
     const img = slot.querySelector('img');
     const card = img ? img.dataset.card : null;
 
+    slot.classList.remove('correct', 'incorrect');
+    label.textContent = '';
+
     if (card === originalOrder[idx]) {
       slot.classList.add('correct');
+      correctCount++;
     } else {
       slot.classList.add('incorrect');
-      label.textContent = originalOrder[idx]; // Show "QH", "5C", etc.
+      label.textContent = originalOrder[idx];
     }
-
-    return card;
   });
 
   const correctCount = userCards.reduce((count, card, idx) => {
