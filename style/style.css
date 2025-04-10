@@ -594,6 +594,22 @@ main {
   border-radius: 8px;
 }
 
+.card-wrapper {
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  display: inline-block;
+  max-width: 100%;
+}
+
+.memory-card {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+}
+
 /* =======================================================
    13 - Media Queries (Responsive)
    ======================================================= */
