@@ -200,27 +200,32 @@ function dragStart(e, imgElement) {
   }
 
   function handleDrop(e) {
-    const card = e.dataTransfer.getData('card');
-    if (!card) return;
+  const card = e.dataTransfer.getData('card');
+  if (!card) return;
 
-    const slot = e.target.closest('.drop-slot');
-    if (!slot || slot.querySelector('.card-wrapper')) return;
+  const slot = e.target.closest('.drop-slot');
+  if (!slot) return;
 
-    const fileName = getCardFilename(card);
-    if (!fileName) return;
+  const fileName = getCardFilename(card);
+  if (!fileName) return;
 
-    const img = document.createElement('img');
-    img.src = `/assets/png/${fileName}`;
-    img.alt = card;
-    img.className = 'memory-card small';
-    img.dataset.card = card;
+  // Remove existing card if there's one already
+  const existing = slot.querySelector('.card-wrapper');
+  if (existing) existing.remove();
 
-    const wrapper = document.createElement('div');
-    wrapper.className = 'card-wrapper';
-    wrapper.appendChild(img);
+  const img = document.createElement('img');
+  img.src = `/assets/png/${fileName}`;
+  img.alt = card;
+  img.className = 'memory-card small';
+  img.dataset.card = card;
 
-    slot.appendChild(wrapper);
-  }
+  const wrapper = document.createElement('div');
+  wrapper.className = 'card-wrapper';
+  wrapper.appendChild(img);
+
+  slot.appendChild(wrapper);
+}
+
 
   function getDragImageWithBackground(imgElement) {
     const size = 100;
