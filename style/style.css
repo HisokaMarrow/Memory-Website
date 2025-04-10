@@ -335,13 +335,11 @@ main {
 }
 
 .drop-slot.correct {
-  border-color: var(--color-success);
-  background-color: rgba(76, 175, 80, 0.1);
+  border: var(--color-success);
 }
 
 .drop-slot.incorrect {
-  border-color: var(--color-success);
-  background-color: rgba(244, 67, 54, 0.1);
+  border: var(--color-success);
 }
 
 /* =======================================================
