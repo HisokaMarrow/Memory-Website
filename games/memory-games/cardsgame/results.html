@@ -149,17 +149,23 @@
       e.dataTransfer.setData('card', imgElement.dataset.card);
       e.dataTransfer.setDragImage(getDragImageWithBackground(imgElement), 0, 0);
     });
+
     let longPressTimer = null;
     wrapper.addEventListener('touchstart', e => {
-      if (e.cancelable) e.preventDefault();
+      if (!e.target.closest('.draggable')) return;
       longPressTimer = setTimeout(() => {
         const dataTransfer = new DataTransfer();
         dataTransfer.setData('card', imgElement.dataset.card);
-        const event = new DragEvent('dragstart', { bubbles: true, cancelable: true, dataTransfer });
+        const event = new DragEvent('dragstart', {
+          bubbles: true,
+          cancelable: true,
+          dataTransfer: dataTransfer
+        });
         wrapper.dispatchEvent(event);
       }, 2000);
     });
     wrapper.addEventListener('touchend', () => clearTimeout(longPressTimer));
+    wrapper.addEventListener('touchmove', () => clearTimeout(longPressTimer));
   }
 
   function handleDrop(e) {
