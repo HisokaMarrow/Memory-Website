@@ -335,11 +335,11 @@ main {
 }
 
 .drop-slot.correct {
-  border: var(--color-success);
+  border-color: var(--color-success);
 }
 
 .drop-slot.incorrect {
-  border: var(--color-success);
+  border-color: var(--color-error);
 }
 
 /* =======================================================
