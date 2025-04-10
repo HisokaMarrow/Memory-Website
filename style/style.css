@@ -334,6 +334,19 @@ main {
   border-color: var(--color-error);
 }
 
+.drop-slot.correct {
+  border-color: var(--color-success);
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.drop-slot.incorrect {
+  border-color: var(--color-success);
+  background-color: rgba(244, 67, 54, 0.1);
+}
+
+/* =======================================================
+   10 - Log-in
+   ======================================================= */
 .login-container {
   background-color: var(--color-bg-card);
   border: 1px solid var(--color-border);
@@ -379,7 +392,7 @@ main {
 
 
 /* =======================================================
-   10 - Results Page Styling
+   11 - Results Page Styling
    ======================================================= */
 .input-wrapper {
   display: flex;
@@ -405,7 +418,7 @@ main {
 
 
 /* =======================================================
-   11 - Carousel / Scrollable UI
+   12 - Carousel / Scrollable UI
    ======================================================= */
 .game-section {
   display: flex;
@@ -507,7 +520,7 @@ main {
 }
 
 /* =======================================================
-   12 - Section Links & Navigation
+   13 - Section Links & Navigation
    ======================================================= */
 .main-section-link {
   color: var(--color-secondary);
@@ -612,15 +625,6 @@ main {
   width: 60px; /* adjust as needed */
 }
 
-.drop-slot.correct {
-  border: 2px solid #4caf50 !important;
-  background-color: rgba(76, 175, 80, 0.1);
-}
-
-.drop-slot.incorrect {
-  border: 2px solid #f44336 !important;
-  background-color: rgba(244, 67, 54, 0.1);
-}
 /* =======================================================
    13 - Media Queries (Responsive)
    ======================================================= */
