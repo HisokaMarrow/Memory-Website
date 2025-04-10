@@ -63,12 +63,12 @@
     <!-- Drop Slots -->
     <div id="resultsArea" class="results-grid" style="margin: 2rem 0;"></div>
 
-    <!-- Carousel (fixed) -->
+    <!-- Carousel -->
     <h3 class="main-subtitle" style="text-align:center;">All Cards Used</h3>
     <div class="cards-carousel-wrapper">
-      <button class="cards-carousel-arrow" onclick="scrollCarousel(-1)">&lt</button>
+      <button class="cards-carousel-arrow" onclick="scrollCarousel(-1)">&lt;</button>
       <div id="carousel" class="cards-main-carousel"></div>
-      <button class="cards-carousel-arrow" onclick="scrollCarousel(1)">&gt</button>
+      <button class="cards-carousel-arrow" onclick="scrollCarousel(1)">&gt;</button>
     </div>
 
     <!-- Buttons -->
@@ -82,7 +82,6 @@
     <div id="summary" class="result-summary" style="margin-top: 2rem;"></div>
   </div>
 </main>
-
 
 <script>
   let originalOrder = [];
@@ -134,8 +133,11 @@
   function renderCarousel(cards) {
     carousel.innerHTML = '';
     cards.forEach(card => {
+      const fileName = getCardFilename(card);
+      if (!fileName) return;
+
       const img = document.createElement('img');
-      img.src = `/assets/png/${getCardFilename(card)}`;
+      img.src = `/assets/png/${fileName}`;
       img.alt = card;
       img.className = 'memory-card draggable';
       img.draggable = true;
@@ -143,6 +145,7 @@
 
       const wrapper = document.createElement('div');
       wrapper.className = 'card-wrapper';
+      wrapper.style.minWidth = '80px'; // ensures card takes space in scroll
       wrapper.appendChild(img);
 
       wrapper.addEventListener('dragstart', (e) => dragStart(e, img));
@@ -160,10 +163,13 @@
     if (!card) return;
 
     const slot = e.target.closest('.drop-slot');
-    if (!slot || slot.querySelector('img')) return;
+    if (!slot || slot.querySelector('.card-wrapper')) return;
+
+    const fileName = getCardFilename(card);
+    if (!fileName) return;
 
     const img = document.createElement('img');
-    img.src = `/assets/png/${getCardFilename(card)}`;
+    img.src = `/assets/png/${fileName}`;
     img.alt = card;
     img.className = 'memory-card small';
     img.dataset.card = card;
@@ -176,7 +182,7 @@
   }
 
   function getDragImageWithBackground(imgElement) {
-    const size = 100; // Adjust drag image size if needed
+    const size = 100;
     const canvas = document.createElement('canvas');
     canvas.width = size;
     canvas.height = size * 1.4;
@@ -212,8 +218,7 @@
 
   function scrollCarousel(dir) {
     const scrollAmount = 150;
-    const scrollEl = document.querySelector('.cards-main-carousel');
-    if (scrollEl) scrollEl.scrollLeft += dir * scrollAmount;
+    carousel.scrollLeft += dir * scrollAmount;
   }
 
   window.onload = () => {
