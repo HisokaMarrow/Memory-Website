@@ -145,58 +145,61 @@
   }
 }
 
-  function renderCarousel(cards) {
-    carousel.innerHTML = '';
-    cards.forEach(card => {
-      const fileName = getCardFilename(card);
-      if (!fileName) return;
+function renderCarousel(cards) {
+  carousel.innerHTML = '';
+  cards.forEach(card => {
+    const fileName = getCardFilename(card);
+    if (!fileName) return;
 
-      const img = document.createElement('img');
-      img.src = `/assets/png/${fileName}`;
-      img.alt = card;
-      img.className = 'memory-card';
-      img.dataset.card = card;
+    const img = document.createElement('img');
+    img.src = `/assets/png/${fileName}`;
+    img.alt = card;
+    img.className = 'memory-card';
+    img.dataset.card = card;
 
-      const wrapper = document.createElement('div');
-      wrapper.className = 'card-wrapper';
-      wrapper.style.minWidth = '80px';
-      wrapper.appendChild(img);
+    const wrapper = document.createElement('div');
+    wrapper.className = 'card-wrapper';
+    wrapper.style.minWidth = '80px';
+    wrapper.appendChild(img);
 
-      // Double-click to place (or replace) in selected slot
-      wrapper.addEventListener('dblclick', () => {
-        if (!selectedSlot) return;
+    // Double-click to place card in selected drop slot
+    wrapper.addEventListener('dblclick', () => {
+      if (!selectedSlot) return;
 
-        // Remove existing card in the slot
-        const existing = selectedSlot.querySelector('.card-wrapper');
-        if (existing) existing.remove();
+      const inner = selectedSlot.querySelector('.drop-slot-inner');
+      if (!inner) return;
 
-        const clone = document.createElement('img');
-        clone.src = img.src;
-        clone.alt = card;
-        clone.className = 'memory-card small';
-        clone.dataset.card = card;
+      // Clear existing content (card + label if any)
+      inner.innerHTML = '';
 
-        const innerWrapper = document.createElement('div');
-        innerWrapper.className = 'card-wrapper';
-        innerWrapper.appendChild(clone);
+      const clone = document.createElement('img');
+      clone.src = img.src;
+      clone.alt = card;
+      clone.className = 'memory-card small';
+      clone.dataset.card = card;
 
-        selectedSlot.appendChild(innerWrapper);
-        selectedSlot.classList.remove('selected');
-        selectedSlot = null;
-      });
+      const innerWrapper = document.createElement('div');
+      innerWrapper.className = 'card-wrapper';
+      innerWrapper.appendChild(clone);
 
-      carousel.appendChild(wrapper);
+      inner.appendChild(innerWrapper);
+
+      selectedSlot.classList.remove('selected');
+      selectedSlot = null;
     });
-  }
 
-  function checkAnswers() {
+    carousel.appendChild(wrapper);
+  });
+}
+
+function checkAnswers() {
   const userCards = [...resultsArea.children].map((slot, idx) => {
     slot.classList.remove('correct', 'incorrect');
 
     const inner = slot.querySelector('.drop-slot-inner');
     if (!inner) return null;
 
-    // Remove previous label (if any)
+    // Remove previous label if any
     const existingLabel = inner.querySelector('.correct-label');
     if (existingLabel) existingLabel.remove();
 
@@ -209,7 +212,7 @@
     } else {
       slot.classList.add('incorrect');
 
-      // Show correct answer below
+      // Show correct answer below the card
       const label = document.createElement('div');
       label.className = 'correct-label';
       label.textContent = correctCard;
