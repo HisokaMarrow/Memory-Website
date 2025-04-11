@@ -118,29 +118,32 @@
   }
 
   function renderDropZones(count) {
-    resultsArea.innerHTML = '';
-    for (let i = 0; i < count; i++) {
-      const slot = document.createElement('div');
-      slot.className = 'drop-slot';
-      slot.dataset.index = i;
+  resultsArea.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const slot = document.createElement('div');
+    slot.className = 'drop-slot';
+    slot.dataset.index = i;
 
-      slot.addEventListener('click', () => {
-        // Clear previous selection
-        const previous = document.querySelector('.drop-slot.selected');
-        if (previous) previous.classList.remove('selected');
+    // Inner container to hold card + label
+    const content = document.createElement('div');
+    content.className = 'drop-slot-inner';
+    slot.appendChild(content);
 
-        // Toggle selection
-        if (selectedSlot === slot) {
-          selectedSlot = null;
-        } else {
-          selectedSlot = slot;
-          slot.classList.add('selected');
-        }
-      });
+    slot.addEventListener('click', () => {
+      const previous = document.querySelector('.drop-slot.selected');
+      if (previous) previous.classList.remove('selected');
 
-      resultsArea.appendChild(slot);
-    }
+      if (selectedSlot === slot) {
+        selectedSlot = null;
+      } else {
+        selectedSlot = slot;
+        slot.classList.add('selected');
+      }
+    });
+
+    resultsArea.appendChild(slot);
   }
+}
 
   function renderCarousel(cards) {
     carousel.innerHTML = '';
@@ -190,11 +193,14 @@
   const userCards = [...resultsArea.children].map((slot, idx) => {
     slot.classList.remove('correct', 'incorrect');
 
-    // Remove any previous correct-answer label
-    const existingLabel = slot.querySelector('.correct-label');
+    const inner = slot.querySelector('.drop-slot-inner');
+    if (!inner) return null;
+
+    // Remove previous label (if any)
+    const existingLabel = inner.querySelector('.correct-label');
     if (existingLabel) existingLabel.remove();
 
-    const img = slot.querySelector('img');
+    const img = inner.querySelector('img');
     const card = img ? img.dataset.card : null;
     const correctCard = originalOrder[idx];
 
@@ -203,11 +209,11 @@
     } else {
       slot.classList.add('incorrect');
 
-      // Show correct answer below the slot
+      // Show correct answer below
       const label = document.createElement('div');
       label.className = 'correct-label';
       label.textContent = correctCard;
-      slot.appendChild(label);
+      inner.appendChild(label);
     }
 
     return card;
