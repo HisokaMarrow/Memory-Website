@@ -85,6 +85,7 @@
 
 <script>
   let originalOrder = [];
+  let selectedSlot = null;
   const resultsArea = document.getElementById('resultsArea');
   const carousel = document.getElementById('carousel');
   const summary = document.getElementById('summary');
@@ -114,8 +115,11 @@
       const slot = document.createElement('div');
       slot.className = 'drop-slot';
       slot.dataset.index = i;
-      slot.addEventListener('dragover', e => e.preventDefault());
-      slot.addEventListener('drop', handleDrop);
+      slot.addEventListener('click', () => {
+        if (selectedSlot) selectedSlot.classList.remove('selected');
+        selectedSlot = slot;
+        selectedSlot.classList.add('selected');
+      });
       const label = document.createElement('div');
       label.className = 'correct-answer-label';
       label.textContent = '';
@@ -133,43 +137,74 @@
       const img = document.createElement('img');
       img.src = `/assets/png/${fileName}`;
       img.alt = card;
-      img.className = 'memory-card draggable';
+      img.className = 'memory-card';
       img.dataset.card = card;
+
+      let lastTap = 0;
+      img.addEventListener('click', e => {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTap;
+        if (tapLength < 400 && tapLength > 0) {
+          handleCardSelect(card);
+        }
+        lastTap = currentTime;
+      });
+
       const wrapper = document.createElement('div');
       wrapper.className = 'card-wrapper';
       wrapper.style.minWidth = '80px';
       wrapper.appendChild(img);
-      enableDragEvents(wrapper, img);
       carousel.appendChild(wrapper);
     });
+
+    // Mobile scroll improvement: allow horizontal swiping
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    carousel.addEventListener('mousedown', e => {
+      isDown = true;
+      carousel.classList.add('scrolling');
+      startX = e.pageX - carousel.offsetLeft;
+      scrollLeft = carousel.scrollLeft;
+    });
+    carousel.addEventListener('mouseleave', () => {
+      isDown = false;
+      carousel.classList.remove('scrolling');
+    });
+    carousel.addEventListener('mouseup', () => {
+      isDown = false;
+      carousel.classList.remove('scrolling');
+    });
+    carousel.addEventListener('mousemove', e => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - carousel.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      carousel.scrollLeft = scrollLeft - walk;
+    });
+
+    carousel.addEventListener('touchstart', e => {
+      isDown = true;
+      startX = e.touches[0].pageX - carousel.offsetLeft;
+      scrollLeft = carousel.scrollLeft;
+    });
+    carousel.addEventListener('touchend', () => {
+      isDown = false;
+    });
+    carousel.addEventListener('touchmove', e => {
+      if (!isDown) return;
+      const x = e.touches[0].pageX - carousel.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      carousel.scrollLeft = scrollLeft - walk;
+    });
   }
 
-  function enableDragEvents(wrapper, imgElement) {
-    wrapper.addEventListener('dragstart', e => {
-      e.dataTransfer.setData('card', imgElement.dataset.card);
-      e.dataTransfer.setDragImage(getDragImageWithBackground(imgElement), 0, 0);
-    });
-    let longPressTimer = null;
-    wrapper.addEventListener('touchstart', e => {
-      if (e.cancelable) e.preventDefault();
-      longPressTimer = setTimeout(() => {
-        const dataTransfer = new DataTransfer();
-        dataTransfer.setData('card', imgElement.dataset.card);
-        const event = new DragEvent('dragstart', { bubbles: true, cancelable: true, dataTransfer });
-        wrapper.dispatchEvent(event);
-      }, 2000);
-    });
-    wrapper.addEventListener('touchend', () => clearTimeout(longPressTimer));
-  }
-
-  function handleDrop(e) {
-    const card = e.dataTransfer.getData('card');
-    if (!card) return;
-    const slot = e.target.closest('.drop-slot');
-    if (!slot) return;
+  function handleCardSelect(card) {
+    if (!selectedSlot) return;
     const fileName = getCardFilename(card);
     if (!fileName) return;
-    const existing = slot.querySelector('.card-wrapper');
+    const existing = selectedSlot.querySelector('.card-wrapper');
     if (existing) existing.remove();
     const img = document.createElement('img');
     img.src = `/assets/png/${fileName}`;
@@ -179,19 +214,7 @@
     const wrapper = document.createElement('div');
     wrapper.className = 'card-wrapper';
     wrapper.appendChild(img);
-    slot.appendChild(wrapper);
-  }
-
-  function getDragImageWithBackground(imgElement) {
-    const size = 100;
-    const canvas = document.createElement('canvas');
-    canvas.width = size;
-    canvas.height = size * 1.4;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
-    return canvas;
+    selectedSlot.appendChild(wrapper);
   }
 
   function checkAnswers() {
@@ -234,7 +257,6 @@
     renderCarousel(generateFullDeckOrdered());
   };
 </script>
-
 
 <!-- Footer -->
 <div id="site-footer"></div>
