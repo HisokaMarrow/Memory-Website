@@ -187,27 +187,39 @@
   }
 
   function checkAnswers() {
-    const userCards = [...resultsArea.children].map((slot, idx) => {
-      slot.classList.remove('correct', 'incorrect');
+  const userCards = [...resultsArea.children].map((slot, idx) => {
+    slot.classList.remove('correct', 'incorrect');
 
-      const img = slot.querySelector('img');
-      const card = img ? img.dataset.card : null;
+    const img = slot.querySelector('img');
+    const card = img ? img.dataset.card : null;
 
-      if (card === originalOrder[idx]) {
-        slot.classList.add('correct');
-      } else {
-        slot.classList.add('incorrect');
+    // Remove previous correct answer label if any
+    const oldLabel = slot.querySelector('.correct-label');
+    if (oldLabel) oldLabel.remove();
+
+    if (card === originalOrder[idx]) {
+      slot.classList.add('correct');
+    } else {
+      slot.classList.add('incorrect');
+
+      // Show correct card label
+      if (originalOrder[idx]) {
+        const label = document.createElement('div');
+        label.className = 'correct-label';
+        label.innerText = originalOrder[idx]; // Short format like QH
+        slot.appendChild(label);
       }
+    }
 
-      return card;
-    });
+    return card;
+  });
 
-    let correctCount = userCards.reduce((count, card, idx) => {
-      return card === originalOrder[idx] ? count + 1 : count;
-    }, 0);
+  let correctCount = userCards.reduce((count, card, idx) => {
+    return card === originalOrder[idx] ? count + 1 : count;
+  }, 0);
 
-    summary.innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
-  }
+  summary.innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
+}
 
   function tryAgain() {
     window.location.href = 'game.html';
