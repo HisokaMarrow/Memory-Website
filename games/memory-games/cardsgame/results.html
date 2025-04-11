@@ -85,22 +85,15 @@
 
 <script>
   let originalOrder = [];
-  let selectedSlot = null; // Currently selected drop slot
-
   const resultsArea = document.getElementById('resultsArea');
   const carousel = document.getElementById('carousel');
   const summary = document.getElementById('summary');
-
   const allSuits = ['S', 'H', 'C', 'D'];
   const allRanks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 
   function getCardFilename(code) {
     const suits = { C: 'clubs', D: 'diamonds', H: 'hearts', S: 'spades' };
-    const ranks = {
-      A: 'ace', J: 'jack', Q: 'queen', K: 'king',
-      '10': '10', '9': '9', '8': '8', '7': '7',
-      '6': '6', '5': '5', '4': '4', '3': '3', '2': '2'
-    };
+    const ranks = { A: 'ace', J: 'jack', Q: 'queen', K: 'king', '10': '10', '9': '9', '8': '8', '7': '7', '6': '6', '5': '5', '4': '4', '3': '3', '2': '2' };
     const match = code.match(/^([0-9]{1,2}|[AJQK])([CDHS])$/);
     if (!match) return null;
     const [_, rank, suit] = match;
@@ -109,125 +102,118 @@
 
   function generateFullDeckOrdered() {
     const ordered = [];
-    for (let suit of allSuits) {
-      for (let rank of allRanks) {
-        ordered.push(`${rank}${suit}`);
-      }
-    }
+    for (let suit of allSuits) for (let rank of allRanks) ordered.push(`${rank}${suit}`);
     return ordered;
   }
 
   function renderDropZones(count) {
-  resultsArea.innerHTML = '';
-  for (let i = 0; i < count; i++) {
-    const slot = document.createElement('div');
-    slot.className = 'drop-slot';
-    slot.dataset.index = i;
-
-    // Inner container to hold card + label
-    const content = document.createElement('div');
-    content.className = 'drop-slot-inner';
-    slot.appendChild(content);
-
-    slot.addEventListener('click', () => {
-      const previous = document.querySelector('.drop-slot.selected');
-      if (previous) previous.classList.remove('selected');
-
-      if (selectedSlot === slot) {
-        selectedSlot = null;
-      } else {
-        selectedSlot = slot;
-        slot.classList.add('selected');
-      }
-    });
-
-    resultsArea.appendChild(slot);
+    resultsArea.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'drop-wrapper';
+      const slot = document.createElement('div');
+      slot.className = 'drop-slot';
+      slot.dataset.index = i;
+      slot.addEventListener('dragover', e => e.preventDefault());
+      slot.addEventListener('drop', handleDrop);
+      const label = document.createElement('div');
+      label.className = 'correct-answer-label';
+      label.textContent = '';
+      wrapper.appendChild(slot);
+      wrapper.appendChild(label);
+      resultsArea.appendChild(wrapper);
+    }
   }
-}
 
-function renderCarousel(cards) {
-  carousel.innerHTML = '';
-  cards.forEach(card => {
+  function renderCarousel(cards) {
+    carousel.innerHTML = '';
+    cards.forEach(card => {
+      const fileName = getCardFilename(card);
+      if (!fileName) return;
+      const img = document.createElement('img');
+      img.src = `/assets/png/${fileName}`;
+      img.alt = card;
+      img.className = 'memory-card draggable';
+      img.dataset.card = card;
+      const wrapper = document.createElement('div');
+      wrapper.className = 'card-wrapper';
+      wrapper.style.minWidth = '80px';
+      wrapper.appendChild(img);
+      enableDragEvents(wrapper, img);
+      carousel.appendChild(wrapper);
+    });
+  }
+
+  function enableDragEvents(wrapper, imgElement) {
+    wrapper.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('card', imgElement.dataset.card);
+      e.dataTransfer.setDragImage(getDragImageWithBackground(imgElement), 0, 0);
+    });
+    let longPressTimer = null;
+    wrapper.addEventListener('touchstart', e => {
+      if (e.cancelable) e.preventDefault();
+      longPressTimer = setTimeout(() => {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.setData('card', imgElement.dataset.card);
+        const event = new DragEvent('dragstart', { bubbles: true, cancelable: true, dataTransfer });
+        wrapper.dispatchEvent(event);
+      }, 2000);
+    });
+    wrapper.addEventListener('touchend', () => clearTimeout(longPressTimer));
+  }
+
+  function handleDrop(e) {
+    const card = e.dataTransfer.getData('card');
+    if (!card) return;
+    const slot = e.target.closest('.drop-slot');
+    if (!slot) return;
     const fileName = getCardFilename(card);
     if (!fileName) return;
-
+    const existing = slot.querySelector('.card-wrapper');
+    if (existing) existing.remove();
     const img = document.createElement('img');
     img.src = `/assets/png/${fileName}`;
     img.alt = card;
-    img.className = 'memory-card';
+    img.className = 'memory-card small';
     img.dataset.card = card;
-
     const wrapper = document.createElement('div');
     wrapper.className = 'card-wrapper';
-    wrapper.style.minWidth = '80px';
     wrapper.appendChild(img);
+    slot.appendChild(wrapper);
+  }
 
-    // Double-click to place card in selected drop slot
-    wrapper.addEventListener('dblclick', () => {
-      if (!selectedSlot) return;
+  function getDragImageWithBackground(imgElement) {
+    const size = 100;
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size * 1.4;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
+    return canvas;
+  }
 
-      const inner = selectedSlot.querySelector('.drop-slot-inner');
-      if (!inner) return;
-
-      // Clear existing content (card + label if any)
-      inner.innerHTML = '';
-
-      const clone = document.createElement('img');
-      clone.src = img.src;
-      clone.alt = card;
-      clone.className = 'memory-card small';
-      clone.dataset.card = card;
-
-      const innerWrapper = document.createElement('div');
-      innerWrapper.className = 'card-wrapper';
-      innerWrapper.appendChild(clone);
-
-      inner.appendChild(innerWrapper);
-
-      selectedSlot.classList.remove('selected');
-      selectedSlot = null;
+  function checkAnswers() {
+    const wrappers = [...document.querySelectorAll('.drop-wrapper')];
+    let correctCount = 0;
+    wrappers.forEach((wrapper, idx) => {
+      const slot = wrapper.querySelector('.drop-slot');
+      const label = wrapper.querySelector('.correct-answer-label');
+      const img = slot.querySelector('img');
+      const card = img ? img.dataset.card : null;
+      slot.classList.remove('correct', 'incorrect');
+      label.textContent = '';
+      if (card === originalOrder[idx]) {
+        slot.classList.add('correct');
+        correctCount++;
+      } else {
+        slot.classList.add('incorrect');
+        label.textContent = originalOrder[idx];
+      }
     });
-
-    carousel.appendChild(wrapper);
-  });
-}
-
-function checkAnswers() {
-  const userCards = [...resultsArea.children].map((slot, idx) => {
-    slot.classList.remove('correct', 'incorrect');
-
-    const inner = slot.querySelector('.drop-slot-inner');
-    if (!inner) return null;
-
-    // Remove previous label if any
-    const existingLabel = inner.querySelector('.correct-label');
-    if (existingLabel) existingLabel.remove();
-
-    const img = inner.querySelector('img');
-    const card = img ? img.dataset.card : null;
-    const correctCard = originalOrder[idx];
-
-    if (card === correctCard) {
-      slot.classList.add('correct');
-    } else {
-      slot.classList.add('incorrect');
-
-      // Show correct answer below the card
-      const label = document.createElement('div');
-      label.className = 'correct-label';
-      label.textContent = correctCard;
-      inner.appendChild(label);
-    }
-
-    return card;
-  });
-
-  const correctCount = userCards.reduce((count, card, idx) => {
-    return card === originalOrder[idx] ? count + 1 : count;
-  }, 0);
-
-  summary.innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
-}
+    summary.innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
+  }
 
   function tryAgain() {
     window.location.href = 'game.html';
@@ -248,6 +234,7 @@ function checkAnswers() {
     renderCarousel(generateFullDeckOrdered());
   };
 </script>
+
 
 <!-- Footer -->
 <div id="site-footer"></div>
