@@ -322,6 +322,10 @@ main {
   justify-content: center;
 }
 
+.drop-slot.selected {
+  outline: 2px dashed #2196f3;
+}
+
 
 /* =======================================================
    09 - Inputs & Forms
