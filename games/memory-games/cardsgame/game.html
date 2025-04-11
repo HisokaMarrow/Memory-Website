@@ -76,52 +76,15 @@
 </main>
 
 <script>
-(() => {
-  const output = document.getElementById('output');
-  const countdown = document.getElementById('countdown');
-  const countdownLabel = document.getElementById('countdownLabel');
-  const startBtn = document.getElementById('startButton');
+  let originalOrder = [];
+  let selectedSlot = null; // Currently selected drop slot
 
-  const allSuits = ['C', 'D', 'H', 'S'];
+  const resultsArea = document.getElementById('resultsArea');
+  const carousel = document.getElementById('carousel');
+  const summary = document.getElementById('summary');
+
+  const allSuits = ['S', 'H', 'C', 'D'];
   const allRanks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-
-  const deckCount = parseInt(localStorage.getItem("cardDeckCount")) || 1;
-  const timeLimit = parseInt(localStorage.getItem("cardTimeLimit")) || 30;
-  const cardInterval = parseFloat(localStorage.getItem("cardInterval")) || 2;
-
-  let cardSequence = [];
-  let isPaused = false;
-  let pauseResolve = null;
-  let countdownValue = 3;
-  let startTime = null;
-  let currentIndex = 0;
-  let gameTimerInterval;
-
-  function generateDeck() {
-    const singleDeck = [];
-    for (let suit of allSuits) {
-      for (let rank of allRanks) {
-        singleDeck.push(`${rank}${suit}`);
-      }
-    }
-    return singleDeck;
-  }
-
-  function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
-
-  function getShuffledCards() {
-    let fullDeck = [];
-    for (let i = 0; i < deckCount; i++) {
-      fullDeck = fullDeck.concat(generateDeck());
-    }
-    return shuffle(fullDeck).slice(0, 52);
-  }
 
   function getCardFilename(code) {
     const suits = { C: 'clubs', D: 'diamonds', H: 'hearts', S: 'spades' };
@@ -136,132 +99,123 @@
     return `${ranks[rank]}_of_${suits[suit]}.png`;
   }
 
-  // Show the current card with white background wrapper
-  function showCard(index) {
-    output.innerHTML = '';
-    output.style.display = 'flex';
-    output.classList.remove('card-grid');
-
-    const card = cardSequence[index];
-    const img = document.createElement('img');
-    const filename = getCardFilename(card);
-    img.src = `/assets/png/${filename}`;
-    img.alt = card;
-    img.className = 'memory-card';
-
-    const wrapper = document.createElement('div');
-    wrapper.className = 'card-wrapper';
-    wrapper.appendChild(img);
-
-    output.appendChild(wrapper);
-  }
-
-  async function wait(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  async function beginGame() {
-    cardSequence = getShuffledCards();
-    startTime = Date.now();
-
-    const timerEl = document.getElementById("game-timer");
-    let remainingTime = timeLimit;
-
-    if (timerEl) {
-      timerEl.textContent = remainingTime;
-      timerEl.style.display = "block";
+  function generateFullDeckOrdered() {
+    const ordered = [];
+    for (let suit of allSuits) {
+      for (let rank of allRanks) {
+        ordered.push(`${rank}${suit}`);
+      }
     }
+    return ordered;
+  }
 
-    gameTimerInterval = setInterval(() => {
-      if (!isPaused) {
-        remainingTime--;
-        if (timerEl) timerEl.textContent = remainingTime;
-        if (remainingTime <= 0) {
-          clearInterval(gameTimerInterval);
+  function renderDropZones(count) {
+    resultsArea.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const slot = document.createElement('div');
+      slot.className = 'drop-slot';
+      slot.dataset.index = i;
+
+      slot.addEventListener('click', () => {
+        // Clear previous selection
+        const previous = document.querySelector('.drop-slot.selected');
+        if (previous) previous.classList.remove('selected');
+
+        // Toggle selection
+        if (selectedSlot === slot) {
+          selectedSlot = null;
+        } else {
+          selectedSlot = slot;
+          slot.classList.add('selected');
         }
-      }
-    }, 1000);
+      });
 
-    while (currentIndex < cardSequence.length) {
-      if (isPaused) {
-        await waitWhilePaused();
-      }
-
-      const elapsed = (Date.now() - startTime) / 1000;
-      if (elapsed >= timeLimit) break;
-
-      showCard(currentIndex);
-      currentIndex++;
-      await wait(cardInterval * 1000);
+      resultsArea.appendChild(slot);
     }
-
-    clearInterval(gameTimerInterval);
-    localStorage.setItem("cardSequence", JSON.stringify(cardSequence.slice(0, currentIndex)));
-    window.location.href = "results.html";
   }
 
-  function startCountdown(callback) {
-    const countdownEl = document.getElementById("countdown");
-    const label = document.getElementById("countdownLabel");
+  function renderCarousel(cards) {
+    carousel.innerHTML = '';
+    cards.forEach(card => {
+      const fileName = getCardFilename(card);
+      if (!fileName) return;
 
-    countdownEl.style.display = "block";
-    label.style.display = "block";
-    startBtn.style.display = "none";
+      const img = document.createElement('img');
+      img.src = `/assets/png/${fileName}`;
+      img.alt = card;
+      img.className = 'memory-card draggable';
+      img.dataset.card = card;
 
-    const interval = setInterval(() => {
-      if (!isPaused) {
-        countdownEl.innerText = countdownValue;
-        countdownValue--;
-        if (countdownValue < 0) {
-          clearInterval(interval);
-          countdownEl.style.display = "none";
-          label.style.display = "none";
-          callback();
-        }
-      }
-    }, 1000);
-  }
+      const wrapper = document.createElement('div');
+      wrapper.className = 'card-wrapper';
+      wrapper.style.minWidth = '80px';
+      wrapper.appendChild(img);
 
-  function waitWhilePaused() {
-    return new Promise(resolve => {
-      if (!isPaused) resolve();
-      else pauseResolve = resolve;
+      // Double-click to place in selected slot
+      wrapper.addEventListener('dblclick', () => {
+        if (!selectedSlot) return;
+        if (selectedSlot.querySelector('img')) return; // Don't overwrite
+
+        const clone = document.createElement('img');
+        clone.src = img.src;
+        clone.alt = card;
+        clone.className = 'memory-card small';
+        clone.dataset.card = card;
+
+        const innerWrapper = document.createElement('div');
+        innerWrapper.className = 'card-wrapper';
+        innerWrapper.appendChild(clone);
+
+        selectedSlot.appendChild(innerWrapper);
+        selectedSlot.classList.remove('selected');
+        selectedSlot = null;
+      });
+
+      carousel.appendChild(wrapper);
     });
   }
 
-  function togglePause() {
-    isPaused = !isPaused;
-    const pauseBtnDesktop = document.getElementById("pause");
-    const pauseBtnMobile = document.getElementById("pause-mobile");
-    const label = isPaused ? "Resume" : "Pause";
-    if (pauseBtnDesktop) pauseBtnDesktop.textContent = label;
-    if (pauseBtnMobile) pauseBtnMobile.textContent = label;
-    if (!isPaused && pauseResolve) {
-      pauseResolve();
-      pauseResolve = null;
-    }
+  function checkAnswers() {
+    const userCards = [...resultsArea.children].map((slot, idx) => {
+      slot.classList.remove('correct', 'incorrect');
+
+      const img = slot.querySelector('img');
+      const card = img ? img.dataset.card : null;
+
+      if (card === originalOrder[idx]) {
+        slot.classList.add('correct');
+      } else {
+        slot.classList.add('incorrect');
+      }
+
+      return card;
+    });
+
+    let correctCount = userCards.reduce((count, card, idx) => {
+      return card === originalOrder[idx] ? count + 1 : count;
+    }, 0);
+
+    summary.innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
   }
 
-  function endEarly() {
-    clearInterval(gameTimerInterval);
-    localStorage.setItem("cardSequence", JSON.stringify(cardSequence.slice(0, currentIndex)));
-    window.location.href = "results.html";
+  function tryAgain() {
+    window.location.href = 'game.html';
   }
 
-  function giveUp() {
-    window.location.href = "settings.html";
+  function backtogames() {
+    window.location.href = 'settings.html';
   }
 
-  function initGameLogic() {
-    startBtn.addEventListener('click', () => startCountdown(beginGame));
+  function scrollCarousel(dir) {
+    const scrollAmount = 150;
+    carousel.scrollLeft += dir * scrollAmount;
   }
 
-  window.togglePause = togglePause;
-  window.endEarly = endEarly;
-  window.giveUp = giveUp;
-
-  window.onload = initGameLogic;
-})();
+  window.onload = () => {
+    originalOrder = JSON.parse(localStorage.getItem("cardSequence") || "[]");
+    renderDropZones(originalOrder.length);
+    renderCarousel(generateFullDeckOrdered());
+  };
 </script>
 
 
