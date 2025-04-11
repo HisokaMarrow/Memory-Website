@@ -85,15 +85,21 @@
 
 <script>
   let originalOrder = [];
+
   const resultsArea = document.getElementById('resultsArea');
   const carousel = document.getElementById('carousel');
   const summary = document.getElementById('summary');
+
   const allSuits = ['S', 'H', 'C', 'D'];
   const allRanks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 
   function getCardFilename(code) {
     const suits = { C: 'clubs', D: 'diamonds', H: 'hearts', S: 'spades' };
-    const ranks = { A: 'ace', J: 'jack', Q: 'queen', K: 'king', '10': '10', '9': '9', '8': '8', '7': '7', '6': '6', '5': '5', '4': '4', '3': '3', '2': '2' };
+    const ranks = {
+      A: 'ace', J: 'jack', Q: 'queen', K: 'king',
+      '10': '10', '9': '9', '8': '8', '7': '7',
+      '6': '6', '5': '5', '4': '4', '3': '3', '2': '2'
+    };
     const match = code.match(/^([0-9]{1,2}|[AJQK])([CDHS])$/);
     if (!match) return null;
     const [_, rank, suit] = match;
@@ -102,122 +108,153 @@
 
   function generateFullDeckOrdered() {
     const ordered = [];
-    for (let suit of allSuits) for (let rank of allRanks) ordered.push(`${rank}${suit}`);
+    for (let suit of allSuits) {
+      for (let rank of allRanks) {
+        ordered.push(`${rank}${suit}`);
+      }
+    }
     return ordered;
   }
 
   function renderDropZones(count) {
     resultsArea.innerHTML = '';
     for (let i = 0; i < count; i++) {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'drop-wrapper';
       const slot = document.createElement('div');
       slot.className = 'drop-slot';
       slot.dataset.index = i;
-      slot.addEventListener('dragover', e => e.preventDefault());
-      slot.addEventListener('drop', handleDrop);
-      const label = document.createElement('div');
-      label.className = 'correct-answer-label';
-      label.textContent = '';
-      wrapper.appendChild(slot);
-      wrapper.appendChild(label);
-      resultsArea.appendChild(wrapper);
+
+      resultsArea.appendChild(slot);
     }
   }
 
   function renderCarousel(cards) {
     carousel.innerHTML = '';
+
     cards.forEach(card => {
       const fileName = getCardFilename(card);
       if (!fileName) return;
+
       const img = document.createElement('img');
       img.src = `/assets/png/${fileName}`;
       img.alt = card;
       img.className = 'memory-card draggable';
       img.dataset.card = card;
+
       const wrapper = document.createElement('div');
       wrapper.className = 'card-wrapper';
       wrapper.style.minWidth = '80px';
       wrapper.appendChild(img);
-      enableDragEvents(wrapper, img);
+
+      let dragTimeout = null;
+      let isDragging = false;
+
+      const startDrag = (clientX, clientY) => {
+        const clone = img.cloneNode(true);
+        clone.style.position = 'fixed';
+        clone.style.zIndex = 1000;
+        clone.style.width = '80px';
+        clone.style.pointerEvents = 'none';
+        clone.style.background = 'white';
+        document.body.appendChild(clone);
+
+        const moveAt = (x, y) => {
+          clone.style.left = x - 40 + 'px';
+          clone.style.top = y - 56 + 'px';
+        };
+
+        const onMove = e => {
+          const x = e.touches ? e.touches[0].clientX : e.clientX;
+          const y = e.touches ? e.touches[0].clientY : e.clientY;
+          moveAt(x, y);
+        };
+
+        const onEnd = e => {
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onEnd);
+          document.removeEventListener('touchmove', onMove);
+          document.removeEventListener('touchend', onEnd);
+
+          // Drop logic
+          clone.hidden = true;
+          const elem = document.elementFromPoint(clientX, clientY);
+          clone.hidden = false;
+
+          const dropSlot = elem?.closest('.drop-slot');
+          if (dropSlot && !dropSlot.querySelector('.card-wrapper')) {
+            const finalWrapper = document.createElement('div');
+            finalWrapper.className = 'card-wrapper';
+
+            const droppedImg = clone.cloneNode(true);
+            droppedImg.className = 'memory-card small';
+            finalWrapper.appendChild(droppedImg);
+
+            dropSlot.appendChild(finalWrapper);
+          }
+
+          clone.remove();
+          isDragging = false;
+        };
+
+        isDragging = true;
+        moveAt(clientX, clientY);
+
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onEnd);
+        document.addEventListener('touchmove', onMove);
+        document.addEventListener('touchend', onEnd);
+      };
+
+      // Desktop
+      wrapper.addEventListener('mousedown', e => {
+        if (isDragging) return;
+        dragTimeout = setTimeout(() => startDrag(e.clientX, e.clientY), 1500);
+      });
+      wrapper.addEventListener('mouseup', () => clearTimeout(dragTimeout));
+      wrapper.addEventListener('mouseleave', () => clearTimeout(dragTimeout));
+
+      // Mobile
+      wrapper.addEventListener('touchstart', e => {
+        if (isDragging) return;
+        dragTimeout = setTimeout(() => {
+          const touch = e.touches[0];
+          startDrag(touch.clientX, touch.clientY);
+        }, 1500);
+      });
+      wrapper.addEventListener('touchend', () => clearTimeout(dragTimeout));
+      wrapper.addEventListener('touchmove', () => clearTimeout(dragTimeout));
+
       carousel.appendChild(wrapper);
     });
   }
 
-  function enableDragEvents(wrapper, imgElement) {
-    wrapper.addEventListener('dragstart', e => {
-      e.dataTransfer.setData('card', imgElement.dataset.card);
-      e.dataTransfer.setDragImage(getDragImageWithBackground(imgElement), 0, 0);
-    });
-
-    let longPressTimer = null;
-    wrapper.addEventListener('touchstart', e => {
-      if (!e.target.closest('.draggable')) return;
-      longPressTimer = setTimeout(() => {
-        const dataTransfer = new DataTransfer();
-        dataTransfer.setData('card', imgElement.dataset.card);
-        const event = new DragEvent('dragstart', {
-          bubbles: true,
-          cancelable: true,
-          dataTransfer: dataTransfer
-        });
-        wrapper.dispatchEvent(event);
-      }, 2000);
-    });
-    wrapper.addEventListener('touchend', () => clearTimeout(longPressTimer));
-    wrapper.addEventListener('touchmove', () => clearTimeout(longPressTimer));
-  }
-
-  function handleDrop(e) {
-    const card = e.dataTransfer.getData('card');
-    if (!card) return;
-    const slot = e.target.closest('.drop-slot');
-    if (!slot) return;
-    const fileName = getCardFilename(card);
-    if (!fileName) return;
-    const existing = slot.querySelector('.card-wrapper');
-    if (existing) existing.remove();
-    const img = document.createElement('img');
-    img.src = `/assets/png/${fileName}`;
-    img.alt = card;
-    img.className = 'memory-card small';
-    img.dataset.card = card;
-    const wrapper = document.createElement('div');
-    wrapper.className = 'card-wrapper';
-    wrapper.appendChild(img);
-    slot.appendChild(wrapper);
-  }
-
-  function getDragImageWithBackground(imgElement) {
-    const size = 100;
-    const canvas = document.createElement('canvas');
-    canvas.width = size;
-    canvas.height = size * 1.4;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
-    return canvas;
-  }
-
   function checkAnswers() {
-    const wrappers = [...document.querySelectorAll('.drop-wrapper')];
-    let correctCount = 0;
-    wrappers.forEach((wrapper, idx) => {
-      const slot = wrapper.querySelector('.drop-slot');
-      const label = wrapper.querySelector('.correct-answer-label');
+    const userCards = [...resultsArea.children].map((slot, idx) => {
+      slot.classList.remove('correct', 'incorrect'); // Reset
+
       const img = slot.querySelector('img');
       const card = img ? img.dataset.card : null;
-      slot.classList.remove('correct', 'incorrect');
-      label.textContent = '';
+
       if (card === originalOrder[idx]) {
         slot.classList.add('correct');
-        correctCount++;
       } else {
         slot.classList.add('incorrect');
-        label.textContent = originalOrder[idx];
+        // Add correct answer if wrong
+        if (originalOrder[idx]) {
+          const short = originalOrder[idx];
+          const label = document.createElement('div');
+          label.className = 'correct-label';
+          label.innerText = short;
+          slot.appendChild(label);
+        }
       }
+
+      return card;
     });
+
+    let correctCount = userCards.reduce((count, card, idx) => {
+      return card === originalOrder[idx] ? count + 1 : count;
+    }, 0);
+
     summary.innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
   }
 
