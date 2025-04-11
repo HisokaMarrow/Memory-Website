@@ -85,6 +85,7 @@
 
 <script>
   let originalOrder = [];
+  let selectedSlot = null; // Currently selected drop slot
 
   const resultsArea = document.getElementById('resultsArea');
   const carousel = document.getElementById('carousel');
@@ -123,13 +124,26 @@
       slot.className = 'drop-slot';
       slot.dataset.index = i;
 
+      slot.addEventListener('click', () => {
+        // Clear previous selection
+        const previous = document.querySelector('.drop-slot.selected');
+        if (previous) previous.classList.remove('selected');
+
+        // Toggle selection
+        if (selectedSlot === slot) {
+          selectedSlot = null;
+        } else {
+          selectedSlot = slot;
+          slot.classList.add('selected');
+        }
+      });
+
       resultsArea.appendChild(slot);
     }
   }
 
   function renderCarousel(cards) {
     carousel.innerHTML = '';
-
     cards.forEach(card => {
       const fileName = getCardFilename(card);
       if (!fileName) return;
@@ -145,83 +159,25 @@
       wrapper.style.minWidth = '80px';
       wrapper.appendChild(img);
 
-      let dragTimeout = null;
-      let isDragging = false;
+      // Double-click to place in selected slot
+      wrapper.addEventListener('dblclick', () => {
+        if (!selectedSlot) return;
+        if (selectedSlot.querySelector('img')) return; // Don't overwrite
 
-      const startDrag = (clientX, clientY) => {
-        const clone = img.cloneNode(true);
-        clone.style.position = 'fixed';
-        clone.style.zIndex = 1000;
-        clone.style.width = '80px';
-        clone.style.pointerEvents = 'none';
-        clone.style.background = 'white';
-        document.body.appendChild(clone);
+        const clone = document.createElement('img');
+        clone.src = img.src;
+        clone.alt = card;
+        clone.className = 'memory-card small';
+        clone.dataset.card = card;
 
-        const moveAt = (x, y) => {
-          clone.style.left = x - 40 + 'px';
-          clone.style.top = y - 56 + 'px';
-        };
+        const innerWrapper = document.createElement('div');
+        innerWrapper.className = 'card-wrapper';
+        innerWrapper.appendChild(clone);
 
-        const onMove = e => {
-          const x = e.touches ? e.touches[0].clientX : e.clientX;
-          const y = e.touches ? e.touches[0].clientY : e.clientY;
-          moveAt(x, y);
-        };
-
-        const onEnd = e => {
-          document.removeEventListener('mousemove', onMove);
-          document.removeEventListener('mouseup', onEnd);
-          document.removeEventListener('touchmove', onMove);
-          document.removeEventListener('touchend', onEnd);
-
-          // Drop logic
-          clone.hidden = true;
-          const elem = document.elementFromPoint(clientX, clientY);
-          clone.hidden = false;
-
-          const dropSlot = elem?.closest('.drop-slot');
-          if (dropSlot && !dropSlot.querySelector('.card-wrapper')) {
-            const finalWrapper = document.createElement('div');
-            finalWrapper.className = 'card-wrapper';
-
-            const droppedImg = clone.cloneNode(true);
-            droppedImg.className = 'memory-card small';
-            finalWrapper.appendChild(droppedImg);
-
-            dropSlot.appendChild(finalWrapper);
-          }
-
-          clone.remove();
-          isDragging = false;
-        };
-
-        isDragging = true;
-        moveAt(clientX, clientY);
-
-        document.addEventListener('mousemove', onMove);
-        document.addEventListener('mouseup', onEnd);
-        document.addEventListener('touchmove', onMove);
-        document.addEventListener('touchend', onEnd);
-      };
-
-      // Desktop
-      wrapper.addEventListener('mousedown', e => {
-        if (isDragging) return;
-        dragTimeout = setTimeout(() => startDrag(e.clientX, e.clientY), 1500);
+        selectedSlot.appendChild(innerWrapper);
+        selectedSlot.classList.remove('selected');
+        selectedSlot = null;
       });
-      wrapper.addEventListener('mouseup', () => clearTimeout(dragTimeout));
-      wrapper.addEventListener('mouseleave', () => clearTimeout(dragTimeout));
-
-      // Mobile
-      wrapper.addEventListener('touchstart', e => {
-        if (isDragging) return;
-        dragTimeout = setTimeout(() => {
-          const touch = e.touches[0];
-          startDrag(touch.clientX, touch.clientY);
-        }, 1500);
-      });
-      wrapper.addEventListener('touchend', () => clearTimeout(dragTimeout));
-      wrapper.addEventListener('touchmove', () => clearTimeout(dragTimeout));
 
       carousel.appendChild(wrapper);
     });
@@ -229,7 +185,7 @@
 
   function checkAnswers() {
     const userCards = [...resultsArea.children].map((slot, idx) => {
-      slot.classList.remove('correct', 'incorrect'); // Reset
+      slot.classList.remove('correct', 'incorrect');
 
       const img = slot.querySelector('img');
       const card = img ? img.dataset.card : null;
@@ -238,14 +194,6 @@
         slot.classList.add('correct');
       } else {
         slot.classList.add('incorrect');
-        // Add correct answer if wrong
-        if (originalOrder[idx]) {
-          const short = originalOrder[idx];
-          const label = document.createElement('div');
-          label.className = 'correct-label';
-          label.innerText = short;
-          slot.appendChild(label);
-        }
       }
 
       return card;
