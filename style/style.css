@@ -615,6 +615,7 @@ main {
 }
 
 .form-group {
+  flex: 1 1 200px;
   display: flex;
   flex-direction: column;
 }
@@ -625,7 +626,10 @@ main {
   flex-direction: column;
 }
 
-
+.form-group-login {
+  display: flex;
+  flex-direction: column;
+}
 
 #resultsArea {
   display: flex;
