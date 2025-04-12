@@ -142,20 +142,6 @@
   renderInputs();
 </script>
 
-<!-- Footer -->
-<div id="site-footer"></div>
-<script>
-  fetch('/components/footer/footer.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('site-footer').innerHTML = html;
-
-      const style = document.createElement('link');
-      style.rel = 'stylesheet';
-      style.href = '/components/footer/footer.css';
-      document.head.appendChild(style);
-    });
-</script>
 
 <!-- Footer -->
 <div id="site-footer"></div>
