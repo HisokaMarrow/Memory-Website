@@ -235,7 +235,9 @@
         label.textContent = originalOrder[idx];
       }
     });
-    summary.innerHTML = `<strong>${correctCount}</strong> of <strong>${originalOrder.length}</strong> cards were in the correct position.`;
+   const percent = Math.round((correct / generatedNumbers.length) * 100);
+    document.getElementById("summary").innerHTML =
+      `You got <span class="highlight">${correct}</span> out of ${generatedNumbers.length} correct (${percent}%)`;
   }
 
   function tryAgain() {
