@@ -374,7 +374,15 @@ main {
   border-color: var(--color-success);
 }
 
+.input-box-test.correct {
+  border-color: var(--color-success);
+}
+
 .input-box.incorrect {
+  border-color: var(--color-error);
+}
+
+.input-box-test.incorrect {
   border-color: var(--color-error);
 }
 
