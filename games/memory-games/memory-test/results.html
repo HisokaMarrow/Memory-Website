@@ -56,6 +56,106 @@
     .catch(err => console.error('Failed to load header:', err));
 </script>
 
+<main>
+  <div class="main-container">
+    <h2 class="main-title">Memory Results</h2>
+    <h3 class="main-subtitle">Write all the words you can remember</h3>
+
+    <div id="resultsArea" class="results-grid"></div>
+    <div id="summary" class="result-summary"></div>
+
+    <div class="game-results-buttons-block">
+      <button class="game-results-buttons" onclick="checkAnswers()">Check Answers</button>
+      <button class="game-results-buttons" onclick="goToTechnique()">Try Memory Technique</button>
+    </div>
+  </div>
+</main>
+
+<script>
+  const shownWords = JSON.parse(localStorage.getItem("shownWords") || "[]");
+
+  function renderInputs() {
+    const container = document.getElementById("resultsArea");
+    container.innerHTML = "";
+
+    for (let i = 0; i < shownWords.length; i++) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "input-wrapper";
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.maxLength = 12;
+      input.className = "input-box";
+      input.placeholder = "Word";
+
+      const correctLabel = document.createElement("div");
+      correctLabel.className = "correct-answer";
+
+      wrapper.appendChild(input);
+      wrapper.appendChild(correctLabel);
+      container.appendChild(wrapper);
+    }
+  }
+
+  function checkAnswers() {
+    const inputs = document.querySelectorAll(".input-box");
+    const correctWords = shownWords.map(w => w.toLowerCase());
+    let correctCount = 0;
+    const used = new Set();
+
+    inputs.forEach(input => {
+      const word = input.value.trim().toLowerCase();
+      const wrapper = input.parentElement;
+      const label = wrapper.querySelector(".correct-answer");
+
+      if (correctWords.includes(word) && !used.has(word)) {
+        input.classList.add("correct");
+        input.classList.remove("incorrect");
+        label.textContent = "";
+        correctCount++;
+        used.add(word);
+      } else {
+        input.classList.add("incorrect");
+        input.classList.remove("correct");
+        label.textContent = "Incorrect";
+      }
+    });
+
+    const total = shownWords.length;
+    let resultText = `You remembered <span class="highlight">${correctCount}</span> out of ${total} words`;
+
+    if (correctCount >= 18) {
+      resultText += `<br><strong class='highlight'>You're a genius and a memory master!</strong>`;
+    } else if (correctCount >= 12) {
+      resultText += `<br><strong class='highlight'>Well done, you performed like a genius!</strong>`;
+    } else {
+      resultText += `<br><strong>Plenty of room to improve — keep practicing!</strong>`;
+    }
+
+    document.getElementById("summary").innerHTML = resultText;
+  }
+
+  function goToTechnique() {
+    window.location.href = "association.html"; // this should be memory-technique.html if that's the final name
+  }
+
+  renderInputs();
+</script>
+
+<!-- Footer -->
+<div id="site-footer"></div>
+<script>
+  fetch('/components/footer/footer.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('site-footer').innerHTML = html;
+
+      const style = document.createElement('link');
+      style.rel = 'stylesheet';
+      style.href = '/components/footer/footer.css';
+      document.head.appendChild(style);
+    });
+</script>
 
 <!-- Footer -->
 <div id="site-footer"></div>
