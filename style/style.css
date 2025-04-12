@@ -16,6 +16,7 @@
   --color-secondary-hover: #7f5af0;
   --color-success: #2dd4bf;
   --color-error: #f43f5e;
+  --color-border-select: #FFA500;
 }
 
 
@@ -284,6 +285,22 @@ main {
   padding: 2rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   width: 100%;
+  min-height: 300px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.results-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: var(--color-bg-card);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  width: 100%;
   max-width: 600px;
   margin: 0 auto;
 }
@@ -323,7 +340,9 @@ main {
 }
 
 .drop-slot.selected {
-  outline: 2px dashed #2196f3;
+  border-color: var(--color-border-select);
+  border-width: 2px;
+  border-style: solid;
 }
 
 
@@ -597,7 +616,6 @@ main {
 
 .form-group,
 .checkbox-settings {
-  flex: 1 1 200px;
   display: flex;
   flex-direction: column;
 }
