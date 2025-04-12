@@ -189,7 +189,12 @@
           var num = getRandomNumber(1, rangeMax);
           if (padZeros && num < 10) num = "0" + num;
           currentSequence.push(num);
-          output.innerText = num;
+          output.style.opacity = 0;
+          setTimeout(() => {
+            output.innerText = num;
+            output.style.opacity = 1;
+          }, 50);
+
           speak(num);
 
           setTimeout(generateNumberLoop, delay);
