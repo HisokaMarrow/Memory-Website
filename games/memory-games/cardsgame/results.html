@@ -235,9 +235,9 @@
         label.textContent = originalOrder[idx];
       }
     });
-   const percent = Math.round((correct / generatedNumbers.length) * 100);
+   const percent = Math.round((correct / originalOrder.length) * 100);
     document.getElementById("summary").innerHTML =
-      `You got <span class="highlight">${correct}</span> out of ${generatedNumbers.length} correct (${percent}%)`;
+      `You got <span class="highlight">${correct}</span> out of ${originalOrder.length} correct (${percent}%)`;
   }
 
   function tryAgain() {
