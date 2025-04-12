@@ -63,3 +63,112 @@
       console.error('Failed to load game header:', err);
     });
 </script>
+
+<main>
+  <div class="game-display" id="gameContainer">
+    <h2 class="main-title" id="gameTitle">Quick Memory Test Starting in...</h2>
+    <div class="main-title" id="countdown">5</div>
+    <div id="screen"></div>
+  </div>
+</main>
+
+<script>
+  function initializeGame() {
+    const wordList = [
+      "cloud", "piano", "tree", "shoe", "cat", "hat", "duck", "star", "box", "cup",
+      "water", "horse", "grass", "lion", "robot", "rain", "bird", "egg", "bag", "apple"
+    ];
+
+    let currentIndex = 0;
+    let skipDisplay = false;
+    let isPaused = false;
+    let pauseCallback = null;
+
+    const screen = document.getElementById("screen");
+    const countdownEl = document.getElementById("countdown");
+    const titleEl = document.getElementById("gameTitle");
+    const endEarlyBtn = document.getElementById("endEarlyBtn");
+
+    // Initially disable the "End Early" button
+    if (endEarlyBtn) {
+      endEarlyBtn.classList.add("disabled");
+    }
+
+    function showCountdown(seconds, callback) {
+      let countdown = seconds;
+
+      async function runCountdown() {
+        while (countdown >= 0) {
+          await waitWhilePaused();
+          countdownEl.textContent = countdown;
+          await new Promise(res => setTimeout(res, 1000));
+          countdown--;
+        }
+
+        countdownEl.style.display = "none";
+        titleEl.style.display = "none";
+
+        // Enable the "End Early" button after countdown
+        if (endEarlyBtn) {
+          endEarlyBtn.classList.remove("disabled");
+        }
+
+        callback();
+      }
+
+      runCountdown();
+    }
+
+    async function showWords() {
+      screen.innerHTML = `<div class="main-word" id="wordDisplay"></div>`;
+      currentIndex = 0;
+      while (currentIndex < wordList.length && !skipDisplay) {
+        await waitWhilePaused();
+        document.getElementById("wordDisplay").innerText = wordList[currentIndex];
+        currentIndex++;
+        await new Promise(res => setTimeout(res, 3000));
+      }
+
+      if (!skipDisplay) {
+        screen.innerHTML = `<div class="main-word">Test Ended</div>`;
+        localStorage.setItem("shownWords", JSON.stringify(wordList.slice(0, currentIndex)));
+        setTimeout(() => {
+          window.location.href = "results.html";
+        }, 2000);
+      }
+    }
+
+    // Define the endEarly function in the global scope
+    window.endEarly = function() {
+      skipDisplay = true;
+      screen.innerHTML = `<div class="main-word">Test Ended</div>`;
+      localStorage.setItem("shownWords", JSON.stringify(wordList.slice(0, currentIndex)));
+      setTimeout(() => {
+        window.location.href = "results.html";
+      }, 2000);
+    };
+
+    // Unified Pause/Resume Toggle (works with header button)
+    window.togglePause = function() {
+      const btn = document.getElementById("gameheadernotimer-pauseButton");
+      if (!btn) return;
+
+      isPaused = !isPaused;
+      btn.textContent = isPaused ? "Resume" : "Pause";
+
+      if (!isPaused && pauseCallback) {
+        pauseCallback();
+        pauseCallback = null;
+      }
+    };
+
+    function waitWhilePaused() {
+      return new Promise(resolve => {
+        if (!isPaused) return resolve();
+        pauseCallback = resolve;
+      });
+    }
+
+    showCountdown(5, showWords);
+  }
+</script>
