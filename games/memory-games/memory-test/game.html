@@ -64,3 +64,124 @@
     });
 </script>
 
+<main class="main-container">
+  <div class="game-display">
+    <button id="startButton" class="game-gamestart-button">Start Game</button>
+    <a id="countdownLabel" class="main-title" style="display: none;">Starting in...</a>
+    <div id="countdown" class="main-title" style="display: none;"></div>
+    <div id="output" class="main-word" style="display: none;"></div>
+  </div>
+</main>
+
+<script>
+(() => {
+  const output = document.getElementById('output');
+  const countdown = document.getElementById('countdown');
+  const countdownLabel = document.getElementById('countdownLabel');
+  const startBtn = document.getElementById('startButton');
+
+  const wordList = [
+    "cloud", "piano", "tree", "shoe", "cat", "hat", "duck", "star", "box", "cup",
+    "water", "horse", "grass", "lion", "robot", "rain", "bird", "egg", "bag", "apple"
+  ];
+
+  let currentIndex = 0;
+  let isPaused = false;
+  let pauseResolve = null;
+  let countdownValue = 5;
+
+  function wait(ms) {
+    return new Promise(res => setTimeout(res, ms));
+  }
+
+  function waitWhilePaused() {
+    return new Promise(resolve => {
+      if (!isPaused) resolve();
+      else pauseResolve = resolve;
+    });
+  }
+
+  function showWord(index) {
+    output.innerText = '';
+    output.style.display = 'flex';
+    output.classList.remove('card-grid');
+
+    const word = wordList[index];
+    const wrapper = document.createElement('div');
+    wrapper.className = 'card-wrapper';
+    wrapper.innerText = word;
+    wrapper.style.backgroundColor = '#fff';
+    wrapper.style.color = '#000';
+    wrapper.style.fontSize = '2rem';
+    wrapper.style.fontWeight = '600';
+    wrapper.style.padding = '2rem';
+    wrapper.style.borderRadius = '10px';
+    output.innerHTML = '';
+    output.appendChild(wrapper);
+  }
+
+  async function beginGame() {
+    currentIndex = 0;
+
+    while (currentIndex < wordList.length) {
+      if (isPaused) {
+        await waitWhilePaused();
+      }
+
+      showWord(currentIndex);
+      currentIndex++;
+      await wait(3000);
+    }
+
+    localStorage.setItem("shownWords", JSON.stringify(wordList.slice(0, currentIndex)));
+    window.location.href = "results.html";
+  }
+
+  function startCountdown(callback) {
+    countdown.style.display = "block";
+    countdownLabel.style.display = "block";
+    startBtn.style.display = "none";
+
+    const interval = setInterval(() => {
+      if (!isPaused) {
+        countdown.innerText = countdownValue;
+        countdownValue--;
+        if (countdownValue < 0) {
+          clearInterval(interval);
+          countdown.style.display = "none";
+          countdownLabel.style.display = "none";
+          callback();
+        }
+      }
+    }, 1000);
+  }
+
+  function togglePause() {
+    isPaused = !isPaused;
+    const pauseBtn = document.getElementById("pause");
+    const label = isPaused ? "Resume" : "Pause";
+    if (pauseBtn) pauseBtn.textContent = label;
+
+    if (!isPaused && pauseResolve) {
+      pauseResolve();
+      pauseResolve = null;
+    }
+  }
+
+  function endEarly() {
+    localStorage.setItem("shownWords", JSON.stringify(wordList.slice(0, currentIndex)));
+    window.location.href = "results.html";
+  }
+
+  window.togglePause = togglePause;
+  window.endEarly = endEarly;
+
+  window.onload = () => {
+    startBtn.addEventListener('click', () => startCountdown(beginGame));
+  };
+})();
+</script>
+
+</body>
+</html>
+
