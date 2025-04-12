@@ -614,8 +614,13 @@ main {
   height: 16px;
 }
 
-.form-group,
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
 .checkbox-settings {
+  flex: 1 1 200px;
   display: flex;
   flex-direction: column;
 }
