@@ -323,7 +323,9 @@ main {
 }
 
 .drop-slot.selected {
-  outline: 2px dashed #2196f3;
+  border-color: var(--color-success);
+  border-width: 2px;
+  border-style: solid;
 }
 
 
