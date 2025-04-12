@@ -64,11 +64,13 @@
     });
 </script>
 
+
+
 <main class="main-container">
   <div class="game-display">
     <button id="startButton" class="game-gamestart-button">Start Game</button>
     <a id="countdownLabel" class="main-title" style="display: none;">Starting in...</a>
-    <div id="countdown" class="main-title" style="display: none;"></div>
+    <div id="countdown" class="main-countdown" style="display: none;"></div>
     <div id="output" class="main-word" style="display: none;"></div>
   </div>
 </main>
@@ -80,18 +82,144 @@
   const countdownLabel = document.getElementById('countdownLabel');
   const startBtn = document.getElementById('startButton');
 
-  const wordList = [
-    "cloud", "piano", "tree", "shoe", "cat", "hat", "duck", "star", "box", "cup",
-    "water", "horse", "grass", "lion", "robot", "rain", "bird", "egg", "bag", "apple"
-  ];
+  const allSuits = ['C', 'D', 'H', 'S'];
+  const allRanks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 
-  let currentIndex = 0;
+  const deckCount = parseInt(localStorage.getItem("cardDeckCount")) || 1;
+  const timeLimit = parseInt(localStorage.getItem("cardTimeLimit")) || 30;
+  const cardInterval = parseFloat(localStorage.getItem("cardInterval")) || 2;
+
+  let cardSequence = [];
   let isPaused = false;
   let pauseResolve = null;
   let countdownValue = 5;
+  let startTime = null;
+  let currentIndex = 0;
+  let gameTimerInterval;
 
-  function wait(ms) {
-    return new Promise(res => setTimeout(res, ms));
+  function generateDeck() {
+    const singleDeck = [];
+    for (let suit of allSuits) {
+      for (let rank of allRanks) {
+        singleDeck.push(`${rank}${suit}`);
+      }
+    }
+    return singleDeck;
+  }
+
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  function getShuffledCards() {
+    let fullDeck = [];
+    for (let i = 0; i < deckCount; i++) {
+      fullDeck = fullDeck.concat(generateDeck());
+    }
+    return shuffle(fullDeck).slice(0, 52);
+  }
+
+  function getCardFilename(code) {
+    const suits = { C: 'clubs', D: 'diamonds', H: 'hearts', S: 'spades' };
+    const ranks = {
+      A: 'ace', J: 'jack', Q: 'queen', K: 'king',
+      '10': '10', '9': '9', '8': '8', '7': '7',
+      '6': '6', '5': '5', '4': '4', '3': '3', '2': '2'
+    };
+    const match = code.match(/^([0-9]{1,2}|[AJQK])([CDHS])$/);
+    if (!match) return null;
+    const [_, rank, suit] = match;
+    return `${ranks[rank]}_of_${suits[suit]}.png`;
+  }
+
+  // Show the current card with white background wrapper
+  function showCard(index) {
+    output.innerHTML = '';
+    output.style.display = 'flex';
+    output.classList.remove('card-grid');
+
+    const card = cardSequence[index];
+    const img = document.createElement('img');
+    const filename = getCardFilename(card);
+    img.src = `/assets/png/${filename}`;
+    img.alt = card;
+    img.className = 'memory-card';
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'card-wrapper';
+    wrapper.appendChild(img);
+
+    output.appendChild(wrapper);
+  }
+
+  async function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function beginGame() {
+    cardSequence = getShuffledCards();
+    startTime = Date.now();
+
+    const timerEl = document.getElementById("game-timer");
+    let remainingTime = timeLimit;
+
+    if (timerEl) {
+      timerEl.textContent = remainingTime;
+      timerEl.style.display = "block";
+    }
+
+    gameTimerInterval = setInterval(() => {
+      if (!isPaused) {
+        remainingTime--;
+        if (timerEl) timerEl.textContent = remainingTime;
+        if (remainingTime <= 0) {
+          clearInterval(gameTimerInterval);
+        }
+      }
+    }, 1000);
+
+    while (currentIndex < cardSequence.length) {
+      if (isPaused) {
+        await waitWhilePaused();
+      }
+
+      const elapsed = (Date.now() - startTime) / 1000;
+      if (elapsed >= timeLimit) break;
+
+      showCard(currentIndex);
+      currentIndex++;
+      await wait(cardInterval * 1000);
+    }
+
+    clearInterval(gameTimerInterval);
+    localStorage.setItem("cardSequence", JSON.stringify(cardSequence.slice(0, currentIndex)));
+    window.location.href = "results.html";
+  }
+
+  function startCountdown(callback) {
+    const countdownEl = document.getElementById("countdown");
+    const label = document.getElementById("countdownLabel");
+
+    countdownEl.style.display = "block";
+    label.style.display = "block";
+    startBtn.style.display = "none";
+
+    const interval = setInterval(() => {
+      if (!isPaused) {
+        countdownEl.innerText = countdownValue;
+        countdownValue--;
+        if (countdownValue < 0) {
+          clearInterval(interval);
+          countdownEl.style.display = "none";
+          label.style.display = "none";
+          callback();
+        }
+      }
+    }, 1000);
   }
 
   function waitWhilePaused() {
@@ -101,67 +229,13 @@
     });
   }
 
-  function showWord(index) {
-    output.innerText = '';
-    output.style.display = 'flex';
-    output.classList.remove('card-grid');
-
-    const word = wordList[index];
-    const wrapper = document.createElement('div');
-    wrapper.className = 'card-wrapper';
-    wrapper.innerText = word;
-    wrapper.style.backgroundColor = '#fff';
-    wrapper.style.color = '#000';
-    wrapper.style.fontSize = '2rem';
-    wrapper.style.fontWeight = '600';
-    wrapper.style.padding = '2rem';
-    wrapper.style.borderRadius = '10px';
-    output.innerHTML = '';
-    output.appendChild(wrapper);
-  }
-
-  async function beginGame() {
-    currentIndex = 0;
-
-    while (currentIndex < wordList.length) {
-      if (isPaused) {
-        await waitWhilePaused();
-      }
-
-      showWord(currentIndex);
-      currentIndex++;
-      await wait(3000);
-    }
-
-    localStorage.setItem("shownWords", JSON.stringify(wordList.slice(0, currentIndex)));
-    window.location.href = "results.html";
-  }
-
-  function startCountdown(callback) {
-    countdown.style.display = "block";
-    countdownLabel.style.display = "block";
-    startBtn.style.display = "none";
-
-    const interval = setInterval(() => {
-      if (!isPaused) {
-        countdown.innerText = countdownValue;
-        countdownValue--;
-        if (countdownValue < 0) {
-          clearInterval(interval);
-          countdown.style.display = "none";
-          countdownLabel.style.display = "none";
-          callback();
-        }
-      }
-    }, 1000);
-  }
-
   function togglePause() {
     isPaused = !isPaused;
-    const pauseBtn = document.getElementById("pause");
+    const pauseBtnDesktop = document.getElementById("pause");
+    const pauseBtnMobile = document.getElementById("pause-mobile");
     const label = isPaused ? "Resume" : "Pause";
-    if (pauseBtn) pauseBtn.textContent = label;
-
+    if (pauseBtnDesktop) pauseBtnDesktop.textContent = label;
+    if (pauseBtnMobile) pauseBtnMobile.textContent = label;
     if (!isPaused && pauseResolve) {
       pauseResolve();
       pauseResolve = null;
@@ -169,18 +243,27 @@
   }
 
   function endEarly() {
-    localStorage.setItem("shownWords", JSON.stringify(wordList.slice(0, currentIndex)));
+    clearInterval(gameTimerInterval);
+    localStorage.setItem("cardSequence", JSON.stringify(cardSequence.slice(0, currentIndex)));
     window.location.href = "results.html";
+  }
+
+  function giveUp() {
+    window.location.href = "settings.html";
+  }
+
+  function initGameLogic() {
+    startBtn.addEventListener('click', () => startCountdown(beginGame));
   }
 
   window.togglePause = togglePause;
   window.endEarly = endEarly;
+  window.giveUp = giveUp;
 
-  window.onload = () => {
-    startBtn.addEventListener('click', () => startCountdown(beginGame));
-  };
+  window.onload = initGameLogic;
 })();
 </script>
+
 
   
 </body>
