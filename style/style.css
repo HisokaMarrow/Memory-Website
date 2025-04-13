@@ -403,6 +403,7 @@ main {
 .radio-group input[type="radio"]:checked + label::after {
   content: "";
   position: absolute;
+  right: 13px;
   top: 50%;
   transform: translateY(-50%);
   width: 8px;
