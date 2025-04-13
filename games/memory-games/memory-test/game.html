@@ -168,6 +168,9 @@
     }
   }
 
+  localStorage.setItem("memoryTestSessionCounted", "false");
+
+
   function endEarly() {
     localStorage.setItem("shownWords", JSON.stringify(wordList.slice(0, currentIndex)));
     window.location.href = "results.html";
