@@ -90,7 +90,7 @@
 <!-- Footer -->
 <div id="site-footer"></div>
 <script>
-  fetch('/components/footer/footer.html')
+  fetch('/components/footer.html')
     .then(res => res.text())
     .then(html => {
       document.getElementById('site-footer').innerHTML = html;
