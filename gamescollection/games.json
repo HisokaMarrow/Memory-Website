@@ -25,7 +25,7 @@
     "category": "Math",
     "title": "Addition Master",
     "description": "Solve as many addition problems as you can in limited time.",
-    "link": "/pages/math/addition/settings.html"
+    "link": "games/math-games/addition/settings.html"
   },
   {
     "id": "math_subtraction",
