@@ -329,6 +329,12 @@ main {
   color: var(--header-subtext);
 }
 
+#problem {
+  font-size: 4rem;
+  font-weight: 700;
+  margin-top: 1rem;
+}
+
 #output {
   font-size: 5rem;
   font-weight: 800;
