@@ -359,7 +359,9 @@ main {
    ======================================================= */
 .radio-group {
   display: flex;
-  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
   flex-wrap: wrap;
 }
 
@@ -379,31 +381,40 @@ main {
   font-weight: 600;
   color: white;
   cursor: pointer;
-  min-width: 100px;
+  min-width: 120px;
   text-align: center;
   transition: all 0.3s ease;
 }
 
-/* Small purple circle indicator */
+/* Outer circle aligned right of text */
 .radio-group label::before {
   content: "";
-  width: 14px;
-  height: 14px;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  border: 2px solid #9c4dff;
   border-radius: 50%;
   background-color: transparent;
-  border: 2px solid #9c4dff;
+  transition: all 0.3s ease;
+}
+
+/* Inner dot appears when selected */
+.radio-group input[type="radio"]:checked + label::after {
+  content: "";
   position: absolute;
-  top: 10px;
-  right: 10px;
-  transition: background-color 0.3s ease;
-}
-
-/* When selected, fill the center of the circle */
-.radio-group input[type="radio"]:checked + label::before {
+  right: 17px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
   background-color: #9c4dff;
+  border-radius: 50%;
 }
 
-/* Optional hover styling */
+/* Optional hover effect */
 .radio-group label:hover {
   border-color: #9c4dff;
 }
