@@ -170,7 +170,6 @@
 
   function endEarly() {
     localStorage.setItem("shownWords", JSON.stringify(wordList.slice(0, currentIndex)));
-    localStorage.setItem("memoryTestSessionCounted", "false");
     window.location.href = "results.html";
   }
 
