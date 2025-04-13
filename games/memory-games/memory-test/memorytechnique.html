@@ -61,29 +61,24 @@
     <h1 class="main-title">The 3 Pillars of a Powerful Memory</h1>
     <p>These three techniques fuel each other — working together in a continuous loop to supercharge your memory.</p>
 
-    <div class="loop-container">
+    <div class="daily-grid">
       <!-- Pillar 1: Imagination -->
-      <div class="pillar-card pillar-1">
+      <div class="game-cards">
         <h2>Imagination</h2>
         <p>Create vivid, strange, and sensory-rich images. Use color, movement, sound, smell — the weirder the better.</p>
       </div>
 
       <!-- Pillar 2: Attention -->
-      <div class="pillar-card pillar-2">
+      <div class="game-cards">
         <h2>Attention</h2>
         <p>Focus like your life depends on it. Imagine being paid a million dollars to remember. Your brain rises to the challenge.</p>
       </div>
 
       <!-- Pillar 3: Association -->
-      <div class="pillar-card pillar-3">
+      <div class="game-cards">
         <h2>Association</h2>
         <p>Link each item to the next with imagination. Example: A cloud playing Beethoven on a piano raining music notes.</p>
       </div>
-
-      <!-- Arrows (example placeholder, will be refined) -->
-      <div class="loop-arrow arrow-1">&#10227;</div>
-      <div class="loop-arrow arrow-2">&#10227;</div>
-      <div class="loop-arrow arrow-3">&#10227;</div>
     </div>
 
     <div style="text-align: center; margin-top: 4rem;">
@@ -91,82 +86,6 @@
     </div>
   </div>
 </main>
-
-<style>
-.loop-container {
-  position: relative;
-  width: 100%;
-  max-width: 700px;
-  height: 500px;
-  margin: 4rem auto 0;
-}
-
-.pillar-card {
-  position: absolute;
-  background-color: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 1.5rem;
-  width: 200px;
-  text-align: center;
-}
-
-.pillar-1 {
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.pillar-2 {
-  bottom: 0;
-  left: 0;
-}
-.pillar-3 {
-  bottom: 0;
-  right: 0;
-}
-
-.loop-arrow {
-  position: absolute;
-  font-size: 2rem;
-  color: var(--color-subtext);
-}
-
-.arrow-1 {
-  top: 130px;
-  left: 60%;
-  transform: rotate(45deg);
-}
-
-.arrow-2 {
-  bottom: 130px;
-  left: 25%;
-  transform: rotate(-45deg);
-}
-
-.arrow-3 {
-  bottom: 200px;
-  left: 50%;
-  transform: translateX(-50%) rotate(90deg);
-}
-
-@media (max-width: 768px) {
-  .loop-container {
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-  }
-  .pillar-card {
-    position: static;
-    width: 90%;
-  }
-  .loop-arrow {
-    display: none;
-  }
-}
-</style>
-
   
 <!-- Footer -->
 <div id="site-footer"></div>
