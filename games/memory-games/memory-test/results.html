@@ -151,15 +151,15 @@
     localStorage.setItem("memoryTestSessionCounted", "true"); // prevent double counting
   }
 
-  // Now check if we should show the back to home button
-  const visitCount = parseInt(localStorage.getItem("memoryTestVisitCount") || "0");
-  if (visitCount >= 2) {
-    const btn = document.createElement("a");
-    btn.href = "/index.html";
-    btn.className = "game-results-buttons";
-    btn.textContent = "Back to Home";
-    document.querySelector(".game-results-buttons-block").appendChild(btn);
-  }
+ // ✅ Re-read the updated value
+const updatedVisitCount = parseInt(localStorage.getItem("memoryTestVisitCount") || "0");
+if (updatedVisitCount >= 2) {
+  const btn = document.createElement("a");
+  btn.href = "/index.html";
+  btn.className = "game-results-buttons";
+  btn.textContent = "Back to Home";
+  document.querySelector(".game-results-buttons-block").appendChild(btn);
+}
 </script>
 
 
