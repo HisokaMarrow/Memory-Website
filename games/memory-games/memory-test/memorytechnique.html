@@ -57,39 +57,115 @@
 </script>
 
 <main class="main-container">
-  <div class="page-content">
-    <h1 class="main-title">Unlock Your Memory: The Power of Story & Imagination</h1>
+  <div class="text-box-content page-content">
+    <h1 class="main-title">The 3 Pillars of a Powerful Memory</h1>
+    <p>These three techniques fuel each other — working together in a continuous loop to supercharge your memory.</p>
 
-    <p>The best memorization masters use more than repetition. They rely on association, storytelling, imagination, and multiple senses. Here's how you can do the same.</p>
+    <div class="loop-container">
+      <!-- Pillar 1: Imagination -->
+      <div class="pillar-card pillar-1">
+        <h2>Imagination</h2>
+        <p>Create vivid, strange, and sensory-rich images. Use color, movement, sound, smell — the weirder the better.</p>
+      </div>
 
-    <div class="game-display" style="margin: 2rem auto;">
-      <img src="/assets/img/memory-story-placeholder.png" alt="Visualizing memory with stories" style="width:100%; max-width:500px; border-radius: 12px;" />
+      <!-- Pillar 2: Attention -->
+      <div class="pillar-card pillar-2">
+        <h2>Attention</h2>
+        <p>Focus like your life depends on it. Imagine being paid a million dollars to remember. Your brain rises to the challenge.</p>
+      </div>
+
+      <!-- Pillar 3: Association -->
+      <div class="pillar-card pillar-3">
+        <h2>Association</h2>
+        <p>Link each item to the next with imagination. Example: A cloud playing Beethoven on a piano raining music notes.</p>
+      </div>
+
+      <!-- Arrows (example placeholder, will be refined) -->
+      <div class="loop-arrow arrow-1">&#10227;</div>
+      <div class="loop-arrow arrow-2">&#10227;</div>
+      <div class="loop-arrow arrow-3">&#10227;</div>
     </div>
 
-    <div class="daily-grid">
-      <div class="game-cards">
-        <h3>Story Method</h3>
-        <p>Weave the words into a strange, vivid narrative. The weirder the story, the better it sticks.</p>
-      </div>
-      <div class="game-cards">
-        <h3>Association</h3>
-        <p>Link new info to what you already know — a room, a friend, a routine. Anchor it in your brain.</p>
-      </div>
-      <div class="game-cards">
-        <h3>Imagination</h3>
-        <p>Picture everything bigger, brighter, and funnier. Drama and emotion = memorability.</p>
-      </div>
-      <div class="game-cards">
-        <h3>Multiple Senses</h3>
-        <p>Add sound, texture, smell, or even temperature. The more senses involved, the stronger the memory.</p>
-      </div>
-    </div>
-
-    <div style="text-align: center; margin-top: 3rem;">
+    <div style="text-align: center; margin-top: 4rem;">
       <a href="game.html" class="main-button">Try the Test Again</a>
     </div>
   </div>
 </main>
+
+<style>
+.loop-container {
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  height: 500px;
+  margin: 4rem auto 0;
+}
+
+.pillar-card {
+  position: absolute;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 200px;
+  text-align: center;
+}
+
+.pillar-1 {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.pillar-2 {
+  bottom: 0;
+  left: 0;
+}
+.pillar-3 {
+  bottom: 0;
+  right: 0;
+}
+
+.loop-arrow {
+  position: absolute;
+  font-size: 2rem;
+  color: var(--color-subtext);
+}
+
+.arrow-1 {
+  top: 130px;
+  left: 60%;
+  transform: rotate(45deg);
+}
+
+.arrow-2 {
+  bottom: 130px;
+  left: 25%;
+  transform: rotate(-45deg);
+}
+
+.arrow-3 {
+  bottom: 200px;
+  left: 50%;
+  transform: translateX(-50%) rotate(90deg);
+}
+
+@media (max-width: 768px) {
+  .loop-container {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+  .pillar-card {
+    position: static;
+    width: 90%;
+  }
+  .loop-arrow {
+    display: none;
+  }
+}
+</style>
 
   
 <!-- Footer -->
