@@ -21,7 +21,16 @@
     "kick", "point", "wave", "nod", "hug", "kiss", "text", "call", "share", "post",
     "search", "download", "upload", "scroll", "zoom", "press", "tap", "click", "blink", "smile",
     "scratch", "smell", "breathe", "sneeze", "cough", "speak", "repeat", "carry", "help", "fall",
-    "jump", "run", "throw", "lift", "walk", "watch", "cook", "play", "hop", "toss"
+    "jump", "run", "throw", "lift", "walk", "watch", "cook", "play", "hop", "toss","chair", "table", "cup", "book", "pencil", "phone", "door", "lamp", "window", "bag",
+    "pen", "notebook", "sock", "shoe", "hat", "spoon", "fork", "bottle", "plate", "bed",
+    "couch", "mirror", "clock", "blanket", "pillow", "towel", "brush", "comb", "shirt", "pants",
+    "desk", "drawer", "keyboard", "mouse", "screen", "carpet", "curtain", "fan", "fridge", "stove",
+    "microwave", "sink", "toilet", "soap", "shampoo", "toothbrush", "razor", "hanger", "basket", "bin",
+    "remote", "TV", "charger", "plug", "wire", "cable", "hammer", "nail", "screw", "tape",
+    "glue", "marker", "eraser", "ruler", "scissors", "envelope", "stamp", "ladder", "bucket", "broom",
+    "mop", "pan", "pot", "oven", "knife", "grater", "whisk", "spatula", "mattress", "rug",
+    "can", "jar", "clock", "bell", "trophy", "helmet", "ball", "net", "padlock", "clip",
+    "ring", "coin", "wallet", "key", "calendar", "frame", "vase", "plant", "stone", "shelf"
   ],
   "master": [
     "ephemeral", "juxtaposition", "metamorphosis", "synergy", "equilibrium", "paradox", "ideology", "conundrum", "resilience", "cognition",
@@ -33,6 +42,24 @@
     "variable", "coefficient", "momentum", "acceleration", "relativity", "dimension", "gravity", "singularity", "thermodynamics", "osmosis",
     "diffusion", "refraction", "resonance", "tangential", "orthogonal", "inertia", "convection", "equation", "algorithmic", "fractal",
     "transmutation", "meditation", "visualization", "equanimity", "lucidity", "serendipity", "enlightenment", "illumination", "paradigm", "hyperspace",
-    "biofeedback", "neuroplasticity", "revelation", "conflation", "distillation", "sublimation", "reconstruction", "manifesto", "modulation", "oscillation"
+    "biofeedback", "neuroplasticity", "revelation", "conflation", "distillation", "sublimation", "reconstruction", "manifesto", "modulation", "oscillation","chair", "table", "cup", "book", "pencil", "phone", "door", "lamp", "window", "bag",
+    "pen", "notebook", "sock", "shoe", "hat", "spoon", "fork", "bottle", "plate", "bed",
+    "couch", "mirror", "clock", "blanket", "pillow", "towel", "brush", "comb", "shirt", "pants",
+    "desk", "drawer", "keyboard", "mouse", "screen", "carpet", "curtain", "fan", "fridge", "stove",
+    "microwave", "sink", "toilet", "soap", "shampoo", "toothbrush", "razor", "hanger", "basket", "bin",
+    "remote", "TV", "charger", "plug", "wire", "cable", "hammer", "nail", "screw", "tape",
+    "glue", "marker", "eraser", "ruler", "scissors", "envelope", "stamp", "ladder", "bucket", "broom",
+    "mop", "pan", "pot", "oven", "knife", "grater", "whisk", "spatula", "mattress", "rug",
+    "can", "jar", "clock", "bell", "trophy", "helmet", "ball", "net", "padlock", "clip",
+    "ring", "coin", "wallet", "key", "calendar", "frame", "vase", "plant", "stone", "shelf","run", "jump", "throw", "walk", "sing", "dance", "carry", "climb", "catch", "push",
+    "pull", "lift", "drop", "sit", "stand", "open", "close", "write", "read", "talk",
+    "shout", "whisper", "look", "see", "hear", "listen", "type", "draw", "cut", "cook",
+    "clean", "build", "break", "fix", "paint", "drive", "ride", "swim", "laugh", "cry",
+    "yell", "think", "eat", "drink", "choose", "move", "freeze", "roll", "hide", "seek",
+    "jump", "spin", "fold", "flip", "tie", "untie", "zip", "unzip", "sweep", "clap",
+    "kick", "point", "wave", "nod", "hug", "kiss", "text", "call", "share", "post",
+    "search", "download", "upload", "scroll", "zoom", "press", "tap", "click", "blink", "smile",
+    "scratch", "smell", "breathe", "sneeze", "cough", "speak", "repeat", "carry", "help", "fall",
+    "jump", "run", "throw", "lift", "walk", "watch", "cook", "play", "hop", "toss"
   ]
 }
