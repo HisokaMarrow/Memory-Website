@@ -56,7 +56,61 @@
     .catch(err => console.error('Failed to load header:', err));
 </script>
 
+<main>
+  <h1 class="main-title" style="text-align: center;">Word Memory Settings</h1>
 
+  <section class="games-settings-container">
+
+    <!-- Difficulty Selection -->
+    <div class="input-row">
+      <div class="form-group">
+        <label>Difficulty</label>
+        <div class="radio-group">
+          <label><input type="radio" name="difficulty" value="beginner" checked> Beginner</label>
+          <label><input type="radio" name="difficulty" value="intermediate"> Intermediate</label>
+          <label><input type="radio" name="difficulty" value="master"> Master</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Time Limit Input -->
+    <div class="input-row">
+      <div class="form-group">
+        <label for="testTime">Test Duration (sec)</label>
+        <input type="number" id="testTime" value="120" min="10">
+      </div>
+
+      <!-- Word Interval -->
+      <div class="form-group">
+        <label for="wordInterval">Word Interval (sec)</label>
+        <input type="number" id="wordInterval" value="3" min="1">
+      </div>
+    </div>
+
+    <div class="button-wrapper">
+      <button class="game-start-button">Start Game</button>
+    </div>
+
+  </section>
+</main>
+
+<script>
+  document.querySelector('.game-start-button').addEventListener('click', () => {
+    const difficulty = document.querySelector('input[name="difficulty"]:checked').value;
+    const testTime = document.getElementById("testTime").value;
+    const wordInterval = document.getElementById("wordInterval").value;
+
+    localStorage.setItem("wordDifficulty", difficulty);
+    localStorage.setItem("testTime", testTime);
+    localStorage.setItem("wordInterval", wordInterval);
+
+    setTimeout(() => {
+      window.location.href = "game.html";
+    }, 100);
+  });
+</script>
+
+  
 <!-- Footer -->
 <div id="site-footer"></div>
 <script>
