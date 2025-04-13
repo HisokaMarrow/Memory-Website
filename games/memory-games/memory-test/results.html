@@ -149,7 +149,7 @@ localStorage.setItem("memoryTestVisitCount", visitCount);
 
 // Show "Back to Home" button only if they've visited 2+ times
 if (visitCount >= 2) {
-  const btn = document.createElement("a");
+  const btn = document.createElement("button");
   btn.href = "/index.html";
   btn.className = "game-results-buttons";
   btn.textContent = "Back to Home";
