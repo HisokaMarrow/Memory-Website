@@ -1,1 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memoro</title>
 
+  <!-- Global styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/style.css" />
+
+  <!-- Header-specific styles -->
+  <link rel="stylesheet" href="/style/header.css" />
+
+  <!-- Footer-specific styles -->
+  <link rel="stylesheet" href="/style/footer.css" />
+</head>
+<body>
+
+<script>
+  // Load reusable header from components/header.html
+  fetch('/components/header.html')
+    .then(res => res.text())
+    .then(data => {
+      // Inject the header at the top of the body
+      document.body.insertAdjacentHTML('afterbegin', data);
+
+      // === After header is injected ===
+
+      // Create and insert backdrop
+      const backdropEl = document.createElement('div');
+      backdropEl.classList.add('nav-backdrop');
+      document.body.appendChild(backdropEl);
+
+      // Query the toggle button and the nav drawer
+      const toggleBtn = document.querySelector('.mobile-nav-toggle');
+      const menu = document.querySelector('.header-menu');
+
+      // Safety check
+      if (!toggleBtn || !menu) {
+        console.warn("Header elements not found. Check class names in header.html");
+        return;
+      }
+
+      // Toggle drawer and backdrop visibility
+      const toggleMenu = () => {
+        toggleBtn.classList.toggle('open');    // Animate hamburger to X
+        menu.classList.toggle('open');         // Slide drawer open/closed
+        backdropEl.classList.toggle('active'); // Dim background
+      };
+
+      // Event listeners
+      toggleBtn.addEventListener('click', toggleMenu);
+      backdropEl.addEventListener('click', toggleMenu); // close menu when clicking outside
+    })
+    .catch(err => console.error('Failed to load header:', err));
+</script>
+
+<main class="main-container">
+  <div class="results-display">
+    <h2 class="main-title">What Words Do You Remember?</h2>
+    <div id="resultsArea" class="results-grid" style="margin: 2rem 0;"></div>
+
+    <div class="game-results-buttons-block">
+      <button class="game-results-buttons" onclick="checkAnswers()">Check</button>
+      <button class="game-results-buttons" onclick="tryAgain()">Try Again</button>
+      <button class="game-results-buttons" onclick="backtogames()">Back To Games</button>
+    </div>
+
+    <div id="summary" class="result-summary" style="margin-top: 2rem;"></div>
+  </div>
+</main>
+
+<script>
+  const generatedWords = JSON.parse(localStorage.getItem("generatedWords") || "[]");
+
+  function renderInputs() {
+    const container = document.getElementById("resultsArea");
+    container.innerHTML = "";
+
+    generatedWords.forEach(() => {
+      const wrapper = document.createElement("div");
+      wrapper.className = "input-wrapper";
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.maxLength = 20;
+      input.className = "input-box";
+      input.placeholder = "______";
+
+      const correctLabel = document.createElement("div");
+      correctLabel.className = "correct-answer";
+
+      wrapper.appendChild(input);
+      wrapper.appendChild(correctLabel);
+      container.appendChild(wrapper);
+    });
+  }
+
+  function checkAnswers() {
+    const inputs = document.querySelectorAll(".input-box");
+    let correct = 0;
+
+    inputs.forEach((input, i) => {
+      const wrapper = input.parentElement;
+      const correctAnswer = generatedWords[i].toString().toLowerCase();
+      const userInput = input.value.trim().toLowerCase();
+
+      if (userInput === correctAnswer) {
+        input.classList.add("correct");
+        input.classList.remove("incorrect");
+        wrapper.querySelector(".correct-answer").textContent = "";
+        correct++;
+      } else {
+        input.classList.add("incorrect");
+        input.classList.remove("correct");
+        wrapper.querySelector(".correct-answer").textContent = `Correct: ${generatedWords[i]}`;
+      }
+    });
+
+    const percent = Math.round((correct / generatedWords.length) * 100);
+    document.getElementById("summary").innerHTML =
+      `You got <span class="highlight">${correct}</span> out of ${generatedWords.length} correct (${percent}%)`;
+  }
+
+  function tryAgain() {
+    window.location.href = "settings.html";
+  }
+
+  function backtogames() {
+    window.location.href = "/memory.html";
+  }
+
+  renderInputs();
+  sessionStorage.setItem("dailyGame_Word Memory", "true");
+</script>
+
+
+<!-- Footer -->
+<div id="site-footer"></div>
+<script>
+  // Load reusable footer after its CSS is already in place
+  fetch('/components/footer.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('site-footer').innerHTML = html;
+    })
+    .catch(err => console.error('Failed to load footer:', err));
+</script>
+
+</body>
+</html>
