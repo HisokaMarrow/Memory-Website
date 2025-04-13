@@ -1,1 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memoro</title>
 
+  <!-- Global styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/style.css" />
+
+  <!-- Game header styles -->
+  <link rel="stylesheet" href="/style/gameheader.css" /> <!-- Added this line -->
+</head>
+<body>
+
+<script>
+  // Load reusable game header
+  fetch('/components/gameheader.html')
+    .then(res => res.text())
+    .then(function (data) {
+      document.body.insertAdjacentHTML('afterbegin', data);
+
+      // Backdrop for mobile
+      var backdrop = document.createElement('div');
+      backdrop.classList.add('nav-backdrop');
+      document.body.appendChild(backdrop);
+
+      var toggleBtn = document.querySelector('.game-mobile-toggle');
+      var menu = document.querySelector('.game-menu');
+
+      var toggleMenu = function () {
+        toggleBtn.classList.toggle('open');
+        menu.classList.toggle('open');
+        backdrop.classList.toggle('active');
+      };
+
+      if (toggleBtn && menu) {
+        toggleBtn.addEventListener('click', toggleMenu);
+        backdrop.addEventListener('click', toggleMenu);
+      }
+
+      // Define the button hook function
+      function bindHeaderButtons() {
+        if (typeof window.togglePause === 'function') {
+          document.getElementById('pause')?.addEventListener('click', window.togglePause);
+          document.getElementById('pause-mobile')?.addEventListener('click', window.togglePause);
+        }
+        if (typeof window.endEarly === 'function') {
+          document.getElementById('end-early')?.addEventListener('click', window.endEarly);
+          document.getElementById('end-early-mobile')?.addEventListener('click', window.endEarly);
+        }
+        if (typeof window.giveUp === 'function') {
+          document.getElementById('give-up')?.addEventListener('click', window.giveUp);
+          document.getElementById('give-up-mobile')?.addEventListener('click', window.giveUp);
+        }
+      }
+
+      // Delay just enough for game.js to load and attach window methods
+      setTimeout(bindHeaderButtons, 300);
+    })
+    .catch(function (err) {
+      console.error('Failed to load game header:', err);
+    });
+</script>
+
+<main class="main-container">
+  <div class="game-display">
+    <button id="startButton" class="game-gamestart-button">Start Game</button>
+    <a id="countdownLabel" class="main-title" style="display: none;">Starting in...</a>
+    <div id="countdown" class="main-countdown" style="display: none;"></div>
+    <div id="output" class="main-word" style="display: none;"></div>
+  </div>
+</main>
+
+<script>
+  (function () {
+    let isPaused = false;
+    let pauseResolve = null;
+    let shouldStopGame = false;
+    let currentSequence = [];
+    let timerInterval = null;
+    let countdownValue = 5;
+
+    const testTime = (parseInt(localStorage.getItem("testTime")) || 60);
+    const wordInterval = (parseFloat(localStorage.getItem("wordInterval")) || 2) * 1000;
+    const difficulty = localStorage.getItem("wordDifficulty") || "beginner";
+
+    // Example word lists (can be replaced later with external files or fetch)
+    let wordBank = {};
+
+fetch('/gamescollection/wordlist.json')
+  .then(response => response.json())
+  .then(data => {
+    wordBank = data;
+  })
+  .catch(error => {
+    console.error('Failed to load word list:', error);
+    alert('Error loading word list. Please try again.');
+  });
+
+
+    function speak(text) {
+      const enableVoice = localStorage.getItem("enableVoice") === "true";
+      if (!enableVoice || !window.speechSynthesis) return;
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'en-US';
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utter);
+    }
+
+    function waitWhilePaused() {
+      return new Promise(resolve => {
+        if (!isPaused) resolve();
+        else pauseResolve = resolve;
+      });
+    }
+
+    function togglePause() {
+      isPaused = !isPaused;
+      const pauseBtnDesktop = document.getElementById("pause");
+      const pauseBtnMobile = document.getElementById("pause-mobile");
+      const newLabel = isPaused ? "Resume" : "Pause";
+      if (pauseBtnDesktop) pauseBtnDesktop.textContent = newLabel;
+      if (pauseBtnMobile) pauseBtnMobile.textContent = newLabel;
+      if (!isPaused && pauseResolve) {
+        pauseResolve();
+        pauseResolve = null;
+      }
+    }
+
+    function endEarly() {
+      shouldStopGame = true;
+      clearInterval(timerInterval);
+      localStorage.setItem("generatedWords", JSON.stringify(currentSequence));
+      document.getElementById("output").innerText = "Done!";
+      setTimeout(() => {
+        window.location.href = "results.html";
+      }, 2000);
+    }
+
+    function giveUp() {
+      window.location.href = "settings.html";
+    }
+
+    function getRandomWord() {
+      const list = wordBank[difficulty] || wordBank.beginner;
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    function startCountdown(callback) {
+      const countdownEl = document.getElementById("countdown");
+      const label = document.getElementById("countdownLabel");
+      document.getElementById("startButton").style.display = "none";
+
+      countdownEl.style.display = "block";
+      label.style.display = "block";
+
+      const interval = setInterval(() => {
+        if (!isPaused) {
+          countdownEl.innerText = countdownValue;
+          countdownValue--;
+          if (countdownValue < 0) {
+            clearInterval(interval);
+            countdownEl.style.display = "none";
+            label.style.display = "none";
+            callback();
+          }
+        }
+      }, 1000);
+    }
+
+    function beginGame() {
+      currentSequence = [];
+      let remainingTime = testTime;
+      const output = document.getElementById("output");
+      const timer = document.getElementById("game-timer");
+
+      output.style.display = "block";
+
+      timerInterval = setInterval(() => {
+        if (!isPaused) {
+          remainingTime--;
+          if (timer) timer.textContent = remainingTime;
+          if (remainingTime <= 0) {
+            endEarly();
+          }
+        }
+      }, 1000);
+
+      (function wordLoop() {
+        if (shouldStopGame || remainingTime <= 0) return;
+
+        waitWhilePaused().then(() => {
+          const word = getRandomWord();
+          currentSequence.push(word);
+
+          output.style.opacity = 0;
+          setTimeout(() => {
+            output.innerText = word;
+            output.style.opacity = 1;
+          }, 50);
+
+          speak(word);
+
+          setTimeout(wordLoop, wordInterval);
+        });
+      })();
+    }
+
+    function initGameLogic() {
+      const startBtn = document.getElementById("startButton");
+      if (startBtn) startBtn.onclick = () => startCountdown(beginGame);
+
+      const pauseBtns = [document.getElementById("pause"), document.getElementById("pause-mobile")];
+      const endBtns = [document.getElementById("end-early"), document.getElementById("end-early-mobile")];
+      const giveUpBtns = [document.getElementById("give-up"), document.getElementById("give-up-mobile")];
+
+      pauseBtns.forEach(btn => btn && (btn.onclick = togglePause));
+      endBtns.forEach(btn => btn && (btn.onclick = endEarly));
+      giveUpBtns.forEach(btn => btn && (btn.onclick = giveUp));
+    }
+
+    // Expose for global control
+    window.togglePause = togglePause;
+    window.endEarly = endEarly;
+    window.giveUp = giveUp;
+    window.dispatchEvent(new Event('gameReady'));
+
+    window.onload = initGameLogic;
+  })();
+</script>
