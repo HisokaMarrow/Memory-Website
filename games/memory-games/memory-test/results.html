@@ -142,6 +142,19 @@
   }
 
   renderInputs();
+
+  // Track how many times the user has visited the memory test results
+const visitCount = parseInt(localStorage.getItem("memoryTestVisitCount") || "0") + 1;
+localStorage.setItem("memoryTestVisitCount", visitCount);
+
+// Show "Back to Home" button only if they've visited 2+ times
+if (visitCount >= 2) {
+  const btn = document.createElement("a");
+  btn.href = "/index.html";
+  btn.className = "game-results-buttons";
+  btn.textContent = "Back to Home";
+  document.querySelector(".game-results-buttons-block").appendChild(btn);
+}
 </script>
 
 
