@@ -388,7 +388,7 @@ main {
 .radio-group label::before {
   content: "";
   position: absolute;
-  right: 12px;
+  right: 6px;
   top: 50%;
   transform: translateY(-50%);
   width: 18px;
