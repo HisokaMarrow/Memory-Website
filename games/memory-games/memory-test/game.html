@@ -167,6 +167,10 @@
       pauseResolve = null;
     }
   }
+  
+  function giveUp() {
+  window.location.href = "settings.html"; // or another page if you prefer
+}
 
   function endEarly() {
     localStorage.setItem("shownWords", JSON.stringify(wordList.slice(0, currentIndex)));
@@ -175,6 +179,7 @@
 
   window.togglePause = togglePause;
   window.endEarly = endEarly;
+  window.giveUp = giveUp;
 
   window.onload = () => {
     startBtn.addEventListener('click', () => startCountdown(beginGame));
