@@ -178,8 +178,7 @@
           remainingTime--;
           if (timer) timer.textContent = remainingTime;
           if (remainingTime <= 0) {
-            document.getElementById("output").innerText = "Time's Up!";
-            	endEarly();
+          	endEarly();
           }
         }
       }, 1000);
