@@ -81,8 +81,6 @@
 
 <script>
 (function () {
-  let isPaused = false;
-  let pauseResolve = null;
   let shouldStopGame = false;
   let currentSequence = [];
   let countdownValue = 5;
@@ -103,25 +101,18 @@
     window.speechSynthesis.speak(utter);
   }
 
-  function waitWhilePaused() {
-    return new Promise(resolve => {
-      if (!isPaused) resolve();
-      else pauseResolve = resolve;
-    });
-  }
-
   function togglePause() {
-    isPaused = !isPaused;
+    togglePauseTimer(); // shared timer logic
+
     const pauseBtnDesktop = document.getElementById("pause");
     const pauseBtnMobile = document.getElementById("pause-mobile");
-    const newLabel = isPaused ? "Resume" : "Pause";
+
+    const currentLabel = pauseBtnDesktop?.textContent || "Pause";
+    const isNowPaused = currentLabel === "Pause";
+    const newLabel = isNowPaused ? "Resume" : "Pause";
+
     if (pauseBtnDesktop) pauseBtnDesktop.textContent = newLabel;
     if (pauseBtnMobile) pauseBtnMobile.textContent = newLabel;
-    if (!isPaused && pauseResolve) {
-      pauseResolve();
-      pauseResolve = null;
-    }
-    window.togglePauseTimer?.();
   }
 
   function endEarly() {
@@ -141,6 +132,11 @@
     window.location.href = "settings.html";
   }
 
+  function onTimeExpired() {
+    document.getElementById("output").innerText = "Time’s Up!";
+    setTimeout(() => window.location.href = "results.html", 2000);
+  }
+
   function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -155,15 +151,13 @@
     startBtn.style.display = "none";
 
     const interval = setInterval(() => {
-      if (!isPaused) {
-        countdownEl.innerText = countdownValue;
-        countdownValue--;
-        if (countdownValue < 0) {
-          clearInterval(interval);
-          countdownEl.style.display = "none";
-          label.style.display = "none";
-          callback();
-        }
+      countdownEl.innerText = countdownValue;
+      countdownValue--;
+      if (countdownValue < 0) {
+        clearInterval(interval);
+        countdownEl.style.display = "none";
+        label.style.display = "none";
+        callback();
       }
     }, 1000);
   }
@@ -175,14 +169,12 @@
 
     const gameDuration = testTime / 1000;
 
-    startGameTimer(gameDuration, () => {
-      endEarly();
-    });
+    startGameTimer(gameDuration, onTimeExpired);
 
     (function generateNumberLoop() {
       if (shouldStopGame) return;
 
-      waitWhilePaused().then(() => {
+      window.waitWhilePaused().then(() => {
         const num = getRandomNumber(1, rangeMax);
         const displayNum = padZeros && num < 10 ? "0" + num : num;
         currentSequence.push(displayNum);
@@ -201,9 +193,7 @@
 
   function initGameLogic() {
     const startBtn = document.getElementById("startButton");
-    if (startBtn) {
-      startBtn.onclick = () => startCountdown(beginGame);
-    }
+    if (startBtn) startBtn.onclick = () => startCountdown(beginGame);
 
     document.getElementById("pause")?.addEventListener("click", togglePause);
     document.getElementById("pause-mobile")?.addEventListener("click", togglePause);
@@ -213,7 +203,6 @@
     document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
   }
 
-  // Expose functions globally for header buttons
   window.togglePause = togglePause;
   window.endEarly = endEarly;
   window.giveUp = giveUp;
@@ -221,7 +210,3 @@
   window.onload = initGameLogic;
 })();
 </script>
-
-  
-</body>
-</html>
