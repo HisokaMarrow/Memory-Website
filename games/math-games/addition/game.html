@@ -11,6 +11,9 @@
 
   <!-- Game header styles -->
   <link rel="stylesheet" href="/style/gameheader.css" /> <!-- Added this line -->
+
+  <script src="/scripts/timer.js"></script>
+
 </head>
 <body>
 
@@ -115,19 +118,28 @@
       }
     }
 
-    function endEarly() {
-      shouldStopGame = true;
-      clearInterval(timerInterval);
-      localStorage.setItem("mathProblems", JSON.stringify(problems));
-      localStorage.setItem("mathUserAnswers", JSON.stringify(userAnswers));
-      problemBox.textContent = "Time’s Up!";
-      input.style.display = "none";
-      setTimeout(() => window.location.href = "results.html", 2000);
-    }
+  function endEarly() {
+  shouldStopGame = true;
+  stopGameTimer();
+  localStorage.setItem("mathProblems", JSON.stringify(problems));
+  localStorage.setItem("mathUserAnswers", JSON.stringify(userAnswers));
+  problemBox.textContent = "Done!";
+  input.style.display = "none";
+  setTimeout(() => window.location.href = "results.html", 2000);
+}
 
-    function giveUp() {
-      window.location.href = "settings.html";
-    }
+function giveUp() {
+  shouldStopGame = true;
+  stopGameTimer();
+  problemBox.textContent = "Done!";
+  window.location.href = "settings.html";
+}
+
+function onTimeExpired() {
+  problemBox.textContent = "Time’s Up!";
+  input.style.display = "none";
+  setTimeout(() => window.location.href = "results.html", 2000);
+}
 
     function getRandomNumbers() {
       function randomInRange(min, max) {
@@ -175,29 +187,16 @@
       }, 1000);
     }
 
-   function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
-  const secs = (seconds % 60).toString().padStart(2, '0');
-  return `${mins}:${secs}`;
-}
-
 function beginGame() {
   problemBox.style.display = "block";
   input.style.display = "block";
   input.focus();
   getRandomNumbers();
 
-  // Start and display formatted time
-  const timerDisplay = document.getElementById("game-timer");
-  if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
-
-  timerInterval = setInterval(() => {
-    if (!isPaused) {
-      timeLeft--;
-      if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
-      if (timeLeft <= 0) endEarly();
-    }
-  }, 1000);
+  // Start the global timer using the reusable helper
+ startGameTimer(totalTime, () => {
+  onTimeExpired();
+});
 
   input.addEventListener("keyup", async function (e) {
     if (e.key === "Enter" && input.value.trim() !== "") {
