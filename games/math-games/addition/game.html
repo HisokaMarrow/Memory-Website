@@ -175,30 +175,40 @@
       }, 1000);
     }
 
-    function beginGame() {
-      problemBox.style.display = "block";
-      input.style.display = "block";
-      input.focus();
-      getRandomNumbers();
+   function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+  const secs = (seconds % 60).toString().padStart(2, '0');
+  return `${mins}:${secs}`;
+}
 
-      timerInterval = setInterval(() => {
-        if (!isPaused) {
-          timeLeft--;
-          const timer = document.getElementById("gameheadertimerdown-timer");
-          if (timer) timer.textContent = timeLeft;
-          if (timeLeft <= 0) endEarly();
-        }
-      }, 1000);
+function beginGame() {
+  problemBox.style.display = "block";
+  input.style.display = "block";
+  input.focus();
+  getRandomNumbers();
 
-      input.addEventListener("keyup", async function (e) {
-        if (e.key === "Enter" && input.value.trim() !== "") {
-          userAnswers.push(input.value.trim());
-          input.value = "";
-          await waitWhilePaused();
-          getRandomNumbers();
-        }
-      });
+  // Start and display formatted time
+  const timerDisplay = document.getElementById("game-timer");
+  if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
+
+  timerInterval = setInterval(() => {
+    if (!isPaused) {
+      timeLeft--;
+      if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
+      if (timeLeft <= 0) endEarly();
     }
+  }, 1000);
+
+  input.addEventListener("keyup", async function (e) {
+    if (e.key === "Enter" && input.value.trim() !== "") {
+      userAnswers.push(input.value.trim());
+      input.value = "";
+      await waitWhilePaused();
+      getRandomNumbers();
+    }
+  });
+}
+
 
     function initGame() {
       if (startBtn) startBtn.onclick = () => startCountdown(beginGame);
