@@ -98,29 +98,34 @@
   }
 
   function checkAnswers() {
-    const inputs = document.querySelectorAll(".input-box");
-    let correct = 0;
+  const inputs = document.querySelectorAll(".input-box");
+  let correct = 0;
+  let totalDigitsCorrect = 0;
 
-    inputs.forEach((input, i) => {
-      const wrapper = input.parentElement;
-      const correctAnswer = generatedNumbers[i].toString();
+  inputs.forEach((input, i) => {
+    const wrapper = input.parentElement;
+    const correctAnswer = generatedNumbers[i].toString();
+    const userAnswer = input.value.trim();
 
-      if (input.value.trim() === correctAnswer) {
-        input.classList.add("correct");
-        input.classList.remove("incorrect");
-        wrapper.querySelector(".correct-answer").textContent = "";
-        correct++;
-      } else {
-        input.classList.add("incorrect");
-        input.classList.remove("correct");
-        wrapper.querySelector(".correct-answer").textContent = `Correct: ${correctAnswer}`;
-      }
-    });
+    if (userAnswer === correctAnswer) {
+      input.classList.add("correct");
+      input.classList.remove("incorrect");
+      wrapper.querySelector(".correct-answer").textContent = "";
+      correct++;
+      totalDigitsCorrect += correctAnswer.length;
+    } else {
+      input.classList.add("incorrect");
+      input.classList.remove("correct");
+      wrapper.querySelector(".correct-answer").textContent = `Correct: ${correctAnswer}`;
+    }
+  });
 
-    const percent = Math.round((correct / generatedNumbers.length) * 100);
-    document.getElementById("summary").innerHTML =
-      `You got <span class="highlight">${correct}</span> out of ${generatedNumbers.length} correct (${percent}%)`;
-  }
+  const percent = Math.round((correct / generatedNumbers.length) * 100);
+  document.getElementById("summary").innerHTML = `
+    You got <span class="highlight">${correct}</span> out of ${generatedNumbers.length} correct (${percent}%)<br />
+    <span style="display: block; margin-top: 0.5rem;">Digits remembered: <span class="highlight">${totalDigitsCorrect}</span></span>
+  `;
+}
 
   function tryAgain() {
     window.location.href = "settings.html";
