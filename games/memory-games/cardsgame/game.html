@@ -92,12 +92,9 @@
   const cardInterval = parseFloat(localStorage.getItem("cardInterval")) || 2;
 
   let cardSequence = [];
-  let isPaused = false;
-  let pauseResolve = null;
+  let shouldStopGame = false;
   let countdownValue = 5;
-  let startTime = null;
   let currentIndex = 0;
-  let gameTimerInterval;
 
   function generateDeck() {
     const singleDeck = [];
@@ -138,7 +135,6 @@
     return `${ranks[rank]}_of_${suits[suit]}.png`;
   }
 
-  // Show the current card with white background wrapper
   function showCard(index) {
     output.innerHTML = '';
     output.style.display = 'flex';
@@ -158,104 +154,86 @@
     output.appendChild(wrapper);
   }
 
-  async function wait(ms) {
+  function wait(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   async function beginGame() {
     cardSequence = getShuffledCards();
-    startTime = Date.now();
+    output.style.display = 'block';
 
-    const timerEl = document.getElementById("game-timer");
-    let remainingTime = timeLimit;
+    startGameTimer(timeLimit, onTimeExpired);
 
-    if (timerEl) {
-      timerEl.textContent = remainingTime;
-      timerEl.style.display = "block";
-    }
-
-    gameTimerInterval = setInterval(() => {
-      if (!isPaused) {
-        remainingTime--;
-        if (timerEl) timerEl.textContent = remainingTime;
-        if (remainingTime <= 0) {
-          clearInterval(gameTimerInterval);
-        }
-      }
-    }, 1000);
-
-    while (currentIndex < cardSequence.length) {
-      if (isPaused) {
-        await waitWhilePaused();
-      }
-
-      const elapsed = (Date.now() - startTime) / 1000;
-      if (elapsed >= timeLimit) break;
+    while (currentIndex < cardSequence.length && !shouldStopGame) {
+      await window.waitWhilePaused();
 
       showCard(currentIndex);
       currentIndex++;
       await wait(cardInterval * 1000);
     }
 
-    clearInterval(gameTimerInterval);
-    localStorage.setItem("cardSequence", JSON.stringify(cardSequence.slice(0, currentIndex)));
-    window.location.href = "results.html";
+    if (!shouldStopGame) {
+      localStorage.setItem("cardSequence", JSON.stringify(cardSequence.slice(0, currentIndex)));
+      window.location.href = "results.html";
+    }
   }
 
   function startCountdown(callback) {
-    const countdownEl = document.getElementById("countdown");
-    const label = document.getElementById("countdownLabel");
-
-    countdownEl.style.display = "block";
-    label.style.display = "block";
+    countdown.style.display = "block";
+    countdownLabel.style.display = "block";
     startBtn.style.display = "none";
 
     const interval = setInterval(() => {
-      if (!isPaused) {
-        countdownEl.innerText = countdownValue;
-        countdownValue--;
-        if (countdownValue < 0) {
-          clearInterval(interval);
-          countdownEl.style.display = "none";
-          label.style.display = "none";
-          callback();
-        }
+      countdown.innerText = countdownValue;
+      countdownValue--;
+      if (countdownValue < 0) {
+        clearInterval(interval);
+        countdown.style.display = "none";
+        countdownLabel.style.display = "none";
+        callback();
       }
     }, 1000);
   }
 
-  function waitWhilePaused() {
-    return new Promise(resolve => {
-      if (!isPaused) resolve();
-      else pauseResolve = resolve;
-    });
-  }
-
   function togglePause() {
-    isPaused = !isPaused;
+    togglePauseTimer();
     const pauseBtnDesktop = document.getElementById("pause");
     const pauseBtnMobile = document.getElementById("pause-mobile");
-    const label = isPaused ? "Resume" : "Pause";
-    if (pauseBtnDesktop) pauseBtnDesktop.textContent = label;
-    if (pauseBtnMobile) pauseBtnMobile.textContent = label;
-    if (!isPaused && pauseResolve) {
-      pauseResolve();
-      pauseResolve = null;
-    }
+    const currentLabel = pauseBtnDesktop?.textContent || "Pause";
+    const isNowPaused = currentLabel === "Pause";
+    const newLabel = isNowPaused ? "Resume" : "Pause";
+    if (pauseBtnDesktop) pauseBtnDesktop.textContent = newLabel;
+    if (pauseBtnMobile) pauseBtnMobile.textContent = newLabel;
   }
 
   function endEarly() {
-    clearInterval(gameTimerInterval);
+    shouldStopGame = true;
+    stopGameTimer();
     localStorage.setItem("cardSequence", JSON.stringify(cardSequence.slice(0, currentIndex)));
-    window.location.href = "results.html";
+    output.innerHTML = "Done!";
+    setTimeout(() => window.location.href = "results.html", 2000);
   }
 
   function giveUp() {
+    shouldStopGame = true;
+    stopGameTimer();
+    output.innerHTML = "Done!";
     window.location.href = "settings.html";
   }
 
+  function onTimeExpired() {
+    output.innerHTML = "Time’s Up!";
+    setTimeout(() => window.location.href = "results.html", 2000);
+  }
+
   function initGameLogic() {
-    startBtn.addEventListener('click', () => startCountdown(beginGame));
+    startBtn?.addEventListener('click', () => startCountdown(beginGame));
+    document.getElementById("pause")?.addEventListener("click", togglePause);
+    document.getElementById("pause-mobile")?.addEventListener("click", togglePause);
+    document.getElementById("end-early")?.addEventListener("click", endEarly);
+    document.getElementById("end-early-mobile")?.addEventListener("click", endEarly);
+    document.getElementById("give-up")?.addEventListener("click", giveUp);
+    document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
   }
 
   window.togglePause = togglePause;
@@ -266,7 +244,5 @@
 })();
 </script>
 
-
-  
 </body>
 </html>
