@@ -1,9 +1,8 @@
-// scripts/timer.js
-
 let timerInterval = null;
 let timeLeft = 0;
 let isPaused = false;
 let pauseCallback = null;
+let gameHasEnded = false; // NEW: global guard to prevent late callback
 
 function formatTime(seconds) {
   const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -15,7 +14,11 @@ function startGameTimer(seconds, onEndCallback) {
   const timerDisplay = document.getElementById("game-timer");
   timeLeft = seconds;
   isPaused = false;
+  gameHasEnded = false;
+
   if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
+
+  clearInterval(timerInterval); // Clear existing interval before starting a new one
 
   timerInterval = setInterval(() => {
     if (!isPaused) {
@@ -23,7 +26,8 @@ function startGameTimer(seconds, onEndCallback) {
       if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
       if (timeLeft <= 0) {
         clearInterval(timerInterval);
-        if (typeof onEndCallback === 'function') {
+        timerInterval = null;
+        if (!gameHasEnded && typeof onEndCallback === 'function') {
           onEndCallback();
         }
       }
@@ -33,6 +37,8 @@ function startGameTimer(seconds, onEndCallback) {
 
 function stopGameTimer() {
   clearInterval(timerInterval);
+  timerInterval = null;
+  gameHasEnded = true;
 }
 
 function togglePauseTimer() {
