@@ -11,6 +11,9 @@
 
   <!-- Game header styles -->
   <link rel="stylesheet" href="/style/gameheader.css" /> <!-- Added this line -->
+
+  <script src="/scripts/timer.js"></script>
+
 </head>
 <body>
 
@@ -77,159 +80,148 @@
   
 
 <script>
-  (function () {
-    var isPaused = false;
-    var pauseResolve = null;
-    var shouldStopGame = false;
-    var currentSequence = [];
-    var timerInterval = null;
-    var countdownValue = 5;
+(function () {
+  let isPaused = false;
+  let pauseResolve = null;
+  let shouldStopGame = false;
+  let currentSequence = [];
+  let countdownValue = 5;
 
-    var delay = (parseFloat(localStorage.getItem("delay")) || 2) * 1000;
-    var rangeMax = parseInt(localStorage.getItem("rangeMax")) || 99;
-    var testTime = (parseInt(localStorage.getItem("testTime")) || 30) * 1000;
-    var padZeros = localStorage.getItem("padZeros") === "true";
-    var enableVoice = localStorage.getItem("enableVoice") === "true";
-    var speakIndividually = localStorage.getItem("speakIndividually") === "true";
+  const delay = (parseFloat(localStorage.getItem("delay")) || 2) * 1000;
+  const rangeMax = parseInt(localStorage.getItem("rangeMax")) || 99;
+  const testTime = (parseInt(localStorage.getItem("testTime")) || 30) * 1000;
+  const padZeros = localStorage.getItem("padZeros") === "true";
+  const enableVoice = localStorage.getItem("enableVoice") === "true";
+  const speakIndividually = localStorage.getItem("speakIndividually") === "true";
 
-    function speak(text) {
-      if (!enableVoice || !window.speechSynthesis) return;
-      var utter = new SpeechSynthesisUtterance();
-      utter.text = speakIndividually ? text.toString().split('').join(' ') : text;
-      utter.lang = 'en-US';
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(utter);
+  function speak(text) {
+    if (!enableVoice || !window.speechSynthesis) return;
+    const utter = new SpeechSynthesisUtterance();
+    utter.text = speakIndividually ? text.toString().split('').join(' ') : text;
+    utter.lang = 'en-US';
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utter);
+  }
+
+  function waitWhilePaused() {
+    return new Promise(resolve => {
+      if (!isPaused) resolve();
+      else pauseResolve = resolve;
+    });
+  }
+
+  function togglePause() {
+    isPaused = !isPaused;
+    const pauseBtnDesktop = document.getElementById("pause");
+    const pauseBtnMobile = document.getElementById("pause-mobile");
+    const newLabel = isPaused ? "Resume" : "Pause";
+    if (pauseBtnDesktop) pauseBtnDesktop.textContent = newLabel;
+    if (pauseBtnMobile) pauseBtnMobile.textContent = newLabel;
+    if (!isPaused && pauseResolve) {
+      pauseResolve();
+      pauseResolve = null;
     }
+    window.togglePauseTimer?.();
+  }
 
-    function waitWhilePaused() {
-      return new Promise(function (resolve) {
-        if (!isPaused) resolve();
-        else pauseResolve = resolve;
+  function endEarly() {
+    shouldStopGame = true;
+    stopGameTimer();
+    localStorage.setItem("generatedNumbers", JSON.stringify(currentSequence));
+    document.getElementById("output").innerText = "Done!";
+    setTimeout(() => {
+      window.location.href = "results.html";
+    }, 2000);
+  }
+
+  function giveUp() {
+    shouldStopGame = true;
+    stopGameTimer();
+    document.getElementById("output").innerText = "Done!";
+    window.location.href = "settings.html";
+  }
+
+  function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function startCountdown(callback) {
+    const countdownEl = document.getElementById("countdown");
+    const label = document.getElementById("countdownLabel");
+    const startBtn = document.getElementById("startButton");
+
+    countdownEl.style.display = "block";
+    label.style.display = "block";
+    startBtn.style.display = "none";
+
+    const interval = setInterval(() => {
+      if (!isPaused) {
+        countdownEl.innerText = countdownValue;
+        countdownValue--;
+        if (countdownValue < 0) {
+          clearInterval(interval);
+          countdownEl.style.display = "none";
+          label.style.display = "none";
+          callback();
+        }
+      }
+    }, 1000);
+  }
+
+  function beginGame() {
+    currentSequence = [];
+    const output = document.getElementById("output");
+    output.style.display = "block";
+
+    const gameDuration = testTime / 1000;
+
+    startGameTimer(gameDuration, () => {
+      endEarly();
+    });
+
+    (function generateNumberLoop() {
+      if (shouldStopGame) return;
+
+      waitWhilePaused().then(() => {
+        const num = getRandomNumber(1, rangeMax);
+        const displayNum = padZeros && num < 10 ? "0" + num : num;
+        currentSequence.push(displayNum);
+
+        output.style.opacity = 0;
+        setTimeout(() => {
+          output.innerText = displayNum;
+          output.style.opacity = 1;
+        }, 50);
+
+        speak(displayNum);
+        setTimeout(generateNumberLoop, delay);
       });
+    })();
+  }
+
+  function initGameLogic() {
+    const startBtn = document.getElementById("startButton");
+    if (startBtn) {
+      startBtn.onclick = () => startCountdown(beginGame);
     }
 
-    function togglePause() {
-      isPaused = !isPaused;
-      var pauseBtnDesktop = document.getElementById("pause");
-      var pauseBtnMobile = document.getElementById("pause-mobile");
+    document.getElementById("pause")?.addEventListener("click", togglePause);
+    document.getElementById("pause-mobile")?.addEventListener("click", togglePause);
+    document.getElementById("end-early")?.addEventListener("click", endEarly);
+    document.getElementById("end-early-mobile")?.addEventListener("click", endEarly);
+    document.getElementById("give-up")?.addEventListener("click", giveUp);
+    document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
+  }
 
-      var newLabel = isPaused ? "Resume" : "Pause";
-      if (pauseBtnDesktop) pauseBtnDesktop.textContent = newLabel;
-      if (pauseBtnMobile) pauseBtnMobile.textContent = newLabel;
+  // Expose functions globally for header buttons
+  window.togglePause = togglePause;
+  window.endEarly = endEarly;
+  window.giveUp = giveUp;
 
-      if (!isPaused && pauseResolve) {
-        pauseResolve();
-        pauseResolve = null;
-      }
-    }
-
-    function endEarly() {
-      shouldStopGame = true;
-      clearInterval(timerInterval);
-      localStorage.setItem("generatedNumbers", JSON.stringify(currentSequence));
-      document.getElementById("output").innerText = "Done!";
-      setTimeout(function () {
-        window.location.href = "results.html";
-      }, 2000);
-    }
-
-    function giveUp() {
-      document.getElementById("output").innerText = "Done!";
-      	window.location.href = "settings.html";
-    }
-
-    function getRandomNumber(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    function startCountdown(callback) {
-      var countdownEl = document.getElementById("countdown");
-      var label = document.getElementById("countdownLabel");
-
-      countdownEl.style.display = "block";
-      label.style.display = "block";
-
-      document.getElementById("startButton").style.display = "none";
-
-      var interval = setInterval(function () {
-        if (!isPaused) {
-          countdownEl.innerText = countdownValue;
-          countdownValue--;
-          if (countdownValue < 0) {
-            clearInterval(interval);
-            countdownEl.style.display = "none";
-            label.style.display = "none";
-            callback();
-          }
-        }
-      }, 1000);
-    }
-
-    function beginGame() {
-      currentSequence = [];
-      var remainingTime = testTime / 1000;
-      var output = document.getElementById("output");
-      var timer = document.getElementById("game-timer");
-
-      output.style.display = "block";
-
-      timerInterval = setInterval(function () {
-        if (!isPaused) {
-          remainingTime--;
-          if (timer) timer.textContent = remainingTime;
-          if (remainingTime <= 0) {
-          	endEarly();
-          }
-        }
-      }, 1000);
-
-      (function generateNumberLoop() {
-        if (shouldStopGame || remainingTime <= 0) return;
-
-        waitWhilePaused().then(function () {
-          var num = getRandomNumber(1, rangeMax);
-          if (padZeros && num < 10) num = "0" + num;
-          currentSequence.push(num);
-          output.style.opacity = 0;
-          setTimeout(() => {
-            output.innerText = num;
-            output.style.opacity = 1;
-          }, 50);
-
-          speak(num);
-
-          setTimeout(generateNumberLoop, delay);
-        });
-      })();
-    }
-
-    function initGameLogic() {
-      var startBtn = document.getElementById("startButton");
-      if (startBtn) {
-        startBtn.onclick = function () {
-          startCountdown(beginGame);
-        };
-      }
-
-      var pauseBtns = [document.getElementById("pause"), document.getElementById("pause-mobile")];
-      var endBtns = [document.getElementById("end-early"), document.getElementById("end-early-mobile")];
-      var giveUpBtns = [document.getElementById("give-up"), document.getElementById("give-up-mobile")];
-
-      pauseBtns.forEach(btn => btn && (btn.onclick = togglePause));
-      endBtns.forEach(btn => btn && (btn.onclick = endEarly));
-      giveUpBtns.forEach(btn => btn && (btn.onclick = giveUp));
-    }
-
-    // Expose methods globally for header interaction
-    window.togglePause = togglePause;
-    window.endEarly = endEarly;
-    window.giveUp = giveUp;
-    window.dispatchEvent(new Event('gameReady'));
-
-    // Initialize the game once the page loads
-    window.onload = initGameLogic;
-  })();
+  window.onload = initGameLogic;
+})();
 </script>
+
   
 </body>
 </html>
