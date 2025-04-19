@@ -82,15 +82,11 @@
     const difficulty = localStorage.getItem("mathDifficulty") || "beginner";
     const totalTime = parseInt(localStorage.getItem("mathTimeLimit") || "60");
 
-    let isPaused = false;
-    let pauseCallback = null;
-    let timeLeft = totalTime;
+    let shouldStopGame = false;
     let countdownValue = 5;
     let currentAnswer;
     let problems = [];
     let userAnswers = [];
-    let timerInterval;
-    let shouldStopGame = false;
 
     const countdownEl = document.getElementById("countdown");
     const label = document.getElementById("countdownLabel");
@@ -98,48 +94,42 @@
     const problemBox = document.getElementById("problem");
     const startBtn = document.getElementById("startButton");
 
-    function waitWhilePaused() {
-      return new Promise(resolve => {
-        if (!isPaused) resolve();
-        else pauseCallback = resolve;
-      });
-    }
-
     function togglePause() {
-      isPaused = !isPaused;
+      togglePauseTimer(); // uses shared timer logic
+
       const pauseBtnDesktop = document.getElementById("pause");
       const pauseBtnMobile = document.getElementById("pause-mobile");
-      const newLabel = isPaused ? "Resume" : "Pause";
+
+      const currentLabel = pauseBtnDesktop?.textContent || "Pause";
+      const isNowPaused = currentLabel === "Pause";
+      const newLabel = isNowPaused ? "Resume" : "Pause";
+
       if (pauseBtnDesktop) pauseBtnDesktop.textContent = newLabel;
       if (pauseBtnMobile) pauseBtnMobile.textContent = newLabel;
-      if (!isPaused && pauseCallback) {
-        pauseCallback();
-        pauseCallback = null;
-      }
     }
 
-  function endEarly() {
-  shouldStopGame = true;
-  stopGameTimer();
-  localStorage.setItem("mathProblems", JSON.stringify(problems));
-  localStorage.setItem("mathUserAnswers", JSON.stringify(userAnswers));
-  problemBox.textContent = "Done!";
-  input.style.display = "none";
-  setTimeout(() => window.location.href = "results.html", 2000);
-}
+    function endEarly() {
+      shouldStopGame = true;
+      stopGameTimer();
+      localStorage.setItem("mathProblems", JSON.stringify(problems));
+      localStorage.setItem("mathUserAnswers", JSON.stringify(userAnswers));
+      problemBox.textContent = "Done!";
+      input.style.display = "none";
+      setTimeout(() => window.location.href = "results.html", 2000);
+    }
 
-function giveUp() {
-  shouldStopGame = true;
-  stopGameTimer();
-  problemBox.textContent = "Done!";
-  window.location.href = "settings.html";
-}
+    function giveUp() {
+      shouldStopGame = true;
+      stopGameTimer();
+      problemBox.textContent = "Done!";
+      window.location.href = "settings.html";
+    }
 
-function onTimeExpired() {
-  problemBox.textContent = "Time’s Up!";
-  input.style.display = "none";
-  setTimeout(() => window.location.href = "results.html", 2000);
-}
+    function onTimeExpired() {
+      problemBox.textContent = "Time’s Up!";
+      input.style.display = "none";
+      setTimeout(() => window.location.href = "results.html", 2000);
+    }
 
     function getRandomNumbers() {
       function randomInRange(min, max) {
@@ -174,60 +164,56 @@ function onTimeExpired() {
       countdownEl.style.display = "block";
 
       const interval = setInterval(() => {
-        if (!isPaused) {
-          countdownEl.innerText = countdownValue;
-          countdownValue--;
-          if (countdownValue < 0) {
-            clearInterval(interval);
-            countdownEl.style.display = "none";
-            label.style.display = "none";
-            callback();
-          }
+        countdownEl.innerText = countdownValue;
+        countdownValue--;
+        if (countdownValue < 0) {
+          clearInterval(interval);
+          countdownEl.style.display = "none";
+          label.style.display = "none";
+          callback();
         }
       }, 1000);
     }
 
-function beginGame() {
-  problemBox.style.display = "block";
-  input.style.display = "block";
-  input.focus();
-  getRandomNumbers();
-
-  // Start the global timer using the reusable helper
- startGameTimer(totalTime, () => {
-  onTimeExpired();
-});
-
-  input.addEventListener("keyup", async function (e) {
-    if (e.key === "Enter" && input.value.trim() !== "") {
-      userAnswers.push(input.value.trim());
-      input.value = "";
-      await waitWhilePaused();
+    function beginGame() {
+      problemBox.style.display = "block";
+      input.style.display = "block";
+      input.focus();
       getRandomNumbers();
-    }
-  });
-}
 
+      startGameTimer(totalTime, () => {
+        onTimeExpired();
+      });
+
+      input.addEventListener("keyup", async function (e) {
+        if (e.key === "Enter" && input.value.trim() !== "") {
+          userAnswers.push(input.value.trim());
+          input.value = "";
+          await window.waitWhilePaused();
+          getRandomNumbers();
+        }
+      });
+    }
 
     function initGame() {
       if (startBtn) startBtn.onclick = () => startCountdown(beginGame);
 
-      const pauseBtns = [document.getElementById("pause"), document.getElementById("pause-mobile")];
-      const endBtns = [document.getElementById("end-early"), document.getElementById("end-early-mobile")];
-      const giveUpBtns = [document.getElementById("give-up"), document.getElementById("give-up-mobile")];
-
-      pauseBtns.forEach(btn => btn && (btn.onclick = togglePause));
-      endBtns.forEach(btn => btn && (btn.onclick = endEarly));
-      giveUpBtns.forEach(btn => btn && (btn.onclick = giveUp));
+      document.getElementById("pause")?.addEventListener("click", togglePause);
+      document.getElementById("pause-mobile")?.addEventListener("click", togglePause);
+      document.getElementById("end-early")?.addEventListener("click", endEarly);
+      document.getElementById("end-early-mobile")?.addEventListener("click", endEarly);
+      document.getElementById("give-up")?.addEventListener("click", giveUp);
+      document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
     }
 
-    // Global exposure for header
     window.togglePause = togglePause;
     window.endEarly = endEarly;
     window.giveUp = giveUp;
+
     window.onload = initGame;
   })();
 </script>
+
 
 </body>
 </html>
