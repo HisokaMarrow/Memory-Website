@@ -120,17 +120,19 @@
 
     function endEarly() {
       shouldStopGame = true;
-      clearInterval(timerInterval);
+      stopGameTimer();
       localStorage.setItem("mathProblems", JSON.stringify(problems));
       localStorage.setItem("mathUserAnswers", JSON.stringify(userAnswers));
-      problemBox.textContent = "Time’s Up!";
-      input.style.display = "none";
+      document.getElementById("output").innerText = "Done!";
       setTimeout(() => window.location.href = "results.html", 2000);
-    }
+  }
 
-    function giveUp() {
-      window.location.href = "settings.html";
-    }
+  function giveUp() {
+    shouldStopGame = true;
+    stopGameTimer();
+    document.getElementById("output").innerText = "Done!";
+    window.location.href = "settings.html";
+  }
 
     function getRandomNumbers() {
       function randomInRange(min, max) {
