@@ -168,7 +168,7 @@
 
     startGameTimer(testTime, onTimeExpired);
 
-    (function wordLoop() {
+   (function wordLoop() {
       if (shouldStopGame) return;
 
       window.waitWhilePaused().then(() => {
@@ -186,7 +186,6 @@
       });
     })();
   }
-
   function initGameLogic() {
     document.getElementById("startButton")?.addEventListener("click", () => startCountdown(beginGame));
     document.getElementById("pause")?.addEventListener("click", togglePause);
