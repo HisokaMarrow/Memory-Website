@@ -11,6 +11,9 @@
 
   <!-- Game header styles -->
   <link rel="stylesheet" href="/style/gameheader.css" /> <!-- Added this line -->
+
+  <script src="/scripts/timer.js"></script>
+
 </head>
 <body>
 
@@ -187,17 +190,10 @@ function beginGame() {
   input.focus();
   getRandomNumbers();
 
-  // Start and display formatted time
-  const timerDisplay = document.getElementById("game-timer");
-  if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
-
-  timerInterval = setInterval(() => {
-    if (!isPaused) {
-      timeLeft--;
-      if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
-      if (timeLeft <= 0) endEarly();
-    }
-  }, 1000);
+  // Start the global timer using the reusable helper
+  startGameTimer(totalTime, () => {
+    endEarly();
+  });
 
   input.addEventListener("keyup", async function (e) {
     if (e.key === "Enter" && input.value.trim() !== "") {
