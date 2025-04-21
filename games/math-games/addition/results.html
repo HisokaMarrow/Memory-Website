@@ -92,6 +92,7 @@
       input.className = "input-box";
       input.value = userAnswers[i] || "";
       input.placeholder = "?";
+      input.readOnly = true; // Disable editing
 
       const correctLabel = document.createElement("div");
       correctLabel.className = "correct-answer";
