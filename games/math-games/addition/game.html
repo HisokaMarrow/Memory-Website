@@ -109,14 +109,17 @@
     }
 
     function endEarly() {
-      shouldStopGame = true;
-      stopGameTimer();
-      localStorage.setItem("mathProblems", JSON.stringify(problems));
-      localStorage.setItem("mathUserAnswers", JSON.stringify(userAnswers));
-      problemBox.textContent = "Done!";
-      input.style.display = "none";
-      setTimeout(() => window.location.href = "results.html", 2000);
-    }
+  shouldStopGame = true;
+  stopGameTimer();
+
+  // Trim problems to match the number of user answers
+  localStorage.setItem("mathProblems", JSON.stringify(problems.slice(0, userAnswers.length)));
+  localStorage.setItem("mathUserAnswers", JSON.stringify(userAnswers.slice()));
+
+  problemBox.textContent = "Done!";
+  input.style.display = "none";
+  setTimeout(() => window.location.href = "results.html", 2000);
+}
 
     function giveUp() {
       shouldStopGame = true;
