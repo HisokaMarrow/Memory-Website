@@ -144,12 +144,16 @@
  renderInputs();
 
 // Show Back to Home button only if user has visited memory technique page
+// Show Back to Home button only if user has visited memory technique page
 if (localStorage.getItem("hasVisitedMemoryTechnique") === "true") {
   const btn = document.createElement("button");
   btn.className = "game-results-buttons";
   btn.textContent = "Back to Home";
   btn.onclick = () => window.location.href = "/index.html";
   document.querySelector(".game-results-buttons-block").appendChild(btn);
+
+  // Clear the flag so it only shows once per cycle
+  localStorage.removeItem("hasVisitedMemoryTechnique");
 }
 
 // Set this flag only when they click through to memory technique
