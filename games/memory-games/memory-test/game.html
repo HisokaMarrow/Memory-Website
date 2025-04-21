@@ -11,6 +11,8 @@
 
   <!-- Game header styles -->
   <link rel="stylesheet" href="/style/gameheader.css" /> <!-- Added this line -->
+  
+  <script src="/scripts/timer.js"></script>
 </head>
 <body>
 
@@ -111,21 +113,28 @@
 }
 
   async function beginGame() {
-    currentIndex = 0;
+  currentIndex = 0;
 
-    while (currentIndex < wordList.length) {
-      if (isPaused) {
-        await waitWhilePaused();
-      }
-
-      showWord(currentIndex);
-      currentIndex++;
-      await wait(3000);
-    }
-
+  // Calculate total test duration: 20 words × 3s each = 60s
+  const totalTestTime = wordList.length * 3;
+  startGameTimer(totalTestTime, () => {
     localStorage.setItem("shownWords", JSON.stringify(wordList.slice(0, currentIndex)));
     window.location.href = "results.html";
+  });
+
+  while (currentIndex < wordList.length) {
+    if (isPaused) {
+      await waitWhilePaused();
+    }
+
+    showWord(currentIndex);
+    currentIndex++;
+    await wait(3000);
   }
+
+  localStorage.setItem("shownWords", JSON.stringify(wordList.slice(0, currentIndex)));
+  window.location.href = "results.html";
+}
 
   function startCountdown(callback) {
     countdown.style.display = "block";
