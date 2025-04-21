@@ -126,10 +126,14 @@
     }
 
     function onTimeExpired() {
-      problemBox.textContent = "Time’s Up!";
-      input.style.display = "none";
-      setTimeout(() => window.location.href = "results.html", 2000);
-    }
+  shouldStopGame = true;
+  stopGameTimer();
+  localStorage.setItem("mathProblems", JSON.stringify(problems));
+  localStorage.setItem("mathUserAnswers", JSON.stringify(userAnswers));
+  problemBox.textContent = "Time’s Up!";
+  input.style.display = "none";
+  setTimeout(() => window.location.href = "results.html", 2000);
+}
 
     function getRandomNumbers() {
       function randomInRange(min, max) {
