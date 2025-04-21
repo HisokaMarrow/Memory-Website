@@ -133,9 +133,12 @@
   }
 
   function onTimeExpired() {
-    document.getElementById("output").innerText = "Time’s Up!";
-    setTimeout(() => window.location.href = "results.html", 2000);
-  }
+  shouldStopGame = true;
+  stopGameTimer();
+  localStorage.setItem("generatedNumbers", JSON.stringify(currentSequence));
+  document.getElementById("output").innerText = "Time’s Up!";
+  setTimeout(() => window.location.href = "results.html", 2000);
+}
 
   function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
