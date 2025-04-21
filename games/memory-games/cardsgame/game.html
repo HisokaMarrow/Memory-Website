@@ -222,9 +222,12 @@
   }
 
   function onTimeExpired() {
-    output.innerHTML = "Time’s Up!";
-    setTimeout(() => window.location.href = "results.html", 2000);
-  }
+  shouldStopGame = true;
+  stopGameTimer();
+  localStorage.setItem("cardSequence", JSON.stringify(cardSequence.slice(0, currentIndex)));
+  output.innerHTML = "Time’s Up!";
+  setTimeout(() => window.location.href = "results.html", 2000);
+}
 
   function initGameLogic() {
     startBtn?.addEventListener('click', () => startCountdown(beginGame));
