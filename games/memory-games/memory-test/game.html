@@ -102,23 +102,13 @@
   }
 
   function showWord(index) {
-    output.innerText = '';
-    output.style.display = 'flex';
-    output.classList.remove('card-grid');
-
-    const word = wordList[index];
-    const wrapper = document.createElement('div');
-    wrapper.className = 'card-wrapper';
-    wrapper.innerText = word;
-    wrapper.style.backgroundColor = '#fff';
-    wrapper.style.color = '#000';
-    wrapper.style.fontSize = '2rem';
-    wrapper.style.fontWeight = '600';
-    wrapper.style.padding = '2rem';
-    wrapper.style.borderRadius = '10px';
-    output.innerHTML = '';
-    output.appendChild(wrapper);
-  }
+  output.style.display = 'block';
+  output.style.opacity = 0;
+  setTimeout(() => {
+    output.innerText = wordList[index];
+    output.style.opacity = 1;
+  }, 50);
+}
 
   async function beginGame() {
     currentIndex = 0;
