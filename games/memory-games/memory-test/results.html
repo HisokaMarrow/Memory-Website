@@ -143,18 +143,21 @@
 
   renderInputs();
 
-  // Get and increment visit count just for this results page
-  let visitCount = parseInt(localStorage.getItem("memoryTestResultsVisit") || "0") + 1;
-  localStorage.setItem("memoryTestResultsVisit", visitCount);
+// Only show Back to Home button if the user has already visited from the memory technique page
+const visitCount = parseInt(localStorage.getItem("memoryTestResultsVisit") || "0");
+if (visitCount >= 1) {
+  const btn = document.createElement("button");
+  btn.className = "game-results-buttons";
+  btn.textContent = "Back to Home";
+  btn.onclick = () => window.location.href = "/index.html";
+  document.querySelector(".game-results-buttons-block").appendChild(btn);
+}
 
-  // Show Back to Home button only if this is the second visit or more
-  if (visitCount >= 2) {
-    const btn = document.createElement("button");
-    btn.href = "/index.html";
-    btn.className = "game-results-buttons";
-    btn.textContent = "Back to Home";
-    document.querySelector(".game-results-buttons-block").appendChild(btn);
-  }
+// Update visit count ONLY when they click through to the memory technique
+function goToTechnique() {
+  localStorage.setItem("memoryTestResultsVisit", "1");
+  window.location.href = "/games/memory-games/memory-test/memorytechnique.html";
+}
 </script>
 
 
