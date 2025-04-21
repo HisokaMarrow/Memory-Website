@@ -131,9 +131,12 @@
   }
 
   function onTimeExpired() {
-    document.getElementById("output").innerText = "Time’s Up!";
-    setTimeout(() => window.location.href = "results.html", 2000);
-  }
+  shouldStopGame = true;
+  stopGameTimer();
+  localStorage.setItem("generatedWords", JSON.stringify(currentSequence));
+  document.getElementById("output").innerText = "Time’s Up!";
+  setTimeout(() => window.location.href = "results.html", 2000);
+}
 
   function getRandomWord() {
     const list = wordBank[difficulty] || wordBank.beginner;
