@@ -141,11 +141,10 @@
     window.location.href = "/games/memory-games/memory-test/memorytechnique.html"; // this should be memory-technique.html if that's the final name
   }
 
-  renderInputs();
+ renderInputs();
 
-// Only show Back to Home button if the user has already visited from the memory technique page
-const visitCount = parseInt(localStorage.getItem("memoryTestResultsVisit") || "0");
-if (visitCount >= 1) {
+// Show Back to Home button only if user has visited memory technique page
+if (localStorage.getItem("hasVisitedMemoryTechnique") === "true") {
   const btn = document.createElement("button");
   btn.className = "game-results-buttons";
   btn.textContent = "Back to Home";
@@ -153,9 +152,9 @@ if (visitCount >= 1) {
   document.querySelector(".game-results-buttons-block").appendChild(btn);
 }
 
-// Update visit count ONLY when they click through to the memory technique
+// Set this flag only when they click through to memory technique
 function goToTechnique() {
-  localStorage.setItem("memoryTestResultsVisit", "1");
+  localStorage.setItem("hasVisitedMemoryTechnique", "true");
   window.location.href = "/games/memory-games/memory-test/memorytechnique.html";
 }
 </script>
