@@ -617,6 +617,7 @@ main {
   padding: 1rem 0;
   max-width: 100%;
   box-sizing: border-box;
+  touch-action: pan-x
 }
 
 
