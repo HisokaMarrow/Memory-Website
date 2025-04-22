@@ -160,7 +160,7 @@
       }
 
       numbers.sort((a, b) => b - a);
-      currentAnswer = numbers.reduce((sum, num) => sum + num, 0);
+      currentAnswer = numbers.reduce((sum, num) => sum - num, 0);
       problems.push({ numbers, answer: currentAnswer });
       problemBox.textContent = numbers.join(" - ");
     }
