@@ -441,7 +441,7 @@ main {
   background-color: var(--main-box);
   color: var(--color-text);
   font-size: 1.25rem;
-  width: 95px;
+  width: 100%;
   text-align: center;
 }
 
