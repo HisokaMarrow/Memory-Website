@@ -85,14 +85,14 @@
 
       const label = document.createElement("div");
       label.className = "problem-label";
-      label.textContent = problem.numbers.join(" + ");
+      label.textContent = `What day is ${problem.date}?`;
 
       const input = document.createElement("input");
-      input.type = "number";
+      input.type = "text";
       input.className = "input-box";
       input.value = userAnswers[i] || "";
-      input.placeholder = "?";
-      input.readOnly = true; // Disable editing
+      input.placeholder = "Day of week";
+      input.readOnly = true;
 
       const correctLabel = document.createElement("div");
       correctLabel.className = "correct-answer";
@@ -110,8 +110,8 @@
 
     inputs.forEach((input, i) => {
       const wrapper = input.parentElement;
-      const correctAnswer = problems[i].answer;
-      const userInput = parseInt(input.value.trim());
+      const correctAnswer = problems[i].answer.toLowerCase();
+      const userInput = input.value.trim().toLowerCase();
 
       if (userInput === correctAnswer) {
         input.classList.add("correct");
@@ -121,7 +121,7 @@
       } else {
         input.classList.add("incorrect");
         input.classList.remove("correct");
-        wrapper.querySelector(".correct-answer").textContent = `Correct: ${correctAnswer}`;
+        wrapper.querySelector(".correct-answer").textContent = `Correct: ${problems[i].answer}`;
       }
     });
 
@@ -135,12 +135,13 @@
   }
 
   function backToGames() {
-    window.location.href = "/maths.html";
+    window.location.href = "/maths.html"; // or another category if this is separated
   }
 
   renderInputs();
-  sessionStorage.setItem("dailyGame_Math Memory", "true");
+  sessionStorage.setItem("dailyGame_Doomsday Memory", "true");
 </script>
+
 
 
 
