@@ -25,42 +25,42 @@
     "category": "Math",
     "title": "Addition Master",
     "description": "Solve as many addition problems as you can in limited time.",
-    "link": "games/math-games/addition/settings.html"
+    "link": "/games/math-games/addition/settings.html"
   },
   {
     "id": "math_subtraction",
     "category": "Math",
     "title": "Subtraction Master",
     "description": "How fast can you solve subtraction problems?",
-    "link": "/pages/math/subtraction/settings.html"
+    "link": "/games/math-games/subtraction/settings.html"
   },
   {
     "id": "math_multiplication",
     "category": "Math",
     "title": "Multiplication Master",
     "description": "Speed through multiplication tasks under pressure.",
-    "link": "/pages/math/multiplication/settings.html"
+    "link": "/games/math-games/multiplication/settings.html"
   },
   {
     "id": "math_division",
     "category": "Math",
     "title": "Division Master",
     "description": "Speed through division tasks under pressure.",
-    "link": "/pages/math/division/settings.html"
+    "link": "/games/math-games/division/settings.html"
   },
   {
     "id": "math_percentage",
     "category": "Math",
     "title": "Percentage Master",
     "description": "Speed through percentage calculation tasks under pressure.",
-    "link": "/pages/math/percentage/settings.html"
+    "link": "/games/math-games/percentage/settings.html"
   },
   {
     "id": "math_doomsday",
     "category": "Math",
     "title": "Doomsday Master",
     "description": "Practice doomsday calculation formulas for any date.",
-    "link": "/pages/math/doomsday/settings.html"
+    "link": "/games/math-games/doomsday/settings.html"
   },
   {
     "id": "riddle_logic",
@@ -81,7 +81,7 @@
     "category": "Riddles",
     "title": "Cipher",
     "description": "This challenge tests your ability to decode messages using logic and intuition.",
-    "link": null
+    "link": "/pages/riddles/numeric/settings.html"
   },
   {
     "id": "vault_memory_techniques",
