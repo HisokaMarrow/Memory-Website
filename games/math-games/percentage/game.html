@@ -138,32 +138,37 @@
   setTimeout(() => window.location.href = "results.html", 2000);
 }
 
-    function getRandomNumbers() {
-      function randomInRange(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-      }
+   function getRandomNumbers() {
+  function randomInRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
-      let numbers = [];
-      switch (difficulty) {
-        case "beginner":
-          numbers.push(randomInRange(1, 100), randomInRange(1, 9));
-          break;
-        case "advanced":
-          numbers.push(randomInRange(10, 99), randomInRange(10, 99));
-          break;
-        case "expert":
-          const count = randomInRange(2, 3);
-          for (let i = 0; i < count; i++) numbers.push(randomInRange(1, 9999));
-          break;
-        default:
-          throw new Error("Unknown difficulty level: " + difficulty);
-      }
+  let percentage, base;
+  switch (difficulty) {
+    case "beginner":
+      percentage = randomInRange(10, 50);   // e.g., 10%, 20%, ...
+      base = randomInRange(10, 200);
+      break;
+    case "advanced":
+      percentage = randomInRange(5, 95);
+      base = randomInRange(50, 500);
+      break;
+    case "expert":
+      percentage = randomInRange(1, 100);
+      base = randomInRange(100, 1000);
+      break;
+    default:
+      throw new Error("Unknown difficulty level: " + difficulty);
+  }
 
-      numbers.sort((a, b) => b - a);
-      currentAnswer = numbers.reduce((sum, num) => sum + num, 0);
-      problems.push({ numbers, answer: currentAnswer });
-      problemBox.textContent = numbers.join(" + ");
-    }
+  currentAnswer = (percentage / 100) * base;
+  currentAnswer = Math.round(currentAnswer * 100) / 100; // round to 2 decimal places
+
+  const numbers = [percentage, base]; // 25% of 80
+  problems.push({ numbers, answer: currentAnswer });
+  problemBox.textContent = `What is ${percentage}% of ${base}?`;
+}
+
 
     function startCountdown(callback) {
       startBtn.style.display = "none";
