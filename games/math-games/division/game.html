@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memoro</title>
+
+  <!-- Global styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/style.css" />
+
+  <!-- Game header styles -->
+  <link rel="stylesheet" href="/style/gameheader.css" /> <!-- Added this line -->
+
+  <script src="/scripts/timer.js"></script>
+
+</head>
+<body>
+
+<script>
+  // Load reusable game header
+  fetch('/components/gameheader.html')
+    .then(res => res.text())
+    .then(function (data) {
+      document.body.insertAdjacentHTML('afterbegin', data);
+
+      // Backdrop for mobile
+      var backdrop = document.createElement('div');
+      backdrop.classList.add('nav-backdrop');
+      document.body.appendChild(backdrop);
+
+      var toggleBtn = document.querySelector('.game-mobile-toggle');
+      var menu = document.querySelector('.game-menu');
+
+      var toggleMenu = function () {
+        toggleBtn.classList.toggle('open');
+        menu.classList.toggle('open');
+        backdrop.classList.toggle('active');
+      };
+
+      if (toggleBtn && menu) {
+        toggleBtn.addEventListener('click', toggleMenu);
+        backdrop.addEventListener('click', toggleMenu);
+      }
+
+      // Define the button hook function
+      function bindHeaderButtons() {
+        if (typeof window.togglePause === 'function') {
+          document.getElementById('pause')?.addEventListener('click', window.togglePause);
+          document.getElementById('pause-mobile')?.addEventListener('click', window.togglePause);
+        }
+        if (typeof window.endEarly === 'function') {
+          document.getElementById('end-early')?.addEventListener('click', window.endEarly);
+          document.getElementById('end-early-mobile')?.addEventListener('click', window.endEarly);
+        }
+        if (typeof window.giveUp === 'function') {
+          document.getElementById('give-up')?.addEventListener('click', window.giveUp);
+          document.getElementById('give-up-mobile')?.addEventListener('click', window.giveUp);
+        }
+      }
+
+      // Delay just enough for game.js to load and attach window methods
+      setTimeout(bindHeaderButtons, 300);
+    })
+    .catch(function (err) {
+      console.error('Failed to load game header:', err);
+    });
+</script>
+
+<main class="main-container">
+  <div class="game-display">
+    <button id="startButton" class="game-gamestart-button">Start Game</button>
+    <a id="countdownLabel" class="main-title" style="display: none;">Starting in...</a>
+    <div id="countdown" class="main-countdown" style="display: none;"></div>
+    <div id="problem" class="main-word" style="display: none;"></div>
+    <input type="number" id="answerInput" class="input-box" placeholder="Your Answer" style="display: none;" />
+  </div>
+</main>
+
+<script>
+  (function () {
+    const difficulty = localStorage.getItem("mathDifficulty") || "beginner";
+    const totalTime = parseInt(localStorage.getItem("mathTimeLimit") || "60");
+
+    let shouldStopGame = false;
+    let countdownValue = 5;
+    let currentAnswer;
+    let problems = [];
+    let userAnswers = [];
+
+    const countdownEl = document.getElementById("countdown");
+    const label = document.getElementById("countdownLabel");
+    const input = document.getElementById("answerInput");
+    const problemBox = document.getElementById("problem");
+    const startBtn = document.getElementById("startButton");
+
+    function togglePause() {
+      togglePauseTimer(); // uses shared timer logic
+
+      const pauseBtnDesktop = document.getElementById("pause");
+      const pauseBtnMobile = document.getElementById("pause-mobile");
+
+      const currentLabel = pauseBtnDesktop?.textContent || "Pause";
+      const isNowPaused = currentLabel === "Pause";
+      const newLabel = isNowPaused ? "Resume" : "Pause";
+
+      if (pauseBtnDesktop) pauseBtnDesktop.textContent = newLabel;
+      if (pauseBtnMobile) pauseBtnMobile.textContent = newLabel;
+    }
+
+    function endEarly() {
+  shouldStopGame = true;
+  stopGameTimer();
+
+  // Trim problems to match the number of user answers
+  localStorage.setItem("mathProblems", JSON.stringify(problems.slice(0, userAnswers.length)));
+  localStorage.setItem("mathUserAnswers", JSON.stringify(userAnswers.slice()));
+
+  problemBox.textContent = "Done!";
+  input.style.display = "none";
+  setTimeout(() => window.location.href = "results.html", 2000);
+}
+
+    function giveUp() {
+      shouldStopGame = true;
+      stopGameTimer();
+      problemBox.textContent = "Done!";
+      window.location.href = "settings.html";
+    }
+
+    function onTimeExpired() {
+  shouldStopGame = true;
+  stopGameTimer();
+  localStorage.setItem("mathProblems", JSON.stringify(problems));
+  localStorage.setItem("mathUserAnswers", JSON.stringify(userAnswers));
+  problemBox.textContent = "Time’s Up!";
+  input.style.display = "none";
+  setTimeout(() => window.location.href = "results.html", 2000);
+}
+
+    function getRandomNumbers() {
+      function randomInRange(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      let numbers = [];
+      switch (difficulty) {
+        case "beginner":
+          numbers.push(randomInRange(1, 100), randomInRange(1, 9));
+          break;
+        case "advanced":
+          numbers.push(randomInRange(10, 99), randomInRange(10, 99));
+          break;
+        case "expert":
+          const count = randomInRange(2, 3);
+          for (let i = 0; i < count; i++) numbers.push(randomInRange(1, 9999));
+          break;
+        default:
+          throw new Error("Unknown difficulty level: " + difficulty);
+      }
+
+      numbers.sort((a, b) => b - a);
+      currentAnswer = numbers.reduce((sum, num) => sum + num, 0);
+      problems.push({ numbers, answer: currentAnswer });
+      problemBox.textContent = numbers.join(" + ");
+    }
+
+    function startCountdown(callback) {
+      startBtn.style.display = "none";
+      label.style.display = "block";
+      countdownEl.style.display = "block";
+
+      const interval = setInterval(() => {
+        countdownEl.innerText = countdownValue;
+        countdownValue--;
+        if (countdownValue < 0) {
+          clearInterval(interval);
+          countdownEl.style.display = "none";
+          label.style.display = "none";
+          callback();
+        }
+      }, 1000);
+    }
+
+    function beginGame() {
+      problemBox.style.display = "block";
+      input.style.display = "block";
+      input.focus();
+      getRandomNumbers();
+
+      startGameTimer(totalTime, () => {
+        onTimeExpired();
+      });
+
+      input.addEventListener("keyup", async function (e) {
+        if (e.key === "Enter" && input.value.trim() !== "") {
+          userAnswers.push(input.value.trim());
+          input.value = "";
+          await window.waitWhilePaused();
+          getRandomNumbers();
+        }
+      });
+    }
+
+    function initGame() {
+      if (startBtn) startBtn.onclick = () => startCountdown(beginGame);
+
+      document.getElementById("pause")?.addEventListener("click", togglePause);
+      document.getElementById("pause-mobile")?.addEventListener("click", togglePause);
+      document.getElementById("end-early")?.addEventListener("click", endEarly);
+      document.getElementById("end-early-mobile")?.addEventListener("click", endEarly);
+      document.getElementById("give-up")?.addEventListener("click", giveUp);
+      document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
+    }
+
+    window.togglePause = togglePause;
+    window.endEarly = endEarly;
+    window.giveUp = giveUp;
+
+    window.onload = initGame;
+  })();
+</script>
+
+
+</body>
+</html>
