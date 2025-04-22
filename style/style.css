@@ -441,6 +441,17 @@ main {
   text-align: center;
 }
 
+.input-box-login {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 2px solid var(--color-border);
+  background-color: var(--main-box);
+  color: var(--color-text);
+  font-size: 1.25rem;
+  width: 80px;
+  text-align: center;
+}
+
 .input-box.correct {
   border-color: var(--color-success);
 }
@@ -462,4 +473,17 @@ main {
 .result-summary .highlight {
   color: var(--color-secondary);
   font-weight: 600;
+}
+
+/* =============================
+   Forms / Inputs
+============================= */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }
