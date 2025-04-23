@@ -88,8 +88,8 @@
   const allRanks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 
   const deckCount = parseInt(localStorage.getItem("cardDeckCount")) || 1;
-  const timeLimit = parseInt(localStorage.getItem("cardTimeLimit")) || 30;
-  const cardInterval = parseFloat(localStorage.getItem("cardInterval")) || 2;
+  const timeLimit = parseInt(localStorage.getItem("cardTimeLimit")) || 60;
+  const cardInterval = parseFloat(localStorage.getItem("cardInterval")) || 5;
 
   let cardSequence = [];
   let shouldStopGame = false;
