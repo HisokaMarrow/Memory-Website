@@ -768,7 +768,6 @@ input[type=number] {
   -webkit-overflow-scrolling: touch; /* For iOS smooth momentum scrolling */
   touch-action: pan-x; /* Explicitly allow horizontal scrolling */
 }
-}
 
 .memory-card.small {
   width: 80px;
