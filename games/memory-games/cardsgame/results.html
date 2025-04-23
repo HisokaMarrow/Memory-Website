@@ -122,7 +122,6 @@
       });
       const label = document.createElement('div');
       label.className = 'correct-answer-label';
-      label.textContent = '';
       wrapper.appendChild(slot);
       wrapper.appendChild(label);
       resultsArea.appendChild(wrapper);
@@ -131,6 +130,10 @@
 
   function renderCarousel(cards) {
     carousel.innerHTML = '';
+    carousel.style.overflowX = 'auto';
+    carousel.style.touchAction = 'pan-x';
+    carousel.style.webkitOverflowScrolling = 'touch';
+
     cards.forEach(card => {
       const fileName = getCardFilename(card);
       if (!fileName) return;
@@ -153,12 +156,12 @@
       const wrapper = document.createElement('div');
       wrapper.className = 'card-wrapper';
       wrapper.style.minWidth = '80px';
+      wrapper.style.flexShrink = '0';
       wrapper.appendChild(img);
       carousel.appendChild(wrapper);
     });
   }
 
-   
   function handleCardSelect(card) {
     if (!selectedSlot) return;
     const fileName = getCardFilename(card);
@@ -194,9 +197,8 @@
         label.textContent = originalOrder[idx];
       }
     });
-   const percent = Math.round((correctCount / originalOrder.length) * 100);
-    document.getElementById("summary").innerHTML =
-      `You got <span class="highlight">${correctCount}</span> out of ${originalOrder.length} correct (${percent}%)`;
+    const percent = Math.round((correctCount / originalOrder.length) * 100);
+    summary.innerHTML = `You got <span class="highlight">${correctCount}</span> out of ${originalOrder.length} correct (${percent}%)`;
   }
 
   function tryAgain() {
