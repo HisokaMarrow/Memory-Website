@@ -430,7 +430,7 @@ main {
   background-color: var(--main-box);
   color: var(--color-text);
   font-size: clamp(1.5rem, 5vw, 1.25rem);
-  width: 80px;
+  width: 40%;
   text-align: center;
 }
 
