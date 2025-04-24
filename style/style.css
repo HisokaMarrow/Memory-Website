@@ -132,7 +132,7 @@ main {
 
 .results-grid {
   display: grid;
-   grid-template-columns: repeat(auto-fit, 100px);
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 1rem;
   justify-items: center;
   width: 100%;
@@ -435,7 +435,7 @@ main {
   background-color: var(--main-box);
   color: var(--color-text);
   font-size: clamp(1.5rem, 5vw, 1.25rem);
-  width: 40%;
+  width: 100%;
   text-align: center;
 }
 
@@ -574,6 +574,8 @@ input[type=number] {
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
+  width: 40vw;
+  max-width: 300px;
 }
 
 .correct-answer {
