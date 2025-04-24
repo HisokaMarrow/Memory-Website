@@ -143,6 +143,21 @@
 
  renderInputs();
 
+  // === Add keyboard navigation with Enter ===
+const inputBoxes = document.querySelectorAll(".input-box");
+inputBoxes.forEach((input, index) => {
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const nextInput = inputBoxes[index + 1];
+      if (nextInput) {
+        nextInput.focus();
+        nextInput.select();
+      }
+    }
+  });
+});
+
 // Show Back to Home button only if user has visited memory technique page
 // Show Back to Home button only if user has visited memory technique page
 if (localStorage.getItem("hasVisitedMemoryTechnique") === "true") {
