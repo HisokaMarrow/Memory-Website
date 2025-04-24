@@ -136,7 +136,22 @@
   }
 
   renderInputs();
-  sessionStorage.setItem("dailyGame_Number Memory", "true");
+sessionStorage.setItem("dailyGame_Number Memory", "true");
+
+// === Add keyboard navigation with Enter ===
+const inputBoxes = document.querySelectorAll(".input-box");
+inputBoxes.forEach((input, index) => {
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const nextInput = inputBoxes[index + 1];
+      if (nextInput) {
+        nextInput.focus();
+        nextInput.select(); // Optional: select text in case they want to retype
+      }
+    }
+  });
+});
 </script>
 
 <!-- Footer -->
