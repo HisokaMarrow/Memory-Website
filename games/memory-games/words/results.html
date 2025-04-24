@@ -133,6 +133,21 @@
 
   renderInputs();
   sessionStorage.setItem("dailyGame_Word Memory", "true");
+
+  // === Add keyboard navigation with Enter ===
+const inputBoxes = document.querySelectorAll(".input-box");
+inputBoxes.forEach((input, index) => {
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const nextInput = inputBoxes[index + 1];
+      if (nextInput) {
+        nextInput.focus();
+        nextInput.select();
+      }
+    }
+  });
+});
 </script>
 
 
