@@ -85,15 +85,8 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-
-  /* Base background: subtle radial gradient */
-  background: radial-gradient(circle at 40% 40%, #111 0%, #0a0a0a 80%);
-
-  /* Text color for default content */
+  background: radial-gradient(circle at center, #444 0%, #000 100%);
   color: #f0f0f0;
-
-  /* Optional fallback if gradient fails — only include one background rule */
-  /* background-color: var(--color-bg); */
 }
 
 /* =======================================================
