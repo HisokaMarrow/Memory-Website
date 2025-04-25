@@ -86,15 +86,15 @@ html, body {
   margin: 0;
   padding: 0;
 
-  background-color: #000; /* base color */
+  background-color: #000; /* base black */
   background-image: radial-gradient(
     circle at center,
-    rgba(255, 255, 255, 0.08) 0%,   /* brighter white glow */
-    rgba(34, 34, 34, 0.6) 40%,
-    rgba(0, 0, 0, 1) 75%
+    rgba(255, 255, 255, 0.15) 0%,   /* brighter center */
+    rgba(34, 34, 34, 0.8) 30%,      /* stronger mid fade */
+    rgba(0, 0, 0, 1) 65%
   );
   background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-size: cover;
   color: #f0f0f0;
 }
 /* =======================================================
