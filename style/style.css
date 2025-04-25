@@ -86,15 +86,16 @@ html, body {
   margin: 0;
   padding: 0;
 
-  background-color: #000; /* base black */
+  background-color: #000; /* fallback color */
   background-image: radial-gradient(
-    circle at center,
-    rgba(255, 255, 255, 0.15) 0%,   /* brighter center */
-    rgba(34, 34, 34, 0.8) 30%,      /* stronger mid fade */
-    rgba(0, 0, 0, 1) 65%
+    ellipse at center,
+    rgba(255, 255, 255, 0.12) 0%,   /* bright center */
+    rgba(34, 34, 34, 0.7) 30%,
+    rgba(0, 0, 0, 1) 70%
   );
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 80% 120%; /* wider horizontally, taller vertically */
+  background-position: center;
   color: #f0f0f0;
 }
 /* =======================================================
