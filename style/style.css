@@ -83,9 +83,18 @@ html, body {
 html, body {
   width: 100%;
   height: 100%;
-  background-color: var(--color-bg);
-}
+  margin: 0;
+  padding: 0;
 
+  /* Base background: subtle radial gradient */
+  background: radial-gradient(circle at 40% 40%, #111 0%, #0a0a0a 80%);
+
+  /* Text color for default content */
+  color: #f0f0f0;
+
+  /* Optional fallback if gradient fails — only include one background rule */
+  /* background-color: var(--color-bg); */
+}
 
 /* =======================================================
    04 - Layout Containers
@@ -115,7 +124,7 @@ main {
 
 #gamecardgrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
   justify-content: center;
   padding: 1rem 0;
@@ -132,7 +141,7 @@ main {
 
 .results-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: 1rem;
   justify-items: center;
   width: 100%;
@@ -329,19 +338,19 @@ main {
 }
 
 #countdownLabel {
-  font-size: clamp(3rem, 5vw, 4rem);
+  font-size: clamp(1.5rem, 5vw, 4rem);
   font-weight: 600;
   color: var(--header-subtext);
 }
 
 #problem {
-  font-size: clamp(3rem, 5vw, 4rem);
+  font-size: clamp(1.5rem, 5vw, 4rem);
   font-weight: 700;
   margin-top: 1rem;
 }
 
 #output {
-  font-size: clamp(3rem, 5vw, 4rem);
+  font-size: clamp(1.5rem, 5vw, 4rem);
   font-weight: 800;
   margin-top: 1.5rem;
   letter-spacing: 2px;
@@ -435,7 +444,7 @@ main {
   background-color: var(--main-box);
   color: var(--color-text);
   font-size: clamp(1.5rem, 5vw, 1.25rem);
-  width: 100%;
+  width: 40%;
   text-align: center;
 }
 
@@ -458,7 +467,7 @@ main {
   background-color: var(--main-box);
   color: var(--color-text);
   font-size: clamp(1.5rem, 5vw, 1.25rem);
-  width: 100%;
+  width: 95px;
   text-align: center;
 }
 .input-box.correct {
@@ -574,8 +583,6 @@ input[type=number] {
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
-  width: 40vw;
-  max-width: 30%;
 }
 
 .correct-answer {
