@@ -86,13 +86,17 @@ html, body {
   margin: 0;
   padding: 0;
 
-  background-color: #000; /* Fallback black */
-  background-image: radial-gradient(circle at center, rgba(34, 34, 34, 1) 0%, rgba(17, 17, 17, 0.9) 40%, rgba(0, 0, 0, 0) 70%);
+  background-color: #000; /* base color */
+  background-image: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.08) 0%,   /* brighter white glow */
+    rgba(34, 34, 34, 0.6) 40%,
+    rgba(0, 0, 0, 1) 75%
+  );
   background-repeat: no-repeat;
   background-size: 100% 100%;
   color: #f0f0f0;
 }
-
 /* =======================================================
    04 - Layout Containers
    ======================================================= */
