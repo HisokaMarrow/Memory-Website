@@ -86,16 +86,21 @@ html, body {
   margin: 0;
   padding: 0;
 
-  background-color: #000; /* fallback color */
+  background-color: #000;
+
   background-image: radial-gradient(
     ellipse at center,
-    rgba(255, 255, 255, 0.12) 0%,   /* bright center */
-    rgba(34, 34, 34, 0.7) 30%,
-    rgba(0, 0, 0, 1) 70%
+    rgba(255, 255, 255, 0.25) 0%,          /* white core for intensity */
+    rgba(255, 87, 34, 0.2) 20%,            /* orange (Apple-like warmth) */
+    rgba(57, 255, 20, 0.15) 40%,           /* neon green edge */
+    rgba(155, 0, 250, 0.12) 60%,           /* deep purple glow */
+    rgba(255, 0, 70, 0.1) 75%,             /* crimson/red pop */
+    rgba(0, 0, 0, 1) 90%                   /* fade to black */
   );
+
   background-repeat: no-repeat;
-  background-size: 80% 120%; /* wider horizontally, taller vertically */
-  background-position: center;
+  background-size: 100% 90vh;
+  background-position: center 5vh;
   color: #f0f0f0;
 }
 /* =======================================================
