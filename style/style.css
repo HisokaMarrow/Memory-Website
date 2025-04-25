@@ -85,7 +85,11 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: radial-gradient(circle at center, #444 0%, #000 100%);
+
+  background-color: #000; /* Fallback black */
+  background-image: radial-gradient(circle at center, rgba(34, 34, 34, 1) 0%, rgba(17, 17, 17, 0.9) 40%, rgba(0, 0, 0, 0) 70%);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   color: #f0f0f0;
 }
 
