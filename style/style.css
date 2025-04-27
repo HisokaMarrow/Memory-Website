@@ -47,6 +47,11 @@ html, body {
   background-position: center center;
 }
 
+body.no-gradient {
+  background-image: none;
+  background-color: var(--color-bg);
+}
+
 /* =======================================================
    03 - Font & Typography
    ======================================================= */
