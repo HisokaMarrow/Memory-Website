@@ -159,22 +159,32 @@
   }
 
    
-  function handleCardSelect(card) {
-    if (!selectedSlot) return;
-    const fileName = getCardFilename(card);
-    if (!fileName) return;
-    const existing = selectedSlot.querySelector('.card-wrapper');
-    if (existing) existing.remove();
-    const img = document.createElement('img');
-    img.src = `/assets/png/${fileName}`;
-    img.alt = card;
-    img.className = 'memory-card small';
-    img.dataset.card = card;
-    const wrapper = document.createElement('div');
-    wrapper.className = 'card-wrapper';
-    wrapper.appendChild(img);
-    selectedSlot.appendChild(wrapper);
-  }
+ function handleCardSelect(card) {
+  if (!selectedSlot) return;
+  const fileName = getCardFilename(card);
+  if (!fileName) return;
+
+  // If already a card there, remove it
+  const existing = selectedSlot.querySelector('.card-wrapper');
+  if (existing) existing.remove();
+
+  // Create new image
+  const img = document.createElement('img');
+  img.src = `/assets/png/${fileName}`;
+  img.alt = card;
+  img.className = 'memory-card small';
+  img.dataset.card = card;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'card-wrapper';
+  wrapper.appendChild(img);
+
+  selectedSlot.appendChild(wrapper);
+
+  // After placing the card, move to next available slot
+  moveToNextDropSlot(selectedSlot);
+}
+
 
   function checkAnswers() {
     const wrappers = [...document.querySelectorAll('.drop-wrapper')];
@@ -217,6 +227,25 @@
     renderDropZones(originalOrder.length);
     renderCarousel(generateFullDeckOrdered());
   };
+
+  function moveToNextDropSlot(currentSlot) {
+  const slots = Array.from(document.querySelectorAll('.drop-slot'));
+  const currentIndex = slots.indexOf(currentSlot);
+
+  for (let i = currentIndex + 1; i < slots.length; i++) {
+    if (!slots[i].hasChildNodes()) { // Find next empty one
+      if (currentSlot) currentSlot.classList.remove('selected');
+      slots[i].classList.add('selected');
+      selectedSlot = slots[i];
+      return;
+    }
+  }
+
+  // No empty slots left: just remove selection
+  if (currentSlot) currentSlot.classList.remove('selected');
+  selectedSlot = null;
+}
+
 </script>
 
 <!-- Footer -->
