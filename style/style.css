@@ -86,23 +86,22 @@ html, body {
   margin: 0;
   padding: 0;
 
-  background-color: #000;
+  background-color: #000; /* Solid black base */
 
   background-image: radial-gradient(
     ellipse at center,
-    rgba(255, 255, 255, 0.25) 0%,          /* white core for intensity */
-    rgba(255, 87, 34, 0.2) 20%,            /* orange (Apple-like warmth) */
-    rgba(57, 255, 20, 0.15) 40%,           /* neon green edge */
-    rgba(155, 0, 250, 0.12) 60%,           /* deep purple glow */
-    rgba(255, 0, 70, 0.1) 75%,             /* crimson/red pop */
-    rgba(0, 0, 0, 1) 90%                   /* fade to black */
+    rgba(192, 192, 192, 0.15) 0%,   /* soft silver center */
+    rgba(230, 210, 160, 0.08) 30%,  /* slight gold warmth */
+    rgba(0, 0, 0, 0) 70%            /* fade smoothly to black */
   );
 
   background-repeat: no-repeat;
-  background-size: 100% 90vh;
-  background-position: center 5vh;
-  color: #f0f0f0;
+  background-size: 50% 100vh; /* vertical oval, narrower width */
+  background-position: center center;
+
+  color: #f0f0f0; /* Light text */
 }
+
 /* =======================================================
    04 - Layout Containers
    ======================================================= */
