@@ -114,6 +114,14 @@ main {
   gap: 4rem;
 }
 
+/* ====== Make sure main container always fills the screen ====== */
+.main-container {
+  min-height: calc(100vh - 100px); /* Adjust 100px if your header/footer is taller/smaller */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .hero {
   text-align: center;
 }
