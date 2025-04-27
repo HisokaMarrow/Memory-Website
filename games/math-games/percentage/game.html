@@ -138,25 +138,37 @@
   setTimeout(() => window.location.href = "results.html", 2000);
 }
 
-   function getRandomNumbers() {
+  function getRandomNumbers() {
   function randomInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   let percentage, base;
+
   switch (difficulty) {
     case "beginner":
-      percentage = randomInRange(10, 50);   // e.g., 10%, 20%, ...
-      base = randomInRange(10, 200);
+      // Beginner: percentages [10,20,30,40,50,60,70,80,90], base multiple of 100
+      const beginnerPercentages = [10, 20, 30, 40, 50, 60, 70, 80, 90];
+      percentage = beginnerPercentages[randomInRange(0, beginnerPercentages.length - 1)];
+      base = randomInRange(1, 1000) * 100; // e.g., 100, 200, 300, ..., 100000
       break;
+
     case "advanced":
-      percentage = randomInRange(5, 95);
-      base = randomInRange(50, 500);
+      // Advanced: percentages [5,10,15,...,95], base multiple of 50
+      const advancedPercentages = [];
+      for (let i = 5; i <= 95; i += 5) {
+        advancedPercentages.push(i);
+      }
+      percentage = advancedPercentages[randomInRange(0, advancedPercentages.length - 1)];
+      base = randomInRange(1, 2000) * 50; // e.g., 50, 100, 150, ..., 100000
       break;
+
     case "expert":
+      // Expert: fully random
       percentage = randomInRange(1, 100);
-      base = randomInRange(100, 1000);
+      base = randomInRange(1, 100000);
       break;
+
     default:
       throw new Error("Unknown difficulty level: " + difficulty);
   }
@@ -164,10 +176,11 @@
   currentAnswer = (percentage / 100) * base;
   currentAnswer = Math.round(currentAnswer * 100) / 100; // round to 2 decimal places
 
-  const numbers = [percentage, base]; // 25% of 80
+  const numbers = [percentage, base];
   problems.push({ numbers, answer: currentAnswer });
   problemBox.textContent = `What is ${percentage}% of ${base}?`;
 }
+
 
 
     function startCountdown(callback) {
