@@ -370,6 +370,27 @@ main {
   letter-spacing: 2px;
 }
 
+#memory-word-problem,
+#memory-word-output {
+  font-size: clamp(1.5rem, 6vw, 3rem); /* scale down nicely on mobile */
+  font-weight: 700;
+  margin-top: 1rem;
+  letter-spacing: 2px;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  
+  width: 100%;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .drop-slot {
   width: 80px;
   height: 120px;
