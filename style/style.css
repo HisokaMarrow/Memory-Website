@@ -452,16 +452,14 @@ main {
 }
 
 .input-box {
-.input-box {
  padding: 0.75rem 1rem;
   border-radius: 8px;
   border: 2px solid var(--color-border);
   background-color: var(--main-box);
   color: var(--color-text);
   font-size: clamp(1.5rem, 5vw, 1.25rem);
-  width: 40%;
+  width: 100%;
   text-align: center;
-}
 }
 
 .input-box-login {
@@ -483,7 +481,7 @@ main {
   background-color: var(--main-box);
   color: var(--color-text);
   font-size: clamp(1.5rem, 5vw, 1.25rem);
-  width: 40%;
+  width: 100%;
   text-align: center;
 }
 
