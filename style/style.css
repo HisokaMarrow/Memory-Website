@@ -82,7 +82,7 @@ html, body {
 
 html, body {
   width: 100%;
-  height: 100%;
+  min-height: 100%; /* Stretch with content */
   margin: 0;
   padding: 0;
 
@@ -92,14 +92,14 @@ html, body {
     ellipse at center,
     rgba(192, 192, 192, 0.15) 0%,   /* soft silver center */
     rgba(230, 210, 160, 0.08) 30%,  /* slight gold warmth */
-    rgba(0, 0, 0, 0) 70%            /* fade smoothly to black */
+    rgba(0, 0, 0, 0) 70%            /* fade to pure black */
   );
 
   background-repeat: no-repeat;
-  background-size: 50% 100vh; /* vertical oval, narrower width */
-  background-position: center center;
+  background-size: 50% 100%; /* Now 100% of page height (not just viewport height) */
+  background-position: center top;
 
-  color: #f0f0f0; /* Light text */
+  color: #f0f0f0;
 }
 
 /* =======================================================
