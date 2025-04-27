@@ -82,22 +82,22 @@ html, body {
 
 html, body {
   width: 100%;
-  min-height: 100%; /* Stretch with content */
+  min-height: 100%;
   margin: 0;
   padding: 0;
 
-  background-color: #000; /* Solid black base */
+  background-color: #000; /* Full black background */
 
   background-image: radial-gradient(
-    ellipse at center,
-    rgba(192, 192, 192, 0.15) 0%,   /* soft silver center */
-    rgba(230, 210, 160, 0.08) 30%,  /* slight gold warmth */
-    rgba(0, 0, 0, 0) 70%            /* fade to pure black */
+    ellipse 60% 90% at center center,
+    rgba(192, 192, 192, 0.12) 0%,   /* soft silver center */
+    rgba(230, 210, 160, 0.08) 30%,  /* slight warm gold around */
+    rgba(0, 0, 0, 0.95) 70%         /* fade quickly to black */
   );
 
   background-repeat: no-repeat;
-  background-size: 50% 100%; /* Now 100% of page height (not just viewport height) */
-  background-position: center top;
+  background-size: 100% 100%;
+  background-position: center center;
 
   color: #f0f0f0;
 }
