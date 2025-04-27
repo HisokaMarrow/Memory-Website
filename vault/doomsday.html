@@ -15,6 +15,9 @@
   <!-- Header-specific styles -->
   <link rel="stylesheet" href="/style/header.css" />
 
+  <!-- Vault page specific styles -->
+  <link rel="stylesheet" href="/style/voultpagesstyle.css" />
+
   <!-- Footer-specific styles -->
   <link rel="stylesheet" href="/style/footer.css" />
 </head>
@@ -60,6 +63,117 @@
     .catch(err => console.error('Failed to load header:', err));
 
 </script>
+
+<main class="vault-container">
+
+  <!-- Main Heading -->
+  <section class="vault-section center">
+    <h1 class="vault-main-title">Doomsday Calculation Method</h1>
+    <p class="vault-section-description">Master the technique to instantly find the day of the week for any date — a powerful memory tool and mental math exercise.</p>
+  </section>
+
+  <!-- Arch Separator -->
+  <div class="vault-arch-separator"></div>
+
+  <!-- Steps -->
+  <section class="vault-section">
+
+    <!-- Step 1 -->
+    <div class="vault-step-section">
+      <div class="vault-step-image">
+        <img src="/assets/example-step1.png" alt="Step 1 Example" />
+      </div>
+      <div class="vault-step-text">
+        <h2>Step 1: Memorize Anchor Days</h2>
+        <p>Learn the 'Doomsday' for each month — fixed dates like 4/4, 6/6, 8/8 that always fall on the same weekday each year.</p>
+      </div>
+    </div>
+    <div class="vault-divider"></div>
+
+    <!-- Step 2 -->
+    <div class="vault-step-section reverse">
+      <div class="vault-step-image">
+        <img src="/assets/example-step2.png" alt="Step 2 Example" />
+      </div>
+      <div class="vault-step-text">
+        <h2>Step 2: Calculate Year Code</h2>
+        <p>Use simple formulas to find a 'year code' based on the last two digits of the year. This helps adjust for leap years and century shifts.</p>
+      </div>
+    </div>
+    <div class="vault-divider"></div>
+
+    <!-- Step 3 -->
+    <div class="vault-step-section">
+      <div class="vault-step-image">
+        <img src="/assets/example-step3.png" alt="Step 3 Example" />
+      </div>
+      <div class="vault-step-text">
+        <h2>Step 3: Find the Final Day</h2>
+        <p>Combine the anchor day and the year code adjustment to quickly calculate the day of the week for any given date.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Tables Section -->
+  <section class="vault-section vault-tables-section">
+    <h2 class="vault-main-title">Reference Tables</h2>
+
+    <h3>Weekday Codes</h3>
+    <table class="vault-memory-table">
+      <thead>
+        <tr><th>Day</th><th>Code</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Sunday</td><td>0</td></tr>
+        <tr><td>Monday</td><td>1</td></tr>
+        <tr><td>Tuesday</td><td>2</td></tr>
+        <tr><td>Wednesday</td><td>3</td></tr>
+        <tr><td>Thursday</td><td>4</td></tr>
+        <tr><td>Friday</td><td>5</td></tr>
+        <tr><td>Saturday</td><td>6</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Month Anchor Days</h3>
+    <table class="vault-memory-table">
+      <thead>
+        <tr><th>Month</th><th>Anchor Day</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>January</td><td>3 (4 if leap year)</td></tr>
+        <tr><td>February</td><td>28 (29 if leap year)</td></tr>
+        <tr><td>March</td><td>14</td></tr>
+        <tr><td>April</td><td>4</td></tr>
+        <tr><td>May</td><td>9</td></tr>
+        <tr><td>June</td><td>6</td></tr>
+        <tr><td>July</td><td>11</td></tr>
+        <tr><td>August</td><td>8</td></tr>
+        <tr><td>September</td><td>5</td></tr>
+        <tr><td>October</td><td>10</td></tr>
+        <tr><td>November</td><td>7</td></tr>
+        <tr><td>December</td><td>12</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Century Codes</h3>
+    <table class="vault-memory-table">
+      <thead>
+        <tr><th>Century</th><th>Code</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1600s</td><td>2</td></tr>
+        <tr><td>1700s</td><td>0</td></tr>
+        <tr><td>1800s</td><td>5</td></tr>
+        <tr><td>1900s</td><td>3</td></tr>
+        <tr><td>2000s</td><td>2</td></tr>
+        <tr><td>2100s</td><td>0</td></tr>
+      </tbody>
+    </table>
+
+  </section>
+
+</main>
 
 
 <!-- Footer -->
