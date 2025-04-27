@@ -148,13 +148,15 @@
         case "beginner":
           numbers.push(randomInRange(1, 10), randomInRange(1, 9));
           break;
-        case "advanced":
-          numbers.push(randomInRange(10, 99), randomInRange(10, 99));
-          break;
-        case "expert":
-          const count = randomInRange(2, 3);
-          for (let i = 0; i < count; i++) numbers.push(randomInRange(1, 9999));
-          break;
+       case "advanced":
+    // Two-digit number × one-digit number, e.g., 27 × 5
+    numbers.push(randomInRange(10, 99), randomInRange(1, 9));
+    break;
+    
+  case "expert":
+    // Two-digit number × two-digit number, e.g., 22 × 33
+    numbers.push(randomInRange(10, 99), randomInRange(10, 99));
+    break;
         default:
           throw new Error("Unknown difficulty level: " + difficulty);
       }
