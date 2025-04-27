@@ -151,13 +151,20 @@
         case "advanced":
           numbers.push(randomInRange(10, 99), randomInRange(10, 99));
           break;
-        case "expert":
-          const count = randomInRange(2, 3);
-          for (let i = 0; i < count; i++) numbers.push(randomInRange(1, 9999));
-          break;
-        default:
-          throw new Error("Unknown difficulty level: " + difficulty);
+         case "expert":
+      const chance = Math.random(); // random number between 0 and 1
+      if (chance < 0.7) {
+        // 70% chance: two 3-digit numbers
+        numbers.push(randomInRange(100, 999), randomInRange(100, 999));
+      } else {
+        // 30% chance: two 4-digit numbers
+        numbers.push(randomInRange(1000, 9999), randomInRange(1000, 9999));
       }
+      break;
+    default:
+      throw new Error("Unknown difficulty level: " + difficulty);
+  }
+
 
       numbers.sort((a, b) => b - a);
       currentAnswer = numbers.reduce((sum, num) => sum - num);
