@@ -352,19 +352,19 @@ main {
 }
 
 #countdownLabel {
-  font-size: clamp(1.5rem, 5vw, 4rem);
+  font-size: clamp(3rem, 5vw, 4rem);
   font-weight: 600;
   color: var(--header-subtext);
 }
 
 #problem {
-  font-size: clamp(1.5rem, 5vw, 4rem);
+  font-size: clamp(3rem, 5vw, 4rem);
   font-weight: 700;
   margin-top: 1rem;
 }
 
 #output {
-  font-size: clamp(1.5rem, 5vw, 4rem);
+  font-size: clamp(3rem, 5vw, 4rem);
   font-weight: 800;
   margin-top: 1.5rem;
   letter-spacing: 2px;
