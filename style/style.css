@@ -595,7 +595,7 @@ input[type=number] {
    11 - Results Page Styling
    ======================================================= */
 .input-wrapper {
-  width: 15vw;
+  width: 20vw;
   max-width: 300px;
   display: flex;
   flex-direction: column;
