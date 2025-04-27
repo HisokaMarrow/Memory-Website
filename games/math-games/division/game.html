@@ -138,25 +138,38 @@
   setTimeout(() => window.location.href = "results.html", 2000);
 }
 
-    function getRandomNumbers() {
+  function getRandomNumbers() {
   function randomInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   let dividend, divisor, answer;
+
   switch (difficulty) {
     case "beginner":
-      answer = randomInRange(1, 12);         // answer between 1 and 12
-      divisor = randomInRange(1, 12);        // divisor between 1 and 12
+      // Times table type (small), answer max 10, no 3-digit numbers
+      answer = randomInRange(1, 10); // 1-10
+      divisor = randomInRange(1, 10); // 1-10
       break;
+
     case "advanced":
-      answer = randomInRange(2, 50);
-      divisor = randomInRange(2, 20);
+      // 50% chance: 3-digit ÷ 1-digit or 3-digit ÷ 2-digit
+      const chance = Math.random();
+      if (chance < 0.5) {
+        divisor = randomInRange(2, 9); // 1-digit divisor
+        answer = randomInRange(10, 999); // 3-digit answer
+      } else {
+        divisor = randomInRange(10, 99); // 2-digit divisor
+        answer = randomInRange(10, 999); // 3-digit answer
+      }
       break;
+
     case "expert":
-      answer = randomInRange(10, 999);       // bigger integer answers
-      divisor = randomInRange(2, 99);
+      // 4-digit ÷ any divisor (make sure no remainder)
+      answer = randomInRange(100, 9999); // 3 or 4-digit answer
+      divisor = randomInRange(2, 999);   // divisor up to 3 digits
       break;
+
     default:
       throw new Error("Unknown difficulty level: " + difficulty);
   }
@@ -168,7 +181,6 @@
   problems.push({ numbers, answer: currentAnswer });
   problemBox.textContent = `${dividend} ÷ ${divisor}`;
 }
-
 
     function startCountdown(callback) {
       startBtn.style.display = "none";
