@@ -56,7 +56,7 @@
     .catch(err => console.error('Failed to load header:', err));
 </script>
 
-<main>
+<main class="main-container">
   <h1 class="main-title" style="text-align: center;">Riddle Challenge Settings</h1>
 
   <section class="games-settings-container">
@@ -73,6 +73,14 @@
       <label for="riddle6">6 Riddles</label>
     </div>
 
+    <!-- Time Limit Input -->
+    <div class="input-row">
+      <div class="form-group">
+        <label for="riddleTime">Time Limit (sec)</label>
+        <input type="number" id="riddleTime" value="120" min="10">
+      </div>
+    </div>
+
     <div class="button-wrapper">
       <button id="startButton" class="game-start-button">Start Riddle Game</button>
     </div>
@@ -81,15 +89,17 @@
 </main>
 
 <script>
-  document.getElementById('startButton').addEventListener('click', () => {
-    const selected = document.querySelector('input[name="riddleCount"]:checked');
-    if (selected) {
-      localStorage.setItem('riddleCount', selected.value);
-      window.location.href = 'game.html';
-    }
-  });
-</script>
+document.getElementById('startButton').addEventListener('click', () => {
+  const selected = document.querySelector('input[name="riddleCount"]:checked');
+  const timeInput = document.getElementById("riddleTime");
 
+  if (selected && timeInput) {
+    localStorage.setItem('riddleCount', selected.value);
+    localStorage.setItem('riddleTimeLimit', timeInput.value);
+    window.location.href = 'game.html';
+  }
+});
+</script>
   
 <!-- Footer -->
 <div id="site-footer"></div>
