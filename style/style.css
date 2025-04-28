@@ -907,6 +907,25 @@ input[type=number] {
   display: none; /* Hidden by default */
 }
 
+.no-data-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  display: none; /* hidden by default */
+}
+
+.no-data-message {
+  font-size: 1.5rem;
+  color: #e6e8eb;
+  margin-bottom: 1rem; /* space below first line */
+}
+
+.additional-message {
+  font-size: 1.2rem;
+  color: #b0b3b8;
+}
 /* =======================================================
    16 - Media Queries (Responsive Adjustments)
    ======================================================= */
