@@ -77,6 +77,8 @@
 // Function to dynamically load game buttons from the game list
 function loadGameButtons() {
   const gameButtonsContainer = document.getElementById('game-buttons');
+  
+  // Get the list of games from localStorage, default to an empty array if none exist
   const gameList = JSON.parse(localStorage.getItem("gameList") || '[]');  // Get the list of games from localStorage
   
   // Clear existing buttons (if any)
@@ -86,7 +88,7 @@ function loadGameButtons() {
   gameList.forEach(game => {
     const button = document.createElement('button');
     button.classList.add('game-results-buttons');
-    button.textContent = game.title;
+    button.textContent = game.title;  // Use game title as button text
     button.onclick = () => updateGraph(game.id);  // Update the graph based on selected game
     gameButtonsContainer.appendChild(button);
   });
@@ -95,7 +97,7 @@ function loadGameButtons() {
 // Load game buttons when page is loaded
 window.onload = () => {
   loadGameButtons();  // Load the buttons dynamically
-  updateGraph('memory-numbers');  // Default: show "Numbers" on page load
+  updateGraph('memory_number');  // Default: show "Number Memory" on page load
 };
 
 // Function to update the graph based on selected game
@@ -136,7 +138,6 @@ function updateGraph(selectedGame) {
     return;
   }
 
-  // If there is data for the selected game, update the graph
   const labels = filteredSessions.map(s => `${s.date} ${s.time}`);
   const dataPoints = filteredSessions.map(s => s.scorePercent);
 
