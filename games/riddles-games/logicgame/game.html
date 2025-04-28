@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memoro</title>
+
+  <!-- Global styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/style.css" />
+
+  <!-- Game header styles -->
+  <link rel="stylesheet" href="/style/gameheader.css" /> <!-- Added this line -->
+
+  <script src="/scripts/timer.js"></script>
+
+</head>
+<body>
+
+<script>
+  // Load reusable game header
+  fetch('/components/gameheader.html')
+    .then(res => res.text())
+    .then(function (data) {
+      document.body.insertAdjacentHTML('afterbegin', data);
+
+      // Backdrop for mobile
+      var backdrop = document.createElement('div');
+      backdrop.classList.add('nav-backdrop');
+      document.body.appendChild(backdrop);
+
+      var toggleBtn = document.querySelector('.game-mobile-toggle');
+      var menu = document.querySelector('.game-menu');
+
+      var toggleMenu = function () {
+        toggleBtn.classList.toggle('open');
+        menu.classList.toggle('open');
+        backdrop.classList.toggle('active');
+      };
+
+      if (toggleBtn && menu) {
+        toggleBtn.addEventListener('click', toggleMenu);
+        backdrop.addEventListener('click', toggleMenu);
+      }
+
+      // Define the button hook function
+      function bindHeaderButtons() {
+        if (typeof window.togglePause === 'function') {
+          document.getElementById('pause')?.addEventListener('click', window.togglePause);
+          document.getElementById('pause-mobile')?.addEventListener('click', window.togglePause);
+        }
+        if (typeof window.endEarly === 'function') {
+          document.getElementById('end-early')?.addEventListener('click', window.endEarly);
+          document.getElementById('end-early-mobile')?.addEventListener('click', window.endEarly);
+        }
+        if (typeof window.giveUp === 'function') {
+          document.getElementById('give-up')?.addEventListener('click', window.giveUp);
+          document.getElementById('give-up-mobile')?.addEventListener('click', window.giveUp);
+        }
+      }
+
+      // Delay just enough for game.js to load and attach window methods
+      setTimeout(bindHeaderButtons, 300);
+    })
+    .catch(function (err) {
+      console.error('Failed to load game header:', err);
+    });
+</script>
