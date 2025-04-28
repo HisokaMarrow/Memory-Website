@@ -61,10 +61,13 @@
   <h1 class="main-title" style="text-align: center;">Your Progress</h1>
 
   <div id="game-buttons" class="radio-group" style="justify-content: center;">
-    <!-- Dynamic Buttons will be generated here -->
+    <button class="game-results-buttons" onclick="updateGraph('memory-numbers')">Numbers</button>
+    <button class="game-results-buttons" onclick="updateGraph('memory-cards')">Cards</button>
+    <button class="game-results-buttons" onclick="updateGraph('memory-words')">Words</button>
+    <button class="game-results-buttons" onclick="updateGraph('addition')">Addition</button>
+    <button class="game-results-buttons" onclick="updateGraph('subtraction')">Subtraction</button>
+    <button class="game-results-buttons" onclick="updateGraph('logic')">Logic</button>
   </div>
-
-  <h2 id="graph-heading" class="main-title" style="text-align: center; margin-top: 2rem;">Progress for Numbers Game</h2>
 
   <div style="margin-top: 2rem;">
     <canvas id="progressChart" style="max-width: 100%; height: 400px;"></canvas>
@@ -76,42 +79,13 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-// Games List: From the JSON you provided
-const gamesList = [
-  { id: "memory_number", title: "Number Memory" },
-  { id: "memory_words", title: "Word Memory" },
-  { id: "memory_cards", title: "Card Challenge" },
-  { id: "math_addition", title: "Addition Master" },
-  { id: "math_subtraction", title: "Subtraction Master" },
-  { id: "math_multiplication", title: "Multiplication Master" },
-  { id: "math_division", title: "Division Master" },
-  { id: "math_percentage", title: "Percentage Master" },
-  { id: "math_doomsday", title: "Doomsday Master" },
-  { id: "riddle_logic", title: "Logic Riddles" },
-];
-
-// Generate dynamic buttons for each game
-function generateGameButtons() {
-  const gameButtonsContainer = document.getElementById("game-buttons");
-  gamesList.forEach(game => {
-    const button = document.createElement("button");
-    button.classList.add("game-results-buttons");
-    button.textContent = game.title;
-    button.onclick = () => updateGraph(game.id);
-    gameButtonsContainer.appendChild(button);
-  });
-}
-
 let chartInstance = null;
 
-// Function to update graph when a button is clicked
 function updateGraph(selectedGame) {
   const allSessions = JSON.parse(localStorage.getItem("gameSessions") || "[]");
-  const filteredSessions = allSessions.filter(s => s.gameType === selectedGame);
 
-  // Update heading dynamically based on selected game
-  const selectedGameTitle = gamesList.find(game => game.id === selectedGame).title;
-  document.getElementById("graph-heading").textContent = `Progress for ${selectedGameTitle}`;
+  // Filter sessions by selected game
+  const filteredSessions = allSessions.filter(s => s.gameType === selectedGame);
 
   const ctx = document.getElementById('progressChart').getContext('2d');
 
@@ -120,13 +94,14 @@ function updateGraph(selectedGame) {
     chartInstance.destroy();
   }
 
+  // If no data for the selected game, show an empty chart with a message
   if (filteredSessions.length === 0) {
     chartInstance = new Chart(ctx, {
       type: 'line',
       data: {
         labels: ['No Data'],
         datasets: [{
-          label: 'No Sessions Found',
+          label: 'No Sessions',
           data: [0],
           backgroundColor: 'rgba(150, 150, 150, 0.2)',
           borderColor: 'rgba(150, 150, 150, 0.6)',
@@ -145,9 +120,11 @@ function updateGraph(selectedGame) {
     return;
   }
 
+  // Data for the chart: dates and scores
   const labels = filteredSessions.map(s => `${s.date} ${s.time}`);
   const dataPoints = filteredSessions.map(s => s.scorePercent);
 
+  // Create the chart with the filtered data
   chartInstance = new Chart(ctx, {
     type: 'line',
     data: {
@@ -195,10 +172,9 @@ function updateGraph(selectedGame) {
 
 // Show "Numbers" by default on page load
 window.onload = () => {
-  generateGameButtons();  // Load game buttons
-  updateGraph('memory_number');  // Show "Numbers" data by default
+  updateGraph('memory-numbers');
 };
-</script>
+</script
 
 
 <!-- Footer -->
