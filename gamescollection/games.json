@@ -70,20 +70,6 @@
     "link": "/games/riddles-games/logicgame/settings.html"
   },
   {
-    "id": "riddle_numeric",
-    "category": "Riddles",
-    "title": "Math Riddles",
-    "description": "Use both logic and math to crack these riddles.",
-    "link": "/pages/riddles/numeric/settings.html"
-  },
-  {
-    "id": "riddle_cipher",
-    "category": "Riddles",
-    "title": "Cipher",
-    "description": "This challenge tests your ability to decode messages using logic and intuition.",
-    "link": "/pages/riddles/numeric/settings.html"
-  },
-  {
     "id": "vault_memory_techniques",
     "category": "Vault",
     "title": "Memory Techniques",
