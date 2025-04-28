@@ -736,45 +736,7 @@ input[type=number] {
   background-color: rgba(128, 128, 128, 0.25);
 }
 
-/* Carousel wrapper */
-.games-carousel-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 1rem 0;
-  margin-bottom: 1rem;
-  scroll-behavior: smooth;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
 
-/* Inner carousel holding buttons */
-.games-carousel {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 0.75rem;
-  padding: 0 1rem;
-}
-
-/* Make sure buttons are neat */
-.games-carousel .game-results-buttons {
-  flex: 0 0 auto;
-  white-space: nowrap;
-  padding: 0.5rem 1rem;
-  font-size: 0.95rem;
-  border: 1px solid #7c3aed;
-  background-color: transparent;
-  color: #e6e8eb;
-  border-radius: 999px; /* pill shape */
-  transition: background-color 0.3s, color 0.3s;
-  cursor: pointer;
-}
-
-/* Active selected button */
-.games-carousel .game-results-buttons.active {
-  background-color: #7c3aed;
-  color: white;
-  font-weight: bold;
-}
 /* =======================================================
    13 - Settings and Results
    ======================================================= */
@@ -879,7 +841,63 @@ input[type=number] {
   -webkit-user-drag: none; /* Prevent dragging the image in Safari */
 }
 /* =======================================================
-   15 - Media Queries (Responsive Adjustments)
+   15 - Progression Page
+   ======================================================= */
+.chart-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1rem;
+  height: 400px; /* CONTROL HEIGHT */
+}
+
+#progressChart {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* Carousel wrapper */
+.games-carousel-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1rem 0;
+  margin-bottom: 1rem;
+  scroll-behavior: smooth;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Inner carousel holding buttons */
+.games-carousel {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.75rem;
+  padding: 0 1rem;
+}
+
+/* Make sure buttons are neat */
+.games-carousel .game-results-buttons {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  border: 1px solid #7c3aed;
+  background-color: transparent;
+  color: #e6e8eb;
+  border-radius: 999px; /* pill shape */
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+}
+
+/* Active selected button */
+.games-carousel .game-results-buttons.active {
+  background-color: #7c3aed;
+  color: white;
+  font-weight: bold;
+}
+
+/* =======================================================
+   16 - Media Queries (Responsive Adjustments)
    ======================================================= */
 
 /* Hide carousel arrows on small screens */
