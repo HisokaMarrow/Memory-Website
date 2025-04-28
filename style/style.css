@@ -932,14 +932,25 @@ input[type=number] {
   color: #b0b3b8;
 }
 
-/* Hide scrollbar but allow scroll */
+/* Make scrollbar fully transparent but still functional */
 .games-carousel {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;  /* IE and Edge */
+  overflow-x: auto;
+  scrollbar-width: thin; /* Firefox: small invisible scrollbar */
+  scrollbar-color: transparent transparent; /* thumb and track transparent */
+  -ms-overflow-style: none;  /* IE and Edge (hide scrollbar track) */
 }
 
+/* Chrome, Safari, Opera */
 .games-carousel::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  height: 6px; /* Thin scrollbar */
+}
+
+.games-carousel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.games-carousel::-webkit-scrollbar-thumb {
+  background: transparent;
 }
 
 /* =======================================================
