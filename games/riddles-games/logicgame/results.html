@@ -56,31 +56,27 @@
     .catch(err => console.error('Failed to load header:', err));
 </script>
 
-<main>
-  <div class="main-container">
-    <h1 class="main-title">Riddle Challenge Results</h1>
+<main class="main-container">
+  <div class="results-display">
+    <h2 class="main-title">How Did You Do?</h2>
 
-    <div id="summary" class="result-summary">Loading results...</div>
-
-    <div id="resultsArea" class="results-grid"></div>
+    <div id="resultsArea" class="results-grid" style="margin: 2rem 0;"></div>
 
     <div class="game-results-buttons-block">
-      <a href="settings.html" class="game-results-buttons">Try Again</a>
-      <a href="/memory.html" class="game-results-buttons">Back to Memory Games</a>
+      <button class="game-results-buttons" onclick="checkAnswers()">Check</button>
+      <button class="game-results-buttons" onclick="tryAgain()">Try Again</button>
+      <button class="game-results-buttons" onclick="backToGames()">Back to Games</button>
     </div>
+
+    <div id="summary" class="result-summary" style="margin-top: 2rem;"></div>
   </div>
 </main>
 
 <script>
 const riddles = JSON.parse(localStorage.getItem("riddleQuestions") || "[]");
-const answers = JSON.parse(localStorage.getItem("riddleUserAnswers") || "[]");
+const userAnswers = JSON.parse(localStorage.getItem("riddleUserAnswers") || "[]");
 const times = JSON.parse(localStorage.getItem("riddleTimes") || "[]");
 const totalTime = parseInt(localStorage.getItem("riddleTotalTime") || "0");
-
-const grid = document.getElementById("resultsArea");
-const summary = document.getElementById("summary");
-
-let correct = 0;
 
 function normalizeInput(text) {
   return text
@@ -95,35 +91,73 @@ function isAnswerCorrect(userInput, keywordList) {
   return keywordList.every(keyword => inputWords.includes(keyword));
 }
 
-riddles.forEach((item, i) => {
-  const userAnswer = (answers[i] || "").trim();
-  const correctAnswer = item.answer.trim();
-  const keywords = normalizeInput(correctAnswer);
-  const isCorrect = isAnswerCorrect(userAnswer, keywords);
+function renderInputs() {
+  const container = document.getElementById("resultsArea");
+  container.innerHTML = "";
 
-  if (isCorrect) correct++;
+  riddles.forEach((item, i) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "input-wrapper";
 
-  const box = document.createElement("div");
-  box.className = "text-box-content"; // Use your standard content box style
-  box.style.border = `2px solid ${isCorrect ? "var(--color-success)" : "var(--color-error)"}`;
+    const label = document.createElement("div");
+    label.className = "problem-label";
+    label.innerHTML = `<strong>Riddle:</strong> ${item.riddle}`;
 
-  box.innerHTML = `
-    <div><strong>Riddle:</strong> ${item.riddle}</div>
-    <div><strong>Your Answer:</strong> ${userAnswer || "—"}</div>
-    ${!isCorrect ? `<div class="correct-answer">Correct: ${correctAnswer}</div>` : ""}
-    <div class="correct-answer">Time: ${times[i] || 0}s</div>
-  `;
+    const input = document.createElement("input");
+    input.type = "text";
+    input.className = "input-box";
+    input.value = userAnswers[i] || "";
+    input.placeholder = "?";
+    input.readOnly = true; // No editing
 
-  grid.appendChild(box);
-});
+    const correctLabel = document.createElement("div");
+    correctLabel.className = "correct-answer";
 
-summary.innerHTML = `
-  You solved <span class="highlight">${correct}</span> out of <span class="highlight">${riddles.length}</span> correctly
-  (${Math.round((correct / riddles.length) * 100)}%)<br>
-  Total Time: ${totalTime}s
-`;
+    wrapper.appendChild(label);
+    wrapper.appendChild(input);
+    wrapper.appendChild(correctLabel);
+    container.appendChild(wrapper);
+  });
+}
+
+function checkAnswers() {
+  const inputs = document.querySelectorAll(".input-box");
+  let correct = 0;
+
+  inputs.forEach((input, i) => {
+    const wrapper = input.parentElement;
+    const correctAnswer = riddles[i].answer.trim();
+    const keywords = normalizeInput(correctAnswer);
+    const userInput = (input.value || "").trim();
+
+    if (isAnswerCorrect(userInput, keywords)) {
+      input.classList.add("correct");
+      input.classList.remove("incorrect");
+      wrapper.querySelector(".correct-answer").textContent = `Time: ${times[i] || 0}s`;
+      correct++;
+    } else {
+      input.classList.add("incorrect");
+      input.classList.remove("correct");
+      wrapper.querySelector(".correct-answer").innerHTML = `Correct: ${correctAnswer}<br>Time: ${times[i] || 0}s`;
+    }
+  });
+
+  const percent = Math.round((correct / riddles.length) * 100);
+  document.getElementById("summary").innerHTML = 
+    `You got <span class="highlight">${correct}</span> out of ${riddles.length} correct (${percent}%)<br>Total Time: ${totalTime}s`;
+}
+
+function tryAgain() {
+  window.location.href = "settings.html";
+}
+
+function backToGames() {
+  window.location.href = "/memory.html"; // Adjust path if needed
+}
+
+renderInputs();
+sessionStorage.setItem("dailyGame_Riddle Memory", "true");
 </script>
-
   
 <!-- Footer -->
 <div id="site-footer"></div>
