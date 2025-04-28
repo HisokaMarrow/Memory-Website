@@ -67,40 +67,36 @@
     });
 </script>
 
-<main>
-  <div class="main-container" id="gameContainer">
-    <div class="game-display">
-      <h2 class="main-title" id="gameTitle">Starting in...</h2>
-      <div id="countdown" style="font-size: 4rem; font-weight: 700; margin-top: 1rem;">5</div>
+<main class="main-container">
+  <div class="game-display">
+    <button id="startButton" class="game-gamestart-button">Start Riddle Game</button>
 
-      <div id="riddleText" class="main-quotes" style="margin-top: 2rem;"></div> 
+    <a id="countdownLabel" class="main-title" style="display: none;">Starting in...</a>
+    <div id="countdown" class="main-countdown" style="display: none;"></div>
 
-      <input 
-        type="text" 
-        id="answerInput" 
-        placeholder="Type your answer..." 
-        class="input-box" 
-        style="display: none; margin-top: 2rem;" 
-        autocomplete="off"
-      />
-    </div>
+    <div id="problem" class="main-word" style="display: none;"></div>
+
+    <input 
+      type="text" 
+      id="answerInput" 
+      class="input-box" 
+      placeholder="Type your answer..." 
+      style="display: none; margin-top: 2rem;"
+      autocomplete="off"
+    />
   </div>
 </main>
 
-<!-- Riddle Data -->
+<!-- Riddles Data -->
 <script src="/gamescollection/logicriddles.js"></script>
 
 <script>
-function startRiddleApp() {
+(function() {
   const totalCount = parseInt(localStorage.getItem("riddleCount") || "2");
   const timerEl = document.getElementById("gameheadertimerdown-timer");
-  const pauseBtn = document.getElementById("gameheadertimerdown-pauseButton");
-  const countdown = document.getElementById("countdown");
-  const title = document.getElementById("gameTitle");
-  const riddleBox = document.getElementById("riddleText");
-  const input = document.getElementById("answerInput");
-  const endEarlyBtn = document.getElementById("endEarlyBtn");
 
+  let shouldStopGame = false;
+  let countdownValue = 5;
   let riddles = [];
   let current = 0;
   let totalStartTime;
@@ -108,64 +104,56 @@ function startRiddleApp() {
   let riddleTimes = [];
   let userAnswers = [];
 
-  let isPaused = false;
-  let pauseResolve;
+  const startBtn = document.getElementById("startButton");
+  const label = document.getElementById("countdownLabel");
+  const countdownEl = document.getElementById("countdown");
+  const problemBox = document.getElementById("problem");
+  const input = document.getElementById("answerInput");
 
   function togglePause() {
-    isPaused = !isPaused;
+    togglePauseTimer(); // shared timer function you already have
 
-    const pauseBtnDesktop = document.getElementById("gameheadertimerdown-pauseButton");
-    const pauseBtnMobile = document.getElementById("pauseBtn-timer-mobile");
+    const pauseBtnDesktop = document.getElementById("pause");
+    const pauseBtnMobile = document.getElementById("pause-mobile");
 
-    if (pauseBtnDesktop) pauseBtnDesktop.textContent = isPaused ? "Resume" : "Pause";
-    if (pauseBtnMobile) pauseBtnMobile.textContent = isPaused ? "Resume" : "Pause";
+    const isPaused = (pauseBtnDesktop?.textContent === "Pause");
+    const newLabel = isPaused ? "Resume" : "Pause";
 
-    if (!isPaused && pauseResolve) {
-      pauseResolve();
-      pauseResolve = null;
-    }
+    if (pauseBtnDesktop) pauseBtnDesktop.textContent = newLabel;
+    if (pauseBtnMobile) pauseBtnMobile.textContent = newLabel;
   }
 
-  function waitWhilePaused() {
-    return new Promise(resolve => {
-      if (!isPaused) resolve();
-      else pauseResolve = resolve;
-    });
+  function endEarly() {
+    shouldStopGame = true;
+    stopGameTimer();
+
+    // Save only what the user answered so far
+    localStorage.setItem("riddleQuestions", JSON.stringify(riddles.slice(0, userAnswers.length)));
+    localStorage.setItem("riddleUserAnswers", JSON.stringify(userAnswers.slice(0, userAnswers.length)));
+    localStorage.setItem("riddleTimes", JSON.stringify(riddleTimes.slice(0, userAnswers.length)));
+
+    problemBox.textContent = "Done!";
+    input.style.display = "none";
+    setTimeout(() => window.location.href = "results.html", 2000);
   }
 
-  async function countdownStart() {
-    let count = 5;
-    countdown.textContent = count;
-
-    while (count >= 0) {
-      await waitWhilePaused();
-      countdown.textContent = count;
-      await new Promise(res => setTimeout(res, 1000));
-      count--;
-    }
-
-    countdown.style.display = "none";
-    title.style.display = "none";
-    if (endEarlyBtn) endEarlyBtn.classList.remove("disabled");
-    input.style.display = "block";
-    input.focus();
-    startGame();
+  function giveUp() {
+    shouldStopGame = true;
+    stopGameTimer();
+    window.location.href = "settings.html";
   }
 
-  function startGame() {
-    totalStartTime = Date.now();
-    riddles = getRandomRiddles(riddleslist, totalCount);
-    startTimer();
-    showNextRiddle();
-  }
+  function onTimeExpired() {
+    shouldStopGame = true;
+    stopGameTimer();
 
-  function startTimer() {
-    setInterval(() => {
-      if (!isPaused && timerEl) {
-        const elapsed = Math.floor((Date.now() - totalStartTime) / 1000);
-        timerEl.textContent = elapsed;
-      }
-    }, 1000);
+    localStorage.setItem("riddleQuestions", JSON.stringify(riddles));
+    localStorage.setItem("riddleUserAnswers", JSON.stringify(userAnswers));
+    localStorage.setItem("riddleTimes", JSON.stringify(riddleTimes));
+
+    problemBox.textContent = "Time’s Up!";
+    input.style.display = "none";
+    setTimeout(() => window.location.href = "results.html", 2000);
   }
 
   function getRandomRiddles(list, count) {
@@ -174,42 +162,88 @@ function startRiddleApp() {
   }
 
   function showNextRiddle() {
-    if (current >= riddles.length) return endGame();
+    if (current >= riddles.length || shouldStopGame) return endGame();
     const riddle = riddles[current];
-    riddleBox.textContent = riddle.riddle;
+    problemBox.textContent = riddle.riddle;
     input.value = "";
     input.focus();
     riddleStartTime = Date.now();
   }
 
   function endGame() {
-    localStorage.setItem("riddleUserAnswers", JSON.stringify(userAnswers));
+    stopGameTimer();
+
     localStorage.setItem("riddleQuestions", JSON.stringify(riddles));
+    localStorage.setItem("riddleUserAnswers", JSON.stringify(userAnswers));
     localStorage.setItem("riddleTimes", JSON.stringify(riddleTimes));
     localStorage.setItem("riddleTotalTime", Math.floor((Date.now() - totalStartTime) / 1000));
-    riddleBox.textContent = "Challenge Complete!";
+
+    problemBox.textContent = "Challenge Complete!";
     input.style.display = "none";
     setTimeout(() => window.location.href = "results.html", 2000);
   }
 
-  input.addEventListener("keyup", async function(e) {
-    if (e.key === "Enter" && input.value.trim()) {
-      const timeTaken = Math.floor((Date.now() - riddleStartTime) / 1000);
-      riddleTimes.push(timeTaken);
-      userAnswers.push(input.value.trim());
-      current++;
-      await waitWhilePaused();
-      showNextRiddle();
-    }
-  });
+  function startCountdown(callback) {
+    startBtn.style.display = "none";
+    label.style.display = "block";
+    countdownEl.style.display = "block";
+
+    const interval = setInterval(() => {
+      countdownEl.textContent = countdownValue;
+      countdownValue--;
+
+      if (countdownValue < 0) {
+        clearInterval(interval);
+        label.style.display = "none";
+        countdownEl.style.display = "none";
+        callback();
+      }
+    }, 1000);
+  }
+
+  function beginGame() {
+    problemBox.style.display = "block";
+    input.style.display = "block";
+    input.focus();
+    riddles = getRandomRiddles(riddleslist, totalCount);
+    totalStartTime = Date.now();
+
+    startGameTimer(600, () => { // You can set a global limit (or load from settings later)
+      onTimeExpired();
+    });
+
+    showNextRiddle();
+
+    input.addEventListener("keyup", async function (e) {
+      if (e.key === "Enter" && input.value.trim() !== "") {
+        const timeTaken = Math.floor((Date.now() - riddleStartTime) / 1000);
+        riddleTimes.push(timeTaken);
+        userAnswers.push(input.value.trim());
+        await window.waitWhilePaused();
+        current++;
+        showNextRiddle();
+      }
+    });
+  }
+
+  function initGame() {
+    if (startBtn) startBtn.onclick = () => startCountdown(beginGame);
+
+    document.getElementById("pause")?.addEventListener("click", togglePause);
+    document.getElementById("pause-mobile")?.addEventListener("click", togglePause);
+    document.getElementById("end-early")?.addEventListener("click", endEarly);
+    document.getElementById("end-early-mobile")?.addEventListener("click", endEarly);
+    document.getElementById("give-up")?.addEventListener("click", giveUp);
+    document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
+  }
 
   window.togglePause = togglePause;
-  window.endEarly = endGame;
+  window.endEarly = endEarly;
+  window.giveUp = giveUp;
 
-  countdownStart();
-}
+  window.onload = initGame;
+})();
 </script>
-
 </body>
 </html>
 
