@@ -844,15 +844,15 @@ input[type=number] {
    15 - Progression Page
    ======================================================= */
 .chart-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 1rem;
-  height: 400px; /* CONTROL HEIGHT */
+  width: 100%;
+  max-width: 1200px; /* Make it large enough, same as carousel width */
+  margin: 2rem auto; /* Center and add space above and below */
+  padding: 0 1rem; /* Small side padding on very small screens */
 }
 
 #progressChart {
   width: 100% !important;
-  height: 100% !important;
+  height: auto !important;
   display: block;
 }
 
