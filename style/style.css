@@ -53,20 +53,6 @@ body.no-gradient {
 }
 
 /* =======================================================
-   02.1 - Flex Layout for Full Page Height
-   ======================================================= */
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.page-content {
-  flex-grow: 1;
-}
-
-
-/* =======================================================
    03 - Font & Typography
    ======================================================= */
 .page-content p {
