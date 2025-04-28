@@ -56,6 +56,73 @@
     .catch(err => console.error('Failed to load header:', err));
 </script>
 
+<main>
+  <div class="main-container">
+    <h1 class="main-title">Riddle Challenge Results</h1>
+
+    <div id="summary" class="result-summary">Loading results...</div>
+
+    <div id="resultsArea" class="results-grid"></div>
+
+    <div class="game-results-buttons-block">
+      <a href="settings.html" class="game-results-buttons">Try Again</a>
+      <a href="/memory.html" class="game-results-buttons">Back to Memory Games</a>
+    </div>
+  </div>
+</main>
+
+<script>
+const riddles = JSON.parse(localStorage.getItem("riddleQuestions") || "[]");
+const answers = JSON.parse(localStorage.getItem("riddleUserAnswers") || "[]");
+const times = JSON.parse(localStorage.getItem("riddleTimes") || "[]");
+const totalTime = parseInt(localStorage.getItem("riddleTotalTime") || "0");
+
+const grid = document.getElementById("resultsArea");
+const summary = document.getElementById("summary");
+
+let correct = 0;
+
+function normalizeInput(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s]/g, '')
+    .split(/[\s,]+/)
+    .filter(Boolean);
+}
+
+function isAnswerCorrect(userInput, keywordList) {
+  const inputWords = normalizeInput(userInput);
+  return keywordList.every(keyword => inputWords.includes(keyword));
+}
+
+riddles.forEach((item, i) => {
+  const userAnswer = (answers[i] || "").trim();
+  const correctAnswer = item.answer.trim();
+  const keywords = normalizeInput(correctAnswer);
+  const isCorrect = isAnswerCorrect(userAnswer, keywords);
+
+  if (isCorrect) correct++;
+
+  const box = document.createElement("div");
+  box.className = "text-box-content"; // Use your standard content box style
+  box.style.border = `2px solid ${isCorrect ? "var(--color-success)" : "var(--color-error)"}`;
+
+  box.innerHTML = `
+    <div><strong>Riddle:</strong> ${item.riddle}</div>
+    <div><strong>Your Answer:</strong> ${userAnswer || "—"}</div>
+    ${!isCorrect ? `<div class="correct-answer">Correct: ${correctAnswer}</div>` : ""}
+    <div class="correct-answer">Time: ${times[i] || 0}s</div>
+  `;
+
+  grid.appendChild(box);
+});
+
+summary.innerHTML = `
+  You solved <span class="highlight">${correct}</span> out of <span class="highlight">${riddles.length}</span> correctly
+  (${Math.round((correct / riddles.length) * 100)}%)<br>
+  Total Time: ${totalTime}s
+`;
+</script>
 
   
 <!-- Footer -->
