@@ -78,34 +78,32 @@
 <!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
-let allSessions = JSON.parse(localStorage.getItem("gameSessions") || "[]");
 let chartInstance = null;
 
 function updateGraph(selectedGame) {
+  const allSessions = JSON.parse(localStorage.getItem("gameSessions") || "[]");
   const filteredSessions = allSessions.filter(s => s.gameType === selectedGame);
-
-  const labels = filteredSessions.map(s => `${s.date} ${s.time}`);
-  const dataPoints = filteredSessions.map(s => s.scorePercent);
 
   const ctx = document.getElementById('progressChart').getContext('2d');
 
-  // Destroy old chart if exists
+  // Destroy old chart if it exists
   if (chartInstance) {
     chartInstance.destroy();
   }
 
   if (filteredSessions.length === 0) {
-    // No data: draw empty chart
     chartInstance = new Chart(ctx, {
       type: 'line',
       data: {
         labels: ['No Data'],
         datasets: [{
-          label: 'No Sessions Found',
+          label: 'No Sessions',
           data: [0],
-          backgroundColor: 'rgba(128, 128, 128, 0.3)',
-          borderColor: 'rgba(128, 128, 128, 0.6)',
+          backgroundColor: 'rgba(150, 150, 150, 0.2)',
+          borderColor: 'rgba(150, 150, 150, 0.6)',
           borderWidth: 2
         }]
       },
@@ -121,6 +119,9 @@ function updateGraph(selectedGame) {
     return;
   }
 
+  const labels = filteredSessions.map(s => `${s.date} ${s.time}`);
+  const dataPoints = filteredSessions.map(s => s.scorePercent);
+
   chartInstance = new Chart(ctx, {
     type: 'line',
     data: {
@@ -128,11 +129,14 @@ function updateGraph(selectedGame) {
       datasets: [{
         label: 'Score %',
         data: dataPoints,
-        backgroundColor: 'rgba(124, 58, 237, 0.4)',
+        backgroundColor: 'rgba(124, 58, 237, 0.4)', // nice violet
         borderColor: 'rgba(124, 58, 237, 1)',
         borderWidth: 2,
         fill: true,
-        tension: 0.3
+        tension: 0.3,
+        pointBackgroundColor: 'white',
+        pointBorderColor: 'rgba(124, 58, 237, 1)',
+        pointRadius: 4,
       }]
     },
     options: {
@@ -140,13 +144,21 @@ function updateGraph(selectedGame) {
         y: {
           min: 0,
           max: 100,
-          ticks: { stepSize: 10 }
+          ticks: { stepSize: 10 },
+          grid: {
+            color: 'rgba(255,255,255,0.1)'
+          }
+        },
+        x: {
+          grid: {
+            color: 'rgba(255,255,255,0.05)'
+          }
         }
       },
       plugins: {
         legend: {
           labels: {
-            color: '#e6e8eb', // match your site colors
+            color: '#e6e8eb', // match your site's light font
             font: { size: 14 }
           }
         }
@@ -155,7 +167,7 @@ function updateGraph(selectedGame) {
   });
 }
 
-// Default: show "Numbers" when page loads
+// Show "Numbers" by default on page load
 window.onload = () => {
   updateGraph('memory-numbers');
 };
