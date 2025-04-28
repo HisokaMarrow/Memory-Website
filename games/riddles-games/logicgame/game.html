@@ -66,3 +66,148 @@
       console.error('Failed to load game header:', err);
     });
 </script>
+
+<main>
+  <div class="main-container" id="gameContainer">
+    <div class="game-display">
+      <h2 class="main-title" id="gameTitle">Starting in...</h2>
+      <div id="countdown" style="font-size: 4rem; font-weight: 700; margin-top: 1rem;">5</div>
+
+      <div id="riddleText" class="main-quotes" style="margin-top: 2rem;"></div> 
+
+      <input 
+        type="text" 
+        id="answerInput" 
+        placeholder="Type your answer..." 
+        class="input-box" 
+        style="display: none; margin-top: 2rem;" 
+        autocomplete="off"
+      />
+    </div>
+  </div>
+</main>
+
+<!-- Riddle Data -->
+<script src="riddles.js"></script>
+
+<script>
+function startRiddleApp() {
+  const totalCount = parseInt(localStorage.getItem("riddleCount") || "2");
+  const timerEl = document.getElementById("gameheadertimerdown-timer");
+  const pauseBtn = document.getElementById("gameheadertimerdown-pauseButton");
+  const countdown = document.getElementById("countdown");
+  const title = document.getElementById("gameTitle");
+  const riddleBox = document.getElementById("riddleText");
+  const input = document.getElementById("answerInput");
+  const endEarlyBtn = document.getElementById("endEarlyBtn");
+
+  let riddles = [];
+  let current = 0;
+  let totalStartTime;
+  let riddleStartTime;
+  let riddleTimes = [];
+  let userAnswers = [];
+
+  let isPaused = false;
+  let pauseResolve;
+
+  function togglePause() {
+    isPaused = !isPaused;
+
+    const pauseBtnDesktop = document.getElementById("gameheadertimerdown-pauseButton");
+    const pauseBtnMobile = document.getElementById("pauseBtn-timer-mobile");
+
+    if (pauseBtnDesktop) pauseBtnDesktop.textContent = isPaused ? "Resume" : "Pause";
+    if (pauseBtnMobile) pauseBtnMobile.textContent = isPaused ? "Resume" : "Pause";
+
+    if (!isPaused && pauseResolve) {
+      pauseResolve();
+      pauseResolve = null;
+    }
+  }
+
+  function waitWhilePaused() {
+    return new Promise(resolve => {
+      if (!isPaused) resolve();
+      else pauseResolve = resolve;
+    });
+  }
+
+  async function countdownStart() {
+    let count = 5;
+    countdown.textContent = count;
+
+    while (count >= 0) {
+      await waitWhilePaused();
+      countdown.textContent = count;
+      await new Promise(res => setTimeout(res, 1000));
+      count--;
+    }
+
+    countdown.style.display = "none";
+    title.style.display = "none";
+    if (endEarlyBtn) endEarlyBtn.classList.remove("disabled");
+    input.style.display = "block";
+    input.focus();
+    startGame();
+  }
+
+  function startGame() {
+    totalStartTime = Date.now();
+    riddles = getRandomRiddles(riddleslist, totalCount);
+    startTimer();
+    showNextRiddle();
+  }
+
+  function startTimer() {
+    setInterval(() => {
+      if (!isPaused && timerEl) {
+        const elapsed = Math.floor((Date.now() - totalStartTime) / 1000);
+        timerEl.textContent = elapsed;
+      }
+    }, 1000);
+  }
+
+  function getRandomRiddles(list, count) {
+    const shuffled = [...list].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  }
+
+  function showNextRiddle() {
+    if (current >= riddles.length) return endGame();
+    const riddle = riddles[current];
+    riddleBox.textContent = riddle.riddle;
+    input.value = "";
+    input.focus();
+    riddleStartTime = Date.now();
+  }
+
+  function endGame() {
+    localStorage.setItem("riddleUserAnswers", JSON.stringify(userAnswers));
+    localStorage.setItem("riddleQuestions", JSON.stringify(riddles));
+    localStorage.setItem("riddleTimes", JSON.stringify(riddleTimes));
+    localStorage.setItem("riddleTotalTime", Math.floor((Date.now() - totalStartTime) / 1000));
+    riddleBox.textContent = "Challenge Complete!";
+    input.style.display = "none";
+    setTimeout(() => window.location.href = "results.html", 2000);
+  }
+
+  input.addEventListener("keyup", async function(e) {
+    if (e.key === "Enter" && input.value.trim()) {
+      const timeTaken = Math.floor((Date.now() - riddleStartTime) / 1000);
+      riddleTimes.push(timeTaken);
+      userAnswers.push(input.value.trim());
+      current++;
+      await waitWhilePaused();
+      showNextRiddle();
+    }
+  });
+
+  window.togglePause = togglePause;
+  window.endEarly = endGame;
+
+  countdownStart();
+}
+</script>
+
+
