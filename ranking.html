@@ -129,7 +129,7 @@ function updateGraph(selectedGameId) {
 
   const canvas = document.getElementById('progressChart');
   const ctx = canvas.getContext('2d');
-  const noDataMessage = document.getElementById('noDataMessage');
+  const noDataMessageWrapper = document.getElementById('noDataMessageWrapper');
 
   if (chartInstance) {
     chartInstance.destroy();
@@ -138,13 +138,13 @@ function updateGraph(selectedGameId) {
   if (filteredSessions.length === 0) {
     // NO data: hide canvas, show no-data message
     canvas.style.display = 'none';
-    noDataMessage.style.display = 'block';
+    noDataMessageWrapper.style.display = 'block';
     return;
   }
 
   // YES data: show canvas, hide no-data message
   canvas.style.display = 'block';
-  noDataMessage.style.display = 'none';
+  noDataMessageWrapper.style.display = 'none';
 
   const labels = filteredSessions.map(s => `${s.date} ${s.time}`);
   const dataPoints = filteredSessions.map(s => s.scorePercent);
