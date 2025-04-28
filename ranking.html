@@ -189,53 +189,6 @@ function updateGraph(selectedGameId) {
     }
   });
 }
-  const labels = filteredSessions.map(s => `${s.date} ${s.time}`);
-  const dataPoints = filteredSessions.map(s => s.scorePercent);
-
-  chartInstance = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Score %',
-        data: dataPoints,
-        backgroundColor: 'rgba(124, 58, 237, 0.4)',
-        borderColor: 'rgba(124, 58, 237, 1)',
-        borderWidth: 2,
-        fill: true,
-        tension: 0.3,
-        pointBackgroundColor: 'white',
-        pointBorderColor: 'rgba(124, 58, 237, 1)',
-        pointRadius: 4
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          min: 0,
-          max: 100,
-          ticks: { stepSize: 10 },
-          grid: {
-            color: 'rgba(255,255,255,0.1)'
-          }
-        },
-        x: {
-          grid: {
-            color: 'rgba(255,255,255,0.05)'
-          }
-        }
-      },
-      plugins: {
-        legend: {
-          labels: {
-            color: '#e6e8eb',
-            font: { size: 14 }
-          }
-        }
-      }
-    }
-  });
-}
 
 // Optional: Highlight the currently selected button
 function highlightActiveButton(activeButton) {
