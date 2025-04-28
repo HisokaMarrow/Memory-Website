@@ -930,6 +930,7 @@ input[type=number] {
   font-size: 1.2rem;
   color: #b0b3b8;
 }
+
 /* =======================================================
    16 - Media Queries (Responsive Adjustments)
    ======================================================= */
@@ -940,3 +941,11 @@ input[type=number] {
     display: none;
   }
 }
+
+
+@media (max-width: 600px) {
+  .chart-container {
+    padding: 0 1rem; /* small side padding so it doesn't touch edges */
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
