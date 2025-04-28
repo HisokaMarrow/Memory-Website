@@ -79,12 +79,13 @@
 
 <script>
 let chartInstance = null; // Chart instance global
+let filteredSessions = []; // Need this global for tooltips
 
 document.addEventListener('DOMContentLoaded', () => {
   loadGameButtons();
 });
 
-// Load game buttons dynamically from games.json
+// Load game buttons dynamically
 async function loadGameButtons() {
   const gameButtonsContainer = document.getElementById('game-buttons');
 
@@ -92,13 +93,9 @@ async function loadGameButtons() {
     const response = await fetch('/gamescollection/games.json');
     const gamesData = await response.json();
 
-    // Filter only actual games, ignoring vault entries
     const playableGames = gamesData.filter(game => game.category !== "Vault");
-
-    // Clear existing buttons
     gameButtonsContainer.innerHTML = '';
 
-    // Generate a button for each playable game
     playableGames.forEach(game => {
       const button = document.createElement('button');
       button.classList.add('game-results-buttons');
@@ -110,12 +107,10 @@ async function loadGameButtons() {
       gameButtonsContainer.appendChild(button);
     });
 
-    // Automatically load the first game's graph by default
     if (playableGames.length > 0) {
       updateGraph(playableGames[0].id);
       highlightActiveButton(gameButtonsContainer.querySelector('button'));
     }
-
   } catch (error) {
     console.error('Failed to load game list:', error);
     gameButtonsContainer.innerHTML = '<p style="color: #aaa; text-align: center;">Failed to load games.</p>';
@@ -125,7 +120,7 @@ async function loadGameButtons() {
 // Update the graph when a game button is clicked
 function updateGraph(selectedGameId) {
   const allSessions = JSON.parse(localStorage.getItem("gameSessions") || "[]");
-  const filteredSessions = allSessions.filter(session => session.gameType === selectedGameId);
+  filteredSessions = allSessions.filter(session => session.gameType === selectedGameId);
 
   const canvas = document.getElementById('progressChart');
   const ctx = canvas.getContext('2d');
@@ -136,13 +131,11 @@ function updateGraph(selectedGameId) {
   }
 
   if (filteredSessions.length === 0) {
-    // NO data: hide canvas, show no-data message
     canvas.style.display = 'none';
     noDataMessageWrapper.style.display = 'block';
     return;
   }
 
-  // YES data: show canvas, hide no-data message
   canvas.style.display = 'block';
   noDataMessageWrapper.style.display = 'none';
 
@@ -150,62 +143,63 @@ function updateGraph(selectedGameId) {
   const dataPoints = filteredSessions.map(s => s.scorePercent);
 
   chartInstance = new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: labels,
-    datasets: [{
-      label: 'Score %',
-      data: dataPoints,
-      backgroundColor: 'rgba(124, 58, 237, 0.4)',
-      borderColor: 'rgba(124, 58, 237, 1)',
-      borderWidth: 2,
-      fill: true,
-      tension: 0.3,
-      pointBackgroundColor: 'white',
-      pointBorderColor: 'rgba(124, 58, 237, 1)',
-      pointRadius: 4,
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      y: {
-        min: 0,
-        max: 100,
-        ticks: { stepSize: 10 },
-        grid: { color: 'rgba(255,255,255,0.1)' }
-      },
-      x: {
-        grid: { color: 'rgba(255,255,255,0.05)' }
-      }
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Score %',
+        data: dataPoints,
+        backgroundColor: 'rgba(124, 58, 237, 0.4)',
+        borderColor: 'rgba(124, 58, 237, 1)',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.3,
+        pointBackgroundColor: 'white',
+        pointBorderColor: 'rgba(124, 58, 237, 1)',
+        pointRadius: 4,
+      }]
     },
-    plugins: {
-      legend: {
-        labels: {
-          color: '#e6e8eb',
-          font: { size: 14 }
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          min: 0,
+          max: 100,
+          ticks: { stepSize: 10 },
+          grid: { color: 'rgba(255,255,255,0.1)' }
+        },
+        x: {
+          grid: { color: 'rgba(255,255,255,0.05)' }
         }
       },
-      tooltip: {
-        callbacks: {
-          label: function(context) {
-            const index = context.dataIndex;
-            const session = filteredSessions[index];
-            return [
-              `Score: ${session.scorePercent}%`,
-              `Correct: ${session.correctCount}`,
-              `Incorrect: ${session.incorrectCount}`,
-              `Time: ${session.timeSpent}s`
-            ];
+      plugins: {
+        legend: {
+          labels: {
+            color: '#e6e8eb',
+            font: { size: 14 }
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const index = context.dataIndex;
+              const session = filteredSessions[index];
+              return [
+                `Score: ${session.scorePercent}%`,
+                `Correct: ${session.correctCount}`,
+                `Incorrect: ${session.incorrectCount}`,
+                `Time: ${session.timeSpent}s`
+              ];
+            }
           }
         }
       }
     }
-  }
-});
+  });
+}
 
-// Optional: Highlight the currently selected button
+// Highlight active button
 function highlightActiveButton(activeButton) {
   const allButtons = document.querySelectorAll('.game-results-buttons');
   allButtons.forEach(btn => btn.classList.remove('active'));
