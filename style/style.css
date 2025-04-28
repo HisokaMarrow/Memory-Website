@@ -932,6 +932,16 @@ input[type=number] {
   color: #b0b3b8;
 }
 
+/* Hide scrollbar but allow scroll */
+.games-carousel {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+
+.games-carousel::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 /* =======================================================
    16 - Media Queries (Responsive Adjustments)
    ======================================================= */
