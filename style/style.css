@@ -896,6 +896,17 @@ input[type=number] {
   font-weight: bold;
 }
 
+.no-data-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  color: #e6e8eb;
+  text-align: center;
+  display: none; /* Hidden by default */
+}
+
 /* =======================================================
    16 - Media Queries (Responsive Adjustments)
    ======================================================= */
