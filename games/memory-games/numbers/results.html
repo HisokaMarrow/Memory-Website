@@ -98,60 +98,82 @@
   }
 
   function checkAnswers() {
-  const inputs = document.querySelectorAll(".input-box");
-  let correct = 0;
-  let totalDigitsCorrect = 0;
+    const inputs = document.querySelectorAll(".input-box");
+    let correct = 0;
+    let totalDigitsCorrect = 0;
 
-  inputs.forEach((input, i) => {
-    const wrapper = input.parentElement;
-    const correctAnswer = generatedNumbers[i].toString();
-    const userAnswer = input.value.trim();
+    inputs.forEach((input, i) => {
+      const wrapper = input.parentElement;
+      const correctAnswer = generatedNumbers[i].toString();
+      const userAnswer = input.value.trim();
 
-    if (userAnswer === correctAnswer) {
-      input.classList.add("correct");
-      input.classList.remove("incorrect");
-      wrapper.querySelector(".correct-answer").textContent = "";
-      correct++;
-      totalDigitsCorrect += correctAnswer.length;
-    } else {
-      input.classList.add("incorrect");
-      input.classList.remove("correct");
-      wrapper.querySelector(".correct-answer").textContent = `Correct: ${correctAnswer}`;
-    }
-  });
+      if (userAnswer === correctAnswer) {
+        input.classList.add("correct");
+        input.classList.remove("incorrect");
+        wrapper.querySelector(".correct-answer").textContent = "";
+        correct++;
+        totalDigitsCorrect += correctAnswer.length;
+      } else {
+        input.classList.add("incorrect");
+        input.classList.remove("correct");
+        wrapper.querySelector(".correct-answer").textContent = `Correct: ${correctAnswer}`;
+      }
+    });
 
-  const percent = Math.round((correct / generatedNumbers.length) * 100);
-  document.getElementById("summary").innerHTML = `
-    You got <span class="highlight">${correct}</span> out of ${generatedNumbers.length} correct (${percent}%)<br />
-    <span style="display: block; margin-top: 0.5rem;">Digits remembered: <span class="highlight">${totalDigitsCorrect}</span></span>
-  `;
-}
+    const percent = Math.round((correct / generatedNumbers.length) * 100);
+    document.getElementById("summary").innerHTML = `
+      You got <span class="highlight">${correct}</span> out of ${generatedNumbers.length} correct (${percent}%)<br />
+      <span style="display: block; margin-top: 0.5rem;">Digits remembered: <span class="highlight">${totalDigitsCorrect}</span></span>
+    `;
+
+    // ✅ Save the session
+    const incorrect = generatedNumbers.length - correct;
+    const timeSpent = parseInt(localStorage.getItem("testTime") || "60"); // Pull time from settings
+
+    saveGameSession("memory-numbers", percent, correct, incorrect, timeSpent);
+  }
 
   function tryAgain() {
     window.location.href = "settings.html";
   }
 
-   function backtogames() {
+  function backToGames() {
     window.location.href = "/memory.html";
   }
 
-  renderInputs();
-sessionStorage.setItem("dailyGame_Number Memory", "true");
+  function saveGameSession(gameType, scorePercent, correctCount, incorrectCount, timeSpent) {
+    let sessions = JSON.parse(localStorage.getItem("gameSessions") || "[]");
 
-// === Add keyboard navigation with Enter ===
-const inputBoxes = document.querySelectorAll(".input-box");
-inputBoxes.forEach((input, index) => {
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const nextInput = inputBoxes[index + 1];
-      if (nextInput) {
-        nextInput.focus();
-        nextInput.select(); // Optional: select text in case they want to retype
+    sessions.push({
+      gameType: gameType,
+      date: new Date().toLocaleDateString('en-GB'), // format: DD/MM/YYYY
+      time: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }), // HH:MM
+      scorePercent: scorePercent,
+      correctCount: correctCount,
+      incorrectCount: incorrectCount,
+      timeSpent: timeSpent
+    });
+
+    localStorage.setItem("gameSessions", JSON.stringify(sessions));
+  }
+
+  renderInputs();
+  sessionStorage.setItem("dailyGame_Number Memory", "true");
+
+  // ✅ Enable Enter key to jump to next input
+  const inputBoxes = document.querySelectorAll(".input-box");
+  inputBoxes.forEach((input, index) => {
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const nextInput = inputBoxes[index + 1];
+        if (nextInput) {
+          nextInput.focus();
+          nextInput.select(); // Optional: select text
+        }
       }
-    }
+    });
   });
-});
 </script>
 
 <!-- Footer -->
