@@ -855,6 +855,7 @@ input[type=number] {
   width: 100% !important;
   height: auto !important;
   display: block;
+  transition: transform 0.3s ease; /* Smooth transition */
 }
 
 /* Carousel wrapper */
@@ -942,10 +943,10 @@ input[type=number] {
   }
 }
 
-
+/* Stretch Y axis by 1.1x on mobile */
 @media (max-width: 600px) {
-  .chart-container {
-    padding: 0 1rem; /* small side padding so it doesn't touch edges */
-    margin-top: 3rem;
-    margin-bottom: 3rem;
+  #progressChart {
+    transform: scaleY(1.1); /* 10% taller */
+    transform-origin: top center; /* Stretch from top */
   }
+}
