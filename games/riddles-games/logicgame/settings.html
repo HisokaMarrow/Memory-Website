@@ -57,35 +57,37 @@
 </script>
 
 <main>
-  <div class="main-container">
-    <h1 class="main-title">Riddle Challenge</h1>
-    <p class="main-subtitle">Choose how many riddles you want to solve:</p>
+  <h1 class="main-title" style="text-align: center;">Riddle Challenge Settings</h1>
 
-    <div class="games-settings-container">
-      <div class="radio-group">
-        <input type="radio" id="riddle2" name="riddleCount" value="2" checked>
-        <label for="riddle2">2 Riddles</label>
+  <section class="games-settings-container">
 
-        <input type="radio" id="riddle4" name="riddleCount" value="4">
-        <label for="riddle4">4 Riddles</label>
+    <!-- Riddle Count Selection -->
+    <div class="radio-group">
+      <input type="radio" id="riddle2" name="riddleCount" value="2" checked>
+      <label for="riddle2">2 Riddles</label>
 
-        <input type="radio" id="riddle6" name="riddleCount" value="6">
-        <label for="riddle6">6 Riddles</label>
-      </div>
+      <input type="radio" id="riddle4" name="riddleCount" value="4">
+      <label for="riddle4">4 Riddles</label>
 
-      <button onclick="startGame()" class="game-gamestart-button">Start Riddle Game</button>
+      <input type="radio" id="riddle6" name="riddleCount" value="6">
+      <label for="riddle6">6 Riddles</label>
     </div>
-  </div>
+
+    <div class="button-wrapper">
+      <button id="startButton" class="game-start-button">Start Riddle Game</button>
+    </div>
+
+  </section>
 </main>
 
 <script>
-function startGame() {
-  const selected = document.querySelector('input[name="riddleCount"]:checked');
-  if (selected) {
-    localStorage.setItem('riddleCount', selected.value);
-    window.location.href = 'game.html'; // Redirect to riddles game page
-  }
-}
+  document.getElementById('startButton').addEventListener('click', () => {
+    const selected = document.querySelector('input[name="riddleCount"]:checked');
+    if (selected) {
+      localStorage.setItem('riddleCount', selected.value);
+      window.location.href = 'game.html';
+    }
+  });
 </script>
 
   
