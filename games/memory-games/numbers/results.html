@@ -130,7 +130,7 @@
     const incorrect = generatedNumbers.length - correct;
     const timeSpent = parseInt(localStorage.getItem("testTime") || "60"); // Pull time from settings
 
-    saveGameSession("memory-numbers", percent, correct, incorrect, timeSpent);
+    saveGameSession("memory_number", percent, correct, incorrect, timeSpent);
   }
 
   function tryAgain() {
