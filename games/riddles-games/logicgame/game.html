@@ -208,9 +208,11 @@
     riddles = getRandomRiddles(riddleslist, totalCount);
     totalStartTime = Date.now();
 
-    startGameTimer(600, () => { // You can set a global limit (or load from settings later)
-      onTimeExpired();
-    });
+    const totalTimeLimit = parseInt(localStorage.getItem("riddleTimeLimit") || "120");
+
+startGameTimer(totalTimeLimit, () => {
+  onTimeExpired();
+});
 
     showNextRiddle();
 
