@@ -150,47 +150,60 @@ function updateGraph(selectedGameId) {
   const dataPoints = filteredSessions.map(s => s.scorePercent);
 
   chartInstance = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Score %',
-        data: dataPoints,
-        backgroundColor: 'rgba(124, 58, 237, 0.4)',
-        borderColor: 'rgba(124, 58, 237, 1)',
-        borderWidth: 2,
-        fill: true,
-        tension: 0.3,
-        pointBackgroundColor: 'white',
-        pointBorderColor: 'rgba(124, 58, 237, 1)',
-        pointRadius: 4
-      }]
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: 'Score %',
+      data: dataPoints,
+      backgroundColor: 'rgba(124, 58, 237, 0.4)',
+      borderColor: 'rgba(124, 58, 237, 1)',
+      borderWidth: 2,
+      fill: true,
+      tension: 0.3,
+      pointBackgroundColor: 'white',
+      pointBorderColor: 'rgba(124, 58, 237, 1)',
+      pointRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        min: 0,
+        max: 100,
+        ticks: { stepSize: 10 },
+        grid: { color: 'rgba(255,255,255,0.1)' }
+      },
+      x: {
+        grid: { color: 'rgba(255,255,255,0.05)' }
+      }
     },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          min: 0,
-          max: 100,
-          ticks: { stepSize: 10 },
-          grid: { color: 'rgba(255,255,255,0.1)' }
-        },
-        x: {
-          grid: { color: 'rgba(255,255,255,0.05)' }
+    plugins: {
+      legend: {
+        labels: {
+          color: '#e6e8eb',
+          font: { size: 14 }
         }
       },
-      plugins: {
-        legend: {
-          labels: {
-            color: '#e6e8eb',
-            font: { size: 14 }
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            const index = context.dataIndex;
+            const session = filteredSessions[index];
+            return [
+              `Score: ${session.scorePercent}%`,
+              `Correct: ${session.correctCount}`,
+              `Incorrect: ${session.incorrectCount}`,
+              `Time: ${session.timeSpent}s`
+            ];
           }
         }
       }
     }
-  });
-}
+  }
+});
 
 // Optional: Highlight the currently selected button
 function highlightActiveButton(activeButton) {
