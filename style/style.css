@@ -403,6 +403,20 @@ main {
   border-width: 2px;
   border-style: solid;
 }
+
+.drop-slot.correct {
+  border-color: var(--color-success);
+  border-width: 2px;
+  border-style: solid;
+  border-image: initial;
+}
+
+.drop-slot.incorrect {
+  border-color: var(--color-error);
+  border-width: 2px;
+  border-style: solid;
+  border-image: initial;
+}
 /* =======================================================
    09 - Inputs & Forms
    ======================================================= */
