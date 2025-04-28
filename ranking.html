@@ -58,10 +58,10 @@
 
 
 <main class="main-container">
-  <h1 class="main-title" style="text-align: center;">Your Progress</h1>
+  <h1 class="main-title">Your Progress</h1>
 
   <!-- Dynamically loaded game buttons -->
-  <div id="game-buttons" class="radio-group" style="justify-content: center;">
+  <div id="game-buttons" class="radio-group">
     <!-- Buttons will be dynamically generated here -->
   </div>
 
@@ -74,117 +74,115 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-// Function to dynamically load game buttons from the game list
-function loadGameButtons() {
-  const gameButtonsContainer = document.getElementById('game-buttons');
-  
-  // Get the list of games from localStorage, default to an empty array if none exist
-  const gameList = JSON.parse(localStorage.getItem("gameList") || '[]');  // Get the list of games from localStorage
-  
-  // Clear existing buttons (if any)
-  gameButtonsContainer.innerHTML = '';
+  let chartInstance = null; // Declare chartInstance at global scope
 
-  // Generate button for each game in the list
-  gameList.forEach(game => {
-    const button = document.createElement('button');
-    button.classList.add('game-results-buttons');
-    button.textContent = game.title;  // Use game title as button text
-    button.onclick = () => updateGraph(game.id);  // Update the graph based on selected game
-    gameButtonsContainer.appendChild(button);
+  // Load game buttons and initial chart when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    loadGameButtons();
+    updateGraph('memory_number'); // Default game
   });
-}
 
-// Load game buttons when page is loaded
-window.onload = () => {
-  loadGameButtons();  // Load the buttons dynamically
-  updateGraph('memory_number');  // Default: show "Number Memory" on page load
-};
+  // Function to dynamically load game buttons from localStorage
+  function loadGameButtons() {
+    const gameButtonsContainer = document.getElementById('game-buttons');
+    const gameList = JSON.parse(localStorage.getItem("gameList") || '[]');  
 
-// Function to update the graph based on selected game
-function updateGraph(selectedGame) {
-  const allSessions = JSON.parse(localStorage.getItem("gameSessions") || "[]");
-  const filteredSessions = allSessions.filter(s => s.gameType === selectedGame);
+    // Clear existing buttons
+    gameButtonsContainer.innerHTML = '';
 
-  const ctx = document.getElementById('progressChart').getContext('2d');
-
-  // Destroy the old chart before creating a new one
-  if (chartInstance) {
-    chartInstance.destroy();
+    // Generate buttons
+    gameList.forEach(game => {
+      const button = document.createElement('button');
+      button.classList.add('game-results-buttons');
+      button.textContent = game.title;
+      button.onclick = () => updateGraph(game.id);
+      gameButtonsContainer.appendChild(button);
+    });
   }
 
-  // If no data for the selected game, show a default message
-  if (filteredSessions.length === 0) {
+  // Function to update the graph based on selected game
+  function updateGraph(selectedGame) {
+    const allSessions = JSON.parse(localStorage.getItem("gameSessions") || "[]");
+    const filteredSessions = allSessions.filter(s => s.gameType === selectedGame);
+
+    const ctx = document.getElementById('progressChart').getContext('2d');
+
+    if (chartInstance) {
+      chartInstance.destroy();
+    }
+
+    if (filteredSessions.length === 0) {
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['No Data'],
+          datasets: [{
+            label: 'No Sessions',
+            data: [0],
+            backgroundColor: 'rgba(150, 150, 150, 0.2)',
+            borderColor: 'rgba(150, 150, 150, 0.6)',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          scales: {
+            y: { min: 0, max: 100 }
+          },
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+      return;
+    }
+
+    const labels = filteredSessions.map(s => `${s.date} ${s.time}`);
+    const dataPoints = filteredSessions.map(s => s.scorePercent);
+
     chartInstance = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: ['No Data'],
+        labels: labels,
         datasets: [{
-          label: 'No Sessions',
-          data: [0],
-          backgroundColor: 'rgba(150, 150, 150, 0.2)',
-          borderColor: 'rgba(150, 150, 150, 0.6)',
-          borderWidth: 2
+          label: 'Score %',
+          data: dataPoints,
+          backgroundColor: 'rgba(124, 58, 237, 0.4)',
+          borderColor: 'rgba(124, 58, 237, 1)',
+          borderWidth: 2,
+          fill: true,
+          tension: 0.3,
+          pointBackgroundColor: 'white',
+          pointBorderColor: 'rgba(124, 58, 237, 1)',
+          pointRadius: 4
         }]
       },
       options: {
         scales: {
-          y: { min: 0, max: 100 }
+          y: {
+            min: 0,
+            max: 100,
+            ticks: { stepSize: 10 },
+            grid: {
+              color: 'rgba(255,255,255,0.1)'
+            }
+          },
+          x: {
+            grid: {
+              color: 'rgba(255,255,255,0.05)'
+            }
+          }
         },
         plugins: {
-          legend: { display: false }
+          legend: {
+            labels: {
+              color: '#e6e8eb',
+              font: { size: 14 }
+            }
+          }
         }
       }
     });
-    return;
   }
-
-  const labels = filteredSessions.map(s => `${s.date} ${s.time}`);
-  const dataPoints = filteredSessions.map(s => s.scorePercent);
-
-  chartInstance = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Score %',
-        data: dataPoints,
-        backgroundColor: 'rgba(124, 58, 237, 0.4)', // violet color
-        borderColor: 'rgba(124, 58, 237, 1)',
-        borderWidth: 2,
-        fill: true,
-        tension: 0.3,
-        pointBackgroundColor: 'white',
-        pointBorderColor: 'rgba(124, 58, 237, 1)',
-        pointRadius: 4
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          min: 0,
-          max: 100,
-          ticks: { stepSize: 10 },
-          grid: {
-            color: 'rgba(255,255,255,0.1)'
-          }
-        },
-        x: {
-          grid: {
-            color: 'rgba(255,255,255,0.05)'
-          }
-        }
-      },
-      plugins: {
-        legend: {
-          labels: {
-            color: '#e6e8eb', // match your site's light font
-            font: { size: 14 }
-          }
-        }
-      }
-    }
-  });
-}
 </script>
 
 <!-- Footer -->
