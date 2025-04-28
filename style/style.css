@@ -56,9 +56,6 @@ body.no-gradient {
 /* =======================================================
    03 - Font & Typography
    ======================================================= */
-.page-content {
-  flex: 1;
-}
 
 .page-content p {
   color: var(--color-subtext);
