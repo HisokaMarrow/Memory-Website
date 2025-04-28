@@ -62,16 +62,17 @@
 
   <div class="games-carousel-wrapper">
     <div id="game-buttons" class="games-carousel">
-      <!-- buttons -->
+      <!-- Buttons will be dynamically generated here -->
     </div>
   </div>
 
   <div class="chart-container">
     <canvas id="progressChart"></canvas>
-    <div id="no-data-message-wrapper" class="no-data-wrapper">
-  	<div id="no-data-message" class="no-data-message">No data yet — play a game to see your progress!</div>
-  	<div id="additional-message" class="additional-message">Please play and finish a game to start tracking and analyzing your progress.</div>
-	</div>
+    <div id="noDataMessageWrapper" class="no-data-wrapper">
+      <div class="no-data-message">No data yet — play a game to see your progress!</div>
+      <div class="additional-message">Please play and finish a game to start tracking and analyzing your progress.</div>
+    </div>
+  </div> <!-- CLOSE chart-container properly -->
 </main>
 
 <!-- Chart.js CDN -->
@@ -79,7 +80,7 @@
 
 <script>
 let chartInstance = null; // Chart instance global
-let filteredSessions = []; // Need this global for tooltips
+let filteredSessions = []; // To use inside tooltip
 
 document.addEventListener('DOMContentLoaded', () => {
   loadGameButtons();
