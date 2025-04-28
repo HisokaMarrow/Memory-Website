@@ -56,7 +56,6 @@ body.no-gradient {
    03 - Font & Typography
    ======================================================= */
 .page-content p {
-  flex: 1;
   color: var(--color-subtext);
   max-width: 700px;
   margin: 0 auto;
