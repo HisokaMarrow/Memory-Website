@@ -143,8 +143,31 @@ function checkAnswers() {
   });
 
   const percent = Math.round((correct / riddles.length) * 100);
+  const incorrectCount = riddles.length - correct;
+  const timeSpent = totalTime || 60; // fallback if totalTime not set
+
   document.getElementById("summary").innerHTML = 
     `You got <span class="highlight">${correct}</span> out of ${riddles.length} correct (${percent}%)<br>Total Time: ${totalTime}s`;
+
+  // ✅ Save session for Progress Graph
+  saveGameSession("riddle_logic", percent, correct, incorrectCount, timeSpent);
+}
+
+// ✅ Add this saving function too if not already present
+function saveGameSession(gameType, scorePercent, correctCount, incorrectCount, timeSpent) {
+  let sessions = JSON.parse(localStorage.getItem("gameSessions") || "[]");
+
+  sessions.push({
+    gameType: gameType,
+    date: new Date().toLocaleDateString('en-GB'),
+    time: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
+    scorePercent: scorePercent,
+    correctCount: correctCount,
+    incorrectCount: incorrectCount,
+    timeSpent: timeSpent
+  });
+
+  localStorage.setItem("gameSessions", JSON.stringify(sessions));
 }
 
 function tryAgain() {
