@@ -105,31 +105,53 @@
   }
 
   function checkAnswers() {
-    const inputs = document.querySelectorAll(".input-box");
-    let correct = 0;
+  const inputs = document.querySelectorAll(".input-box");
+  let correct = 0;
 
-    inputs.forEach((input, i) => {
-      const wrapper = input.parentElement;
-      const correctAnswer = problems[i].answer;
-      const userInput = parseInt(input.value.trim());
+  inputs.forEach((input, i) => {
+    const wrapper = input.parentElement;
+    const correctAnswer = problems[i].answer;
+    const userInput = parseInt(input.value.trim());
 
-      if (userInput === correctAnswer) {
-        input.classList.add("correct");
-        input.classList.remove("incorrect");
-        wrapper.querySelector(".correct-answer").textContent = "";
-        correct++;
-      } else {
-        input.classList.add("incorrect");
-        input.classList.remove("correct");
-        wrapper.querySelector(".correct-answer").textContent = `Correct: ${correctAnswer}`;
-      }
-    });
+    if (userInput === correctAnswer) {
+      input.classList.add("correct");
+      input.classList.remove("incorrect");
+      wrapper.querySelector(".correct-answer").textContent = "";
+      correct++;
+    } else {
+      input.classList.add("incorrect");
+      input.classList.remove("correct");
+      wrapper.querySelector(".correct-answer").textContent = `Correct: ${correctAnswer}`;
+    }
+  });
 
-    const percent = Math.round((correct / problems.length) * 100);
-    document.getElementById("summary").innerHTML =
-      `You got <span class="highlight">${correct}</span> out of ${problems.length} correct (${percent}%)`;
-  }
+  const percent = Math.round((correct / problems.length) * 100);
+  const incorrectCount = problems.length - correct;
+  const timeSpent = parseInt(localStorage.getItem("testTime") || "60"); // fallback 60 seconds
 
+  document.getElementById("summary").innerHTML =
+    `You got <span class="highlight">${correct}</span> out of ${problems.length} correct (${percent}%)`;
+
+  // ✅ Save session for Progress Graph
+  saveGameSession("math_addition", percent, correct, incorrectCount, timeSpent); // or math_subtraction etc.
+}
+
+// ✅ Save function
+function saveGameSession(gameType, scorePercent, correctCount, incorrectCount, timeSpent) {
+  let sessions = JSON.parse(localStorage.getItem("gameSessions") || "[]");
+
+  sessions.push({
+    gameType: gameType,
+    date: new Date().toLocaleDateString('en-GB'),
+    time: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
+    scorePercent: scorePercent,
+    correctCount: correctCount,
+    incorrectCount: incorrectCount,
+    timeSpent: timeSpent
+  });
+
+  localStorage.setItem("gameSessions", JSON.stringify(sessions));
+}
   function tryAgain() {
     window.location.href = "settings.html";
   }
