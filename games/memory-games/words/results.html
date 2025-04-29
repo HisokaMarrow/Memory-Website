@@ -121,6 +121,8 @@
     const percent = Math.round((correct / generatedWords.length) * 100);
     document.getElementById("summary").innerHTML =
       `You got <span class="highlight">${correct}</span> out of ${generatedWords.length} correct (${percent}%)`;
+      
+      saveGameSession("memory_words", percent, correct, incorrect, timeSpent);
   }
 
   function tryAgain() {
