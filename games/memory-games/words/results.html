@@ -98,32 +98,37 @@
   }
 
   function checkAnswers() {
-    const inputs = document.querySelectorAll(".input-box");
-    let correct = 0;
+  const inputs = document.querySelectorAll(".input-box");
+  let correct = 0;
 
-    inputs.forEach((input, i) => {
-      const wrapper = input.parentElement;
-      const correctAnswer = generatedWords[i].toString().toLowerCase();
-      const userInput = input.value.trim().toLowerCase();
+  inputs.forEach((input, i) => {
+    const wrapper = input.parentElement;
+    const correctAnswer = generatedWords[i].toString().toLowerCase();
+    const userInput = input.value.trim().toLowerCase();
 
-      if (userInput === correctAnswer) {
-        input.classList.add("correct");
-        input.classList.remove("incorrect");
-        wrapper.querySelector(".correct-answer").textContent = "";
-        correct++;
-      } else {
-        input.classList.add("incorrect");
-        input.classList.remove("correct");
-        wrapper.querySelector(".correct-answer").textContent = `Correct: ${generatedWords[i]}`;
-      }
-    });
+    if (userInput === correctAnswer) {
+      input.classList.add("correct");
+      input.classList.remove("incorrect");
+      wrapper.querySelector(".correct-answer").textContent = "";
+      correct++;
+    } else {
+      input.classList.add("incorrect");
+      input.classList.remove("correct");
+      wrapper.querySelector(".correct-answer").textContent = `Correct: ${generatedWords[i]}`;
+    }
+  });
 
-    const percent = Math.round((correct / generatedWords.length) * 100);
-    document.getElementById("summary").innerHTML =
-      `You got <span class="highlight">${correct}</span> out of ${generatedWords.length} correct (${percent}%)`;
-      
-      saveGameSession("memory_words", percent, correct, incorrect, timeSpent);
-  }
+  const total = generatedWords.length;
+  const percent = Math.round((correct / total) * 100);
+  const incorrect = total - correct;
+  const timeSpent = parseInt(localStorage.getItem("testTime") || "60");
+
+  document.getElementById("summary").innerHTML =
+    `You got <span class="highlight">${correct}</span> out of ${total} correct (${percent}%)`;
+
+  // ✅ Now save session properly
+  saveGameSession("memory_words", percent, correct, incorrect, timeSpent);
+}
 
   function tryAgain() {
     window.location.href = "settings.html";
