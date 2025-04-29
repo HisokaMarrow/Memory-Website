@@ -932,27 +932,6 @@ input[type=number] {
   color: #b0b3b8;
 }
 
-/* Make scrollbar fully transparent but still functional */
-.games-carousel {
-  overflow-x: auto;
-  scrollbar-width: thin; /* Firefox: small invisible scrollbar */
-  scrollbar-color: transparent transparent; /* thumb and track transparent */
-  -ms-overflow-style: none;  /* IE and Edge (hide scrollbar track) */
-}
-
-/* Chrome, Safari, Opera */
-.games-carousel::-webkit-scrollbar {
-  height: 6px; /* Thin scrollbar */
-}
-
-.games-carousel::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.games-carousel::-webkit-scrollbar-thumb {
-  background: transparent;
-}
-
 /* =======================================================
    16 - Media Queries (Responsive Adjustments)
    ======================================================= */
