@@ -159,25 +159,27 @@
   }
 
   async function beginGame() {
-    cardSequence = getShuffledCards();
-    output.style.display = 'block';
+  cardSequence = getShuffledCards();
+  output.style.display = 'block';
 
-    startGameTimer(timeLimit, onTimeExpired);
+  startGameTimer(timeLimit, onTimeExpired);
 
-    while (currentIndex < cardSequence.length && !shouldStopGame) {
-      await window.waitWhilePaused();
+  while (currentIndex < cardSequence.length && !shouldStopGame) {
+    await window.waitWhilePaused();
 
-      showCard(currentIndex);
-      currentIndex++;
-      await wait(cardInterval * 1000);
-    }
-
-    if (!shouldStopGame) {
-      localStorage.setItem("cardSequence", JSON.stringify(cardSequence.slice(0, currentIndex)));
-      window.location.href = "results.html";
-    }
+    showCard(currentIndex);
+    currentIndex++;
+    await wait(cardInterval * 1000);
   }
 
+  if (!shouldStopGame) {
+    // User finished the deck
+    stopGameTimer(); // <- also stop the timer cleanly
+    localStorage.setItem("cardSequence", JSON.stringify(cardSequence.slice(0, currentIndex)));
+    output.innerHTML = "Deck Complete!";
+    setTimeout(() => window.location.href = "results.html", 2000);
+  }
+}
   function startCountdown(callback) {
     countdown.style.display = "block";
     countdownLabel.style.display = "block";
