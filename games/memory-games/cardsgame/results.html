@@ -187,28 +187,52 @@
 
 
   function checkAnswers() {
-    const wrappers = [...document.querySelectorAll('.drop-wrapper')];
-    let correctCount = 0;
-    wrappers.forEach((wrapper, idx) => {
-      const slot = wrapper.querySelector('.drop-slot');
-      const label = wrapper.querySelector('.correct-answer-label');
-      const img = slot.querySelector('img');
-      const card = img ? img.dataset.card : null;
-      slot.classList.remove('correct', 'incorrect');
-      label.textContent = '';
-      if (card === originalOrder[idx]) {
-        slot.classList.add('correct');
-        correctCount++;
-      } else {
-        slot.classList.add('incorrect');
-        label.textContent = originalOrder[idx];
-      }
-    });
-   const percent = Math.round((correctCount / originalOrder.length) * 100);
-    document.getElementById("summary").innerHTML =
-      `You got <span class="highlight">${correctCount}</span> out of ${originalOrder.length} correct (${percent}%)`;
-  }
+  const wrappers = [...document.querySelectorAll('.drop-wrapper')];
+  let correctCount = 0;
+  wrappers.forEach((wrapper, idx) => {
+    const slot = wrapper.querySelector('.drop-slot');
+    const label = wrapper.querySelector('.correct-answer-label');
+    const img = slot.querySelector('img');
+    const card = img ? img.dataset.card : null;
+    slot.classList.remove('correct', 'incorrect');
+    label.textContent = '';
+    if (card === originalOrder[idx]) {
+      slot.classList.add('correct');
+      correctCount++;
+    } else {
+      slot.classList.add('incorrect');
+      label.textContent = originalOrder[idx];
+    }
+  });
 
+  const total = originalOrder.length;
+  const percent = Math.round((correctCount / total) * 100);
+  const incorrectCount = total - correctCount;
+  const timeSpent = parseInt(localStorage.getItem("testTime") || "60");
+
+  document.getElementById("summary").innerHTML =
+    `You got <span class="highlight">${correctCount}</span> out of ${total} correct (${percent}%)`;
+
+  // ✅ Now save the session
+  saveGameSession("memory_cards", percent, correctCount, incorrectCount, timeSpent);
+}
+
+// ✅ Add this function to save results properly
+function saveGameSession(gameType, scorePercent, correctCount, incorrectCount, timeSpent) {
+  let sessions = JSON.parse(localStorage.getItem("gameSessions") || "[]");
+
+  sessions.push({
+    gameType: gameType,
+    date: new Date().toLocaleDateString('en-GB'),
+    time: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
+    scorePercent: scorePercent,
+    correctCount: correctCount,
+    incorrectCount: incorrectCount,
+    timeSpent: timeSpent
+  });
+
+  localStorage.setItem("gameSessions", JSON.stringify(sessions));
+}
   function tryAgain() {
     window.location.href = 'game.html';
   }
