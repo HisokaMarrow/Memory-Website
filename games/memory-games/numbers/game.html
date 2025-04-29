@@ -225,38 +225,32 @@
   }
 
   function initGameLogic() {
-    const startBtn = document.getElementById("startButton");
+  const startBtn = document.getElementById("startButton");
 
-    if (startBtn) {
-      startBtn.disabled = true;
-      startBtn.textContent = "Loading Voice...";
+  // Start preloading voices quietly in the background
+  preloadVoices().then(() => {
+    console.log("Voice preloading complete!");
+  }).catch(err => {
+    console.error("Voice preload error", err);
+  });
 
-      preloadVoices().then(() => {
-        console.log("Voice preloading complete!");
-        startBtn.disabled = false;
-        startBtn.textContent = "Start Game";
-      }).catch(err => {
-        console.error("Voice preload error", err);
-        startBtn.disabled = false;
-        startBtn.textContent = "Start Game (Voice may lag)";
-      });
-
-      startBtn.onclick = () => {
-        if (window.speechSynthesis) {
-          let dummy = new SpeechSynthesisUtterance('');
-          window.speechSynthesis.speak(dummy);
-        }
-        startCountdown(beginGame);
-      };
-    }
-
-    document.getElementById("pause")?.addEventListener("click", togglePause);
-    document.getElementById("pause-mobile")?.addEventListener("click", togglePause);
-    document.getElementById("end-early")?.addEventListener("click", endEarly);
-    document.getElementById("end-early-mobile")?.addEventListener("click", endEarly);
-    document.getElementById("give-up")?.addEventListener("click", giveUp);
-    document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
+  if (startBtn) {
+    startBtn.onclick = () => {
+      if (window.speechSynthesis) {
+        let dummy = new SpeechSynthesisUtterance('');
+        window.speechSynthesis.speak(dummy);
+      }
+      startCountdown(beginGame);
+    };
   }
+
+  document.getElementById("pause")?.addEventListener("click", togglePause);
+  document.getElementById("pause-mobile")?.addEventListener("click", togglePause);
+  document.getElementById("end-early")?.addEventListener("click", endEarly);
+  document.getElementById("end-early-mobile")?.addEventListener("click", endEarly);
+  document.getElementById("give-up")?.addEventListener("click", giveUp);
+  document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
+}
 
   window.togglePause = togglePause;
   window.endEarly = endEarly;
