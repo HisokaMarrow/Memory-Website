@@ -195,17 +195,25 @@
   }
 
   function initGameLogic() {
-    const startBtn = document.getElementById("startButton");
-    if (startBtn) startBtn.onclick = () => startCountdown(beginGame);
+  const startBtn = document.getElementById("startButton");
+  if (startBtn) startBtn.onclick = () => {
+    // UNLOCK VOICE IMMEDIATELY on iOS Safari
+    if (window.speechSynthesis) {
+      let dummy = new SpeechSynthesisUtterance('');
+      window.speechSynthesis.speak(dummy);
+    }
+    
+    // Now continue as before
+    startCountdown(beginGame);
+  };
 
-    document.getElementById("pause")?.addEventListener("click", togglePause);
-    document.getElementById("pause-mobile")?.addEventListener("click", togglePause);
-    document.getElementById("end-early")?.addEventListener("click", endEarly);
-    document.getElementById("end-early-mobile")?.addEventListener("click", endEarly);
-    document.getElementById("give-up")?.addEventListener("click", giveUp);
-    document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
-  }
-
+  document.getElementById("pause")?.addEventListener("click", togglePause);
+  document.getElementById("pause-mobile")?.addEventListener("click", togglePause);
+  document.getElementById("end-early")?.addEventListener("click", endEarly);
+  document.getElementById("end-early-mobile")?.addEventListener("click", endEarly);
+  document.getElementById("give-up")?.addEventListener("click", giveUp);
+  document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
+}
   window.togglePause = togglePause;
   window.endEarly = endEarly;
   window.giveUp = giveUp;
