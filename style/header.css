@@ -120,6 +120,9 @@
   transform: scale(1);
 }
 
+.nav-link.active {
+    color: #ffcc00; /* Highlight current page */
+}
 /* ------------------------------
    Mobile Navigation & Behavior
    Responsive tweaks + drawer setup
