@@ -16,12 +16,15 @@
   --color-secondary-hover: #7f5af0;
   --color-success: #2dd4bf;
   --color-error: #f43f5e;
-  --color-border-select: #FFA500;
+  --color-border-select: #ffa500;
 }
+
 /* =======================================================
    02 - Base Reset & Box Model
    ======================================================= */
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -30,26 +33,19 @@
 html, body {
   width: 100%;
   min-height: 100%;
-  margin: 0;
-  padding: 0;
   font-family: 'Poppins', sans-serif;
   color: var(--color-text);
   line-height: 1.6;
-  background-color: #000;
-  background-image: radial-gradient(
-    ellipse 80% 80% at center center,
+  background: #000 radial-gradient(
+    ellipse 80% 80% at center,
     rgba(255, 255, 255, 0.2) 0%,
     rgba(255, 230, 180, 0.15) 40%,
     rgba(0, 0, 0, 0.9) 60%
-  );
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-position: center center;
+  ) no-repeat center/100% 100%;
 }
 
 body.no-gradient {
-  background-image: none;
-  background-color: var(--color-bg);
+  background: var(--color-bg);
 }
 
 /* =======================================================
@@ -64,15 +60,20 @@ body.no-gradient {
 
 .page-content h1,
 .page-content h2,
-.page-content h3 {
-  font-weight: 600;
+.page-content h3,
+.main-title,
+.main-quotes,
+.main-subtitle,
+.section-title,
+.section-description {
   color: var(--color-text);
+  font-weight: 600;
+  text-align: center;
 }
 
 .main-title {
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  text-align: center;
 }
 
 .main-quotes {
@@ -95,6 +96,7 @@ body.no-gradient {
   color: var(--color-subtext);
   margin-bottom: 1.5rem;
 }
+
 /* =======================================================
    04 - Layout Containers
    ======================================================= */
@@ -108,7 +110,7 @@ main {
 }
 
 .main-container {
-  min-height: calc(100vh - 100px); /* Adjust if needed */
+  min-height: calc(100vh - 100px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -117,15 +119,11 @@ main {
 .hero {
   text-align: center;
 }
+
 /* =======================================================
    05 - Grid Systems
    ======================================================= */
-.daily-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-}
-
+.daily-grid,
 #gamecardgrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -135,7 +133,7 @@ main {
 }
 
 #dailyPracticeBox {
-  background-color: var(--color-bg-card);
+  background: var(--color-bg-card);
   display: grid;
   gap: 1rem;
   justify-content: center;
@@ -150,137 +148,90 @@ main {
   justify-items: center;
   width: 100%;
 }
+
 /* =======================================================
    06 - Buttons
    ======================================================= */
-.button-wrapper {
-  margin-top: 1rem;
-}
-
-.main-button {
+.main-button,
+.game-start-button,
+.game-gamestart-button,
+.game-results-buttons {
   display: inline-block;
+  text-align: center;
   background-color: var(--color-secondary);
   color: #fff;
-  text-decoration: none;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   font-weight: 600;
+  font-size: 1.125rem;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
   transition: background-color 0.3s ease;
 }
 
-.main-button:hover {
+.main-button:hover,
+.game-start-button:hover,
+.game-gamestart-button:hover,
+.game-results-buttons:hover {
   background-color: var(--color-secondary-hover);
+}
+
+.button-wrapper {
+  margin-top: 1rem;
 }
 
 .game-start-button {
   display: block;
   width: 100%;
-  text-align: center;
-  padding: 1rem 1.5rem;
-  background-color: var(--color-secondary);
-  color: #fff;
-  font-weight: 600;
-  font-size: 1.125rem;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
   margin-top: 2rem;
-}
-
-.game-start-button:hover {
-  background-color: var(--color-secondary-hover);
 }
 
 .game-gamestart-button {
   display: block;
   width: 60%;
-  text-align: center;
-  padding: 1rem 1.5rem;
-  background-color: var(--color-secondary);
-  color: #fff;
-  font-weight: 600;
-  font-size: 1.125rem;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.game-gamestart-button:hover {
-  background-color: var(--color-secondary-hover);
 }
 
 .game-results-buttons-block {
   display: flex;
   justify-content: center;
-  gap: 1rem;
   flex-wrap: wrap;
+  gap: 1rem;
   margin-top: 2rem;
 }
 
-.game-results-buttons {
-  display: block;
-  text-align: center;
-  padding: 1rem 1.5rem;
-  background-color: var(--color-secondary);
-  color: #fff;
-  font-weight: 600;
-  font-size: 1.125rem;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.game-results-buttons:hover {
-  background-color: var(--color-secondary-hover);
-}
 /* =======================================================
    07 - Cards & Boxes
    ======================================================= */
-
-/* Trial test and daily practice container */
 .trial-test,
-.daily-practice {
-  background-color: var(--color-bg-card);
+.daily-practice,
+.text-box-content,
+.games-settings-container,
+.game-display,
+.results-display {
+  background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 2rem;
   text-align: center;
 }
 
-/* Text Box content */
-.text-box-content {
-  background-color: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: center;
-}
-
-/* Game cards section (Numbers, Addition, Techniques, etc.) */
 .game-cards {
-  background-color: var(--main-game-card);
+  background: var(--main-game-card);
   padding: 1.5rem;
   border-radius: 10px;
   border: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  text-align: center;
   align-items: center;
+  gap: 1rem;
   width: 100%;
   max-width: 300px;
   margin: 0 auto;
+  text-align: center;
   flex: 0 0 auto;
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
               box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.game-cards h3 {
-  font-size: 1.25rem;
-  color: var(--color-text);
 }
 
 .game-cards:hover {
@@ -288,105 +239,56 @@ main {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
 }
 
-/* Settings container (inside game settings) */
-.games-settings-container {
-  background-color: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 2rem;
-  max-width: 900px;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.game-cards h3 {
+  font-size: 1.25rem;
+  color: var(--color-text);
 }
 
-/* Game main display during gameplay */
-.game-display {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background-color: var(--color-bg-card);
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  width: 100%;
-  min-height: 300px;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-/* Results screen container */
-.results-display {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background-color: var(--color-bg-card);
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  width: 100%;
-  margin: 0 auto;
-}
 /* =======================================================
    08 - Game Elements
    ======================================================= */
-
-/* Countdown numbers before game start */
-#countdown {
-  font-size: 4rem;
+#countdown,
+#problem,
+#output {
+  font-size: clamp(3rem, 5vw, 4rem);
   font-weight: 700;
   margin-top: 1rem;
 }
 
-/* Countdown label ("Starting in...") */
+#countdown {
+  font-weight: 700;
+}
+
+#output {
+  font-weight: 800;
+  margin-top: 1.5rem;
+  letter-spacing: 2px;
+}
+
 #countdownLabel {
   font-size: clamp(3rem, 5vw, 4rem);
   font-weight: 600;
   color: var(--header-subtext);
 }
 
-/* Math problems (addition, subtraction, etc.) */
-#problem {
-  font-size: clamp(3rem, 5vw, 4rem);
-  font-weight: 700;
-  margin-top: 1rem;
-}
-
-/* Output for numbers, words, cards shown */
-#output {
-  font-size: clamp(3rem, 5vw, 4rem);
-  font-weight: 800;
-  margin-top: 1.5rem;
-  letter-spacing: 2px;
-}
-
-/* Memory Words special output */
 #memory-word-problem,
 #memory-word-output {
-  font-size: clamp(1.5rem, 6vw, 3rem); /* Scale nicely for long words */
+  font-size: clamp(1.5rem, 6vw, 3rem);
   font-weight: 700;
   margin-top: 1rem;
   letter-spacing: 2px;
-  
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  
   width: 100%;
   max-width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
+  margin: 1rem auto 0;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Drop zone for card games (empty slots) */
+/* Drop slots */
 .drop-slot {
   width: 80px;
   height: 120px;
@@ -398,31 +300,21 @@ main {
   justify-content: center;
 }
 
-/* Drop zone selected state */
 .drop-slot.selected {
-  border-color: var(--color-border-select);
-  border-width: 2px;
-  border-style: solid;
+  border: 2px solid var(--color-border-select);
 }
 
 .drop-slot.correct {
-  border-color: var(--color-success);
-  border-width: 2px;
-  border-style: solid;
-  border-image: initial;
+  border: 2px solid var(--color-success);
 }
 
 .drop-slot.incorrect {
-  border-color: var(--color-error);
-  border-width: 2px;
-  border-style: solid;
-  border-image: initial;
+  border: 2px solid var(--color-error);
 }
+
 /* =======================================================
    09 - Inputs & Forms
    ======================================================= */
-
-/* Radio group for settings options */
 .radio-group {
   display: flex;
   justify-content: center;
@@ -435,12 +327,11 @@ main {
   display: none;
 }
 
-/* Label style for radio buttons */
 .radio-group label {
   position: relative;
-  padding: 0.8rem 1.2rem;
+  padding: 0.8rem 1.2rem 0.8rem 1.2rem;
   padding-right: 2.5rem;
-  background-color: #1e1e2f;
+  background: #1e1e2f;
   border: 2px solid #444;
   border-radius: 12px;
   font-weight: 600;
@@ -451,7 +342,6 @@ main {
   transition: all 0.3s ease;
 }
 
-/* Outer circle for custom radio */
 .radio-group label::before {
   content: "";
   position: absolute;
@@ -462,11 +352,10 @@ main {
   height: 18px;
   border: 2px solid #9c4dff;
   border-radius: 50%;
-  background-color: transparent;
+  background: transparent;
   transition: all 0.3s ease;
 }
 
-/* Inner dot when selected */
 .radio-group input[type="radio"]:checked + label::after {
   content: "";
   position: absolute;
@@ -475,30 +364,28 @@ main {
   transform: translateY(-50%);
   width: 8px;
   height: 8px;
-  background-color: #9c4dff;
+  background: #9c4dff;
   border-radius: 50%;
 }
 
-/* Hover effect */
 .radio-group label:hover {
   border-color: #9c4dff;
 }
 
-/* Input boxes for games */
+/* Shared input boxes */
 .input-box,
 .input-box-login,
 .input-box-test {
   padding: 0.75rem 1rem;
   border-radius: 8px;
   border: 2px solid var(--color-border);
-  background-color: var(--main-box);
+  background: var(--main-box);
   color: var(--color-text);
   font-size: clamp(1.5rem, 5vw, 1.25rem);
   width: 100%;
   text-align: center;
 }
 
-/* Input box states */
 .input-box.correct,
 .input-box-test.correct {
   border-color: var(--color-success);
@@ -509,14 +396,14 @@ main {
   border-color: var(--color-error);
 }
 
-/* Inputs inside card drag slots */
+/* Drop input wrapper */
 .drop-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Correct answer label under inputs */
+/* Correct answer labels */
 .correct-answer-label {
   font-size: 0.85rem;
   color: red;
@@ -526,7 +413,7 @@ main {
   text-align: center;
 }
 
-/* Number inputs style (removing arrows) */
+/* Remove spinners in number input */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -536,13 +423,12 @@ input[type=number]::-webkit-outer-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
 /* =======================================================
    10 - Log-in
    ======================================================= */
-
-/* Login container box */
 .login-container {
-  background-color: var(--color-bg-card);
+  background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 2.5rem;
@@ -550,14 +436,12 @@ input[type=number] {
   margin: 0 auto;
 }
 
-/* Flex layout for login form fields */
 .login-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-/* Each form group wrapper */
 .form-group,
 .form-group-login {
   display: flex;
@@ -565,23 +449,20 @@ input[type=number] {
   gap: 0.5rem;
 }
 
-/* Label inside form */
 .form-group label {
   font-weight: 500;
   color: var(--color-subtext);
 }
 
-/* Input field inside form */
 .form-group input {
   padding: 0.75rem 1rem;
   border-radius: 8px;
   border: 1px solid var(--color-border);
-  background-color: var(--main-box);
+  background: var(--main-box);
   color: var(--color-text);
   font-size: 1rem;
 }
 
-/* Row layout for settings page inputs */
 .input-row {
   display: flex;
   gap: 1.5rem;
@@ -589,11 +470,10 @@ input[type=number] {
   justify-content: space-between;
   margin-bottom: 1.5rem;
 }
+
 /* =======================================================
    11 - Results Page Styling
    ======================================================= */
-
-/* Input wrapper for result input fields */
 .input-wrapper {
   width: 20vw;
   max-width: 300px;
@@ -603,13 +483,11 @@ input[type=number] {
   gap: 0.25rem;
 }
 
-/* Correct answer label under inputs */
 .correct-answer {
   font-size: 0.875rem;
   color: var(--color-subtext);
 }
 
-/* Overall result summary (e.g. score % text) */
 .result-summary {
   text-align: center;
   font-size: 1.2rem;
@@ -620,7 +498,6 @@ input[type=number] {
   font-weight: 600;
 }
 
-/* Results area (the grid where inputs appear) */
 #resultsArea {
   display: flex;
   justify-content: center;
@@ -628,57 +505,21 @@ input[type=number] {
   gap: 10px;
   margin-bottom: 2rem;
 }
+
 /* =======================================================
    12 - Carousel / Scrollable UI
    ======================================================= */
-
-/* Game section general layout */
-.game-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.game-section h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
-/* Main carousel container */
-.carousel-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  overflow: hidden;
-}
-
-/* Main horizontal scroll area */
-.main-carousel {
-  display: flex;
-  flex-wrap: nowrap;
-  flex: 1;
-  gap: 1rem;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  padding: 1rem 0;
-}
-
-.main-carousel::-webkit-scrollbar {
-  display: none; /* hide scrollbar for cleaner look */
-}
-
-/* Special cards carousel wrapper */
+.carousel-wrapper,
 .cards-carousel-wrapper {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   overflow: hidden;
   width: 100%;
-  max-width: 100%;
   box-sizing: border-box;
 }
 
-/* Cards inside special carousel */
+.main-carousel,
 .cards-main-carousel {
   display: flex;
   flex-wrap: nowrap;
@@ -691,37 +532,17 @@ input[type=number] {
   box-sizing: border-box;
 }
 
+.main-carousel::-webkit-scrollbar,
 .cards-main-carousel::-webkit-scrollbar {
   display: none;
 }
 
-/* Arrows for scrolling carousels */
-.carousel-arrow {
-  flex: 0 0 auto;
-  width: 36px;
-  height: 140px;
-  background-color: rgba(128, 128, 128, 0.15);
-  color: white;
-  font-size: 1.6rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.carousel-arrow:hover {
-  background-color: rgba(128, 128, 128, 0.25);
-}
-
-/* Smaller arrows used inside the cards results carousel */
+.carousel-arrow,
 .cards-carousel-arrow {
   flex: 0 0 auto;
   width: 36px;
-  height: 50px;
-  background-color: rgba(128, 128, 128, 0.15);
+  height: 140px;
+  background: rgba(128, 128, 128, 0.15);
   color: white;
   font-size: 1.6rem;
   display: flex;
@@ -733,16 +554,18 @@ input[type=number] {
   transition: background-color 0.2s ease;
 }
 
+.carousel-arrow:hover,
 .cards-carousel-arrow:hover {
-  background-color: rgba(128, 128, 128, 0.25);
+  background: rgba(128, 128, 128, 0.25);
 }
 
+.cards-carousel-arrow {
+  height: 50px;
+}
 
 /* =======================================================
    13 - Settings and Results
    ======================================================= */
-
-/* Link style for going back to main sections */
 .main-section-link {
   color: var(--color-secondary);
   text-decoration: none;
@@ -754,7 +577,6 @@ input[type=number] {
   color: var(--color-secondary-hover);
 }
 
-/* Checkbox groups (completed or settings checkboxes) */
 .checkbox-complete,
 .checkbox-settings {
   display: flex;
@@ -771,35 +593,15 @@ input[type=number] {
   height: 16px;
 }
 
-/* Form groups inside settings or login */
+/* Reuse input-row for form groups */
 .form-group,
-.form-group-login {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.form-group {
-  flex: 1 1 200px;
-}
-
 .checkbox-settings {
   flex: 1 1 200px;
 }
 
-/* Results input area */
-#resultsArea {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 2rem;
-}
 /* =======================================================
    14 - Carousel and Cards
    ======================================================= */
-
-/* General carousel container */
 #carousel {
   display: flex;
   overflow-x: auto;
@@ -809,56 +611,55 @@ input[type=number] {
   margin-top: 1rem;
 }
 
-/* Memory cards inside the carousel */
 .memory-card.small {
   width: 80px;
   height: auto;
 }
 
-/* Card containers */
-.card-container {
-  background-color: white;
-  padding: 8px;
+.card-container,
+.card-wrapper {
+  background: white;
   border-radius: 8px;
 }
 
-/* Wrapper around cards for slight elevation */
+.card-container {
+  padding: 8px;
+}
+
 .card-wrapper {
-  background-color: white;
   padding: 0;
-  border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   display: inline-block;
   max-width: 100%;
 }
 
-/* Individual memory card styling */
 .memory-card {
   width: 100%;
   height: auto;
   display: block;
   border-radius: 6px;
-  touch-action: pan-x; /* Prevent Safari long-tap preview */
-  -webkit-user-drag: none; /* Prevent dragging the image in Safari */
+  touch-action: pan-x;
+  -webkit-user-drag: none;
 }
+
 /* =======================================================
    15 - Progression Page
    ======================================================= */
 .chart-container {
   width: 100%;
-  max-width: 1200px; /* Make it large enough, same as carousel width */
-  margin: 2rem auto; /* Center and add space above and below */
-  padding: 0 1rem; /* Small side padding on very small screens */
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
 
 #progressChart {
   width: 100% !important;
   height: auto !important;
   display: block;
-  transition: transform 0.3s ease; /* Smooth transition */
+  transition: transform 0.3s ease;
 }
 
-/* Carousel wrapper */
+/* Games carousel */
 .games-carousel-wrapper {
   width: 100%;
   overflow-x: auto;
@@ -869,7 +670,6 @@ input[type=number] {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Inner carousel holding buttons */
 .games-carousel {
   display: flex;
   flex-wrap: nowrap;
@@ -877,54 +677,41 @@ input[type=number] {
   padding: 0 1rem;
 }
 
-/* Make sure buttons are neat */
 .games-carousel .game-results-buttons {
   flex: 0 0 auto;
   white-space: nowrap;
   padding: 0.5rem 1rem;
   font-size: 0.95rem;
   border: 1px solid #7c3aed;
-  background-color: transparent;
+  background: transparent;
   color: #e6e8eb;
-  border-radius: 999px; /* pill shape */
+  border-radius: 999px;
   transition: background-color 0.3s, color 0.3s;
   cursor: pointer;
 }
 
-/* Active selected button */
 .games-carousel .game-results-buttons.active {
-  background-color: #7c3aed;
+  background: #7c3aed;
   color: white;
   font-weight: bold;
 }
 
-.no-data-message {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 1.5rem;
-  color: #e6e8eb;
-  text-align: center;
-  display: none; /* Hidden by default */
-}
-
+/* No data messages */
 .no-data-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 4rem; /* Push it lower under the carousel */
+  margin-top: 4rem;
   gap: 1rem;
   color: var(--color-subtext);
   text-align: center;
 }
 
-
 .no-data-message {
   font-size: 1.5rem;
   color: #e6e8eb;
-  margin-bottom: 1rem; /* space below first line */
+  margin-bottom: 1rem;
 }
 
 .additional-message {
@@ -943,10 +730,10 @@ input[type=number] {
   }
 }
 
-/* Stretch Y axis by 1.1x on mobile */
+/* Stretch Y axis of the progress chart on very small screens */
 @media (max-width: 600px) {
   #progressChart {
-    transform: scaleY(1.1); /* 10% taller */
-    transform-origin: top center; /* Stretch from top */
+    transform: scaleY(1.1);
+    transform-origin: top center;
   }
 }
