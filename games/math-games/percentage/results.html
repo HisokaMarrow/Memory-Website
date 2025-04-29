@@ -129,10 +129,32 @@
   });
 
   const percent = Math.round((correct / problems.length) * 100);
+  const incorrectCount = problems.length - correct;
+  const timeSpent = parseInt(localStorage.getItem("testTime") || "60");
+
   document.getElementById("summary").innerHTML =
     `You got <span class="highlight">${correct}</span> out of ${problems.length} correct (${percent}%)`;
+
+  // ✅ Save session for Progress Graph (PERCENTAGE)
+  saveGameSession("math_percentage", percent, correct, incorrectCount, timeSpent);
 }
 
+// ✅ Save function
+function saveGameSession(gameType, scorePercent, correctCount, incorrectCount, timeSpent) {
+  let sessions = JSON.parse(localStorage.getItem("gameSessions") || "[]");
+
+  sessions.push({
+    gameType: gameType,
+    date: new Date().toLocaleDateString('en-GB'),
+    time: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
+    scorePercent: scorePercent,
+    correctCount: correctCount,
+    incorrectCount: incorrectCount,
+    timeSpent: timeSpent
+  });
+
+  localStorage.setItem("gameSessions", JSON.stringify(sessions));
+}
 
   function tryAgain() {
     window.location.href = "settings.html";
