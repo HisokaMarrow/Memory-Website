@@ -130,6 +130,22 @@
   function backtogames() {
     window.location.href = "/memory.html";
   }
+  
+   function saveGameSession(gameType, scorePercent, correctCount, incorrectCount, timeSpent) {
+    let sessions = JSON.parse(localStorage.getItem("gameSessions") || "[]");
+
+    sessions.push({
+      gameType: gameType,
+      date: new Date().toLocaleDateString('en-GB'), // format: DD/MM/YYYY
+      time: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }), // HH:MM
+      scorePercent: scorePercent,
+      correctCount: correctCount,
+      incorrectCount: incorrectCount,
+      timeSpent: timeSpent
+    });
+
+    localStorage.setItem("gameSessions", JSON.stringify(sessions));
+  }
 
   renderInputs();
   sessionStorage.setItem("dailyGame_Word Memory", "true");
