@@ -87,17 +87,19 @@
   </div>
 </main>
 
-<!-- Riddles Data -->
-<script src="/gamescollection/logicriddles.js"></script>
-
-<!-- Riddles Data -->
 <script src="/gamescollection/logicriddles.js"></script>
 
 <script>
 (function() {
-  const totalCount = parseInt(localStorage.getItem("riddleCount") || "2");
-  const timerEl = document.getElementById("gameheadertimerdown-timer");
+  const difficulty = localStorage.getItem("riddleDifficulty") || "beginner";
 
+  const difficultyCountMap = {
+    beginner: 3,
+    advanced: 5,
+    expert: 7
+  };
+
+  const totalCount = difficultyCountMap[difficulty];
   let shouldStopGame = false;
   let countdownValue = 5;
   let riddles = [];
@@ -207,7 +209,7 @@
     problemBox.style.display = "flex";
     input.style.display = "block";
     input.focus();
-    riddles = getRandomRiddles(riddleslist, totalCount);
+    riddles = getRandomRiddles(riddleslist[difficulty], totalCount);
     totalStartTime = Date.now();
 
     const totalTimeLimit = parseInt(localStorage.getItem("riddleTimeLimit") || "120");
@@ -245,6 +247,7 @@
   window.onload = initGame;
 })();
 </script>
+
 </body>
 </html>
 
