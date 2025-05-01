@@ -205,24 +205,37 @@
     startGameTimer(gameDuration, onTimeExpired);
 
     (function generateNumberLoop() {
-      if (shouldStopGame) return;
+  if (shouldStopGame) return;
 
-      window.waitWhilePaused().then(() => {
-        const num = getRandomNumber(1, rangeMax);
-        const displayNum = padZeros && num < 10 ? "0" + num : num;
-        currentSequence.push(displayNum);
+  window.waitWhilePaused().then(() => {
+    const output = document.getElementById("output");
 
-        output.style.opacity = 0;
-        setTimeout(() => {
-          output.innerText = displayNum;
-          output.style.opacity = 1;
-        }, 50);
+    // Calculate how much time is left and whether we need to extend it
+    const remaining = window.getGameTimeRemaining?.();
+    const delaySeconds = delay / 1000;
 
-        speak(displayNum);
-        setTimeout(generateNumberLoop, delay);
-      });
-    })();
-  }
+    if (remaining !== undefined && remaining < delaySeconds) {
+      // Stealth-extend the timer so the final number has full display time
+      const extension = delaySeconds - remaining;
+      if (typeof window.extendGameTimer === "function") {
+        window.extendGameTimer(extension);
+      }
+    }
+
+    const num = getRandomNumber(1, rangeMax);
+    const displayNum = padZeros && num < 10 ? "0" + num : num;
+    currentSequence.push(displayNum);
+
+    output.style.opacity = 0;
+    setTimeout(() => {
+      output.innerText = displayNum;
+      output.style.opacity = 1;
+    }, 50);
+
+    speak(displayNum);
+    setTimeout(generateNumberLoop, delay);
+  });
+})();
 
   function initGameLogic() {
   const startBtn = document.getElementById("startButton");
