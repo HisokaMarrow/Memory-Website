@@ -103,9 +103,9 @@
       utter.lang = 'en-US';
       voiceCache[i] = utter;
       preloadPromises.push(new Promise(resolve => {
-        utter.onstart = resolve; // Hack to preload
+        utter.onstart = resolve;
         window.speechSynthesis.speak(utter);
-        window.speechSynthesis.cancel(); // Immediately cancel after starting
+        window.speechSynthesis.cancel();
       }));
     }
     return Promise.all(preloadPromises);
@@ -120,7 +120,6 @@
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(utter);
     } else {
-      // fallback if not preloaded
       const fallback = new SpeechSynthesisUtterance(
         speakIndividually ? text.toString().split('').join(' ') : text
       );
@@ -201,69 +200,64 @@
     output.style.display = "block";
 
     const gameDuration = testTime / 1000;
-
     startGameTimer(gameDuration, onTimeExpired);
 
     (function generateNumberLoop() {
-  if (shouldStopGame) return;
+      if (shouldStopGame) return;
 
-  window.waitWhilePaused().then(() => {
-    const output = document.getElementById("output");
+      window.waitWhilePaused().then(() => {
+        const delaySeconds = delay / 1000;
+        const remaining = window.getGameTimeRemaining?.();
 
-    // Calculate how much time is left and whether we need to extend it
-    const remaining = window.getGameTimeRemaining?.();
-    const delaySeconds = delay / 1000;
+        if (remaining !== undefined && remaining < delaySeconds) {
+          const extension = delaySeconds - remaining;
+          if (typeof window.extendGameTimer === "function") {
+            window.extendGameTimer(extension);
+          }
+        }
 
-    if (remaining !== undefined && remaining < delaySeconds) {
-      // Stealth-extend the timer so the final number has full display time
-      const extension = delaySeconds - remaining;
-      if (typeof window.extendGameTimer === "function") {
-        window.extendGameTimer(extension);
-      }
-    }
+        const num = getRandomNumber(1, rangeMax);
+        const displayNum = padZeros && num < 10 ? "0" + num : num;
+        currentSequence.push(displayNum);
 
-    const num = getRandomNumber(1, rangeMax);
-    const displayNum = padZeros && num < 10 ? "0" + num : num;
-    currentSequence.push(displayNum);
+        output.style.opacity = 0;
+        setTimeout(() => {
+          output.innerText = displayNum;
+          output.style.opacity = 1;
+        }, 50);
 
-    output.style.opacity = 0;
-    setTimeout(() => {
-      output.innerText = displayNum;
-      output.style.opacity = 1;
-    }, 50);
-
-    speak(displayNum);
-    setTimeout(generateNumberLoop, delay);
-  });
-})();
-
-  function initGameLogic() {
-  const startBtn = document.getElementById("startButton");
-
-  // Start preloading voices quietly in the background
-  preloadVoices().then(() => {
-    console.log("Voice preloading complete!");
-  }).catch(err => {
-    console.error("Voice preload error", err);
-  });
-
-  if (startBtn) {
-    startBtn.onclick = () => {
-      if (window.speechSynthesis) {
-        let dummy = new SpeechSynthesisUtterance('');
-        window.speechSynthesis.speak(dummy);
-      }
-      startCountdown(beginGame);
-    };
+        speak(displayNum);
+        setTimeout(generateNumberLoop, delay);
+      });
+    })();
   }
 
-  document.getElementById("pause")?.addEventListener("click", togglePause);
-  document.getElementById("pause-mobile")?.addEventListener("click", togglePause);
-  document.getElementById("end-early")?.addEventListener("click", endEarly);
-  document.getElementById("end-early-mobile")?.addEventListener("click", endEarly);
-  document.getElementById("give-up")?.addEventListener("click", giveUp);
-  document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
-}
+  function initGameLogic() {
+    const startBtn = document.getElementById("startButton");
+
+    preloadVoices().then(() => {
+      console.log("Voice preloading complete!");
+    }).catch(err => {
+      console.error("Voice preload error", err);
+    });
+
+    if (startBtn) {
+      startBtn.onclick = () => {
+        if (window.speechSynthesis) {
+          const dummy = new SpeechSynthesisUtterance('');
+          window.speechSynthesis.speak(dummy);
+        }
+        startCountdown(beginGame);
+      };
+    }
+
+    document.getElementById("pause")?.addEventListener("click", togglePause);
+    document.getElementById("pause-mobile")?.addEventListener("click", togglePause);
+    document.getElementById("end-early")?.addEventListener("click", endEarly);
+    document.getElementById("end-early-mobile")?.addEventListener("click", endEarly);
+    document.getElementById("give-up")?.addEventListener("click", giveUp);
+    document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
+  }
 
   window.togglePause = togglePause;
   window.endEarly = endEarly;
@@ -272,3 +266,7 @@
   window.onload = initGameLogic;
 })();
 </script>
+
+
+</body>
+</html>
