@@ -2,7 +2,7 @@ let timerInterval = null;
 let timeLeft = 0;
 let isPaused = false;
 let pauseCallback = null;
-let gameHasEnded = false; // Prevents callback after manual stop
+let gameHasEnded = false; // NEW: global guard to prevent late callback
 
 function formatTime(seconds) {
   const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -18,7 +18,7 @@ function startGameTimer(seconds, onEndCallback) {
 
   if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
 
-  clearInterval(timerInterval); // Reset timer if restarting
+  clearInterval(timerInterval); // Clear existing interval before starting a new one
 
   timerInterval = setInterval(() => {
     if (!isPaused) {
@@ -56,20 +56,8 @@ function waitWhilePaused() {
   });
 }
 
-// NEW: Get time left in seconds (used to decide if final item fits)
-function getGameTimeRemaining() {
-  return timeLeft;
-}
-
-// NEW: Extend the timer internally (used to ensure last item shows fully)
-function extendGameTimer(extraSeconds) {
-  timeLeft += extraSeconds;
-}
-
 // Expose functions globally
 window.startGameTimer = startGameTimer;
 window.stopGameTimer = stopGameTimer;
 window.togglePauseTimer = togglePauseTimer;
 window.waitWhilePaused = waitWhilePaused;
-window.getGameTimeRemaining = getGameTimeRemaining;
-window.extendGameTimer = extendGameTimer;
