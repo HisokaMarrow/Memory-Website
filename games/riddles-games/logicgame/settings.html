@@ -61,16 +61,16 @@
 
   <section class="games-settings-container">
 
-    <!-- Riddle Count Selection -->
+    <!-- Difficulty Selection -->
     <div class="radio-group">
-      <input type="radio" id="riddle2" name="riddleCount" value="2" checked>
-      <label for="riddle2">2 Riddles</label>
+      <input type="radio" id="difficultyBeginner" name="riddleDifficulty" value="beginner" checked>
+      <label for="difficultyBeginner">Beginner</label>
 
-      <input type="radio" id="riddle4" name="riddleCount" value="4">
-      <label for="riddle4">4 Riddles</label>
+      <input type="radio" id="difficultyAdvanced" name="riddleDifficulty" value="advanced">
+      <label for="difficultyAdvanced">Advanced</label>
 
-      <input type="radio" id="riddle6" name="riddleCount" value="6">
-      <label for="riddle6">6 Riddles</label>
+      <input type="radio" id="difficultyExpert" name="riddleDifficulty" value="expert">
+      <label for="difficultyExpert">Expert</label>
     </div>
 
     <!-- Time Limit Input -->
@@ -90,27 +90,15 @@
 
 <script>
 document.getElementById('startButton').addEventListener('click', () => {
-  const selected = document.querySelector('input[name="riddleCount"]:checked');
+  const selectedDifficulty = document.querySelector('input[name="riddleDifficulty"]:checked');
   const timeInput = document.getElementById("riddleTime");
 
-  if (selected && timeInput) {
-    localStorage.setItem('riddleCount', selected.value);
+  if (selectedDifficulty && timeInput) {
+    localStorage.setItem('riddleDifficulty', selectedDifficulty.value);
     localStorage.setItem('riddleTimeLimit', timeInput.value);
     window.location.href = 'game.html';
   }
 });
-</script>
-  
-<!-- Footer -->
-<div id="site-footer"></div>
-<script>
-  // Load reusable footer after its CSS is already in place
-  fetch('/components/footer.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('site-footer').innerHTML = html;
-    })
-    .catch(err => console.error('Failed to load footer:', err));
 </script>
 
 </body>
