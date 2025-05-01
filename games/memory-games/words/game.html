@@ -178,6 +178,14 @@
       if (shouldStopGame) return;
 
       window.waitWhilePaused().then(() => {
+        const delaySeconds = wordInterval / 1000;
+        const remaining = window.getGameTimeRemaining?.();
+
+        if (remaining !== undefined && remaining < delaySeconds) {
+          const extension = delaySeconds - remaining;
+          window.extendGameTimer?.(extension);
+        }
+
         const word = getRandomWord();
         currentSequence.push(word);
 
@@ -203,7 +211,6 @@
     document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
   }
 
-  // Expose controls globally
   window.togglePause = togglePause;
   window.endEarly = endEarly;
   window.giveUp = giveUp;
