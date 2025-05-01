@@ -167,6 +167,12 @@
     while (currentIndex < cardSequence.length && !shouldStopGame) {
       await window.waitWhilePaused();
 
+      const remaining = window.getGameTimeRemaining?.();
+      if (remaining !== undefined && remaining < cardInterval) {
+        const extension = cardInterval - remaining;
+        window.extendGameTimer?.(extension);
+      }
+
       showCard(currentIndex);
       currentIndex++;
       await wait(cardInterval * 1000);
