@@ -74,7 +74,7 @@
     <a id="countdownLabel" class="main-title" style="display: none;">Starting in...</a>
     <div id="countdown" class="main-countdown" style="display: none;"></div>
 
-    <div id="problem" class="main-word" style="display: none;"></div>
+    <div id="riddles-logic-problem" style="display: none;"></div>
 
     <input 
       type="text" 
@@ -86,6 +86,9 @@
     />
   </div>
 </main>
+
+<!-- Riddles Data -->
+<script src="/gamescollection/logicriddles.js"></script>
 
 <!-- Riddles Data -->
 <script src="/gamescollection/logicriddles.js"></script>
@@ -107,11 +110,11 @@
   const startBtn = document.getElementById("startButton");
   const label = document.getElementById("countdownLabel");
   const countdownEl = document.getElementById("countdown");
-  const problemBox = document.getElementById("problem");
+  const problemBox = document.getElementById("riddles-logic-problem");
   const input = document.getElementById("answerInput");
 
   function togglePause() {
-    togglePauseTimer(); // shared timer function you already have
+    togglePauseTimer();
 
     const pauseBtnDesktop = document.getElementById("pause");
     const pauseBtnMobile = document.getElementById("pause-mobile");
@@ -127,7 +130,6 @@
     shouldStopGame = true;
     stopGameTimer();
 
-    // Save only what the user answered so far
     localStorage.setItem("riddleQuestions", JSON.stringify(riddles.slice(0, userAnswers.length)));
     localStorage.setItem("riddleUserAnswers", JSON.stringify(userAnswers.slice(0, userAnswers.length)));
     localStorage.setItem("riddleTimes", JSON.stringify(riddleTimes.slice(0, userAnswers.length)));
@@ -202,17 +204,14 @@
   }
 
   function beginGame() {
-    problemBox.style.display = "block";
+    problemBox.style.display = "flex";
     input.style.display = "block";
     input.focus();
     riddles = getRandomRiddles(riddleslist, totalCount);
     totalStartTime = Date.now();
 
     const totalTimeLimit = parseInt(localStorage.getItem("riddleTimeLimit") || "120");
-
-startGameTimer(totalTimeLimit, () => {
-  onTimeExpired();
-});
+    startGameTimer(totalTimeLimit, () => onTimeExpired());
 
     showNextRiddle();
 
