@@ -103,9 +103,9 @@
       utter.lang = 'en-US';
       voiceCache[i] = utter;
       preloadPromises.push(new Promise(resolve => {
-        utter.onstart = resolve;
+        utter.onstart = resolve; // Hack to preload
         window.speechSynthesis.speak(utter);
-        window.speechSynthesis.cancel();
+        window.speechSynthesis.cancel(); // Immediately cancel after starting
       }));
     }
     return Promise.all(preloadPromises);
@@ -120,6 +120,7 @@
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(utter);
     } else {
+      // fallback if not preloaded
       const fallback = new SpeechSynthesisUtterance(
         speakIndividually ? text.toString().split('').join(' ') : text
       );
@@ -200,22 +201,13 @@
     output.style.display = "block";
 
     const gameDuration = testTime / 1000;
+
     startGameTimer(gameDuration, onTimeExpired);
 
     (function generateNumberLoop() {
       if (shouldStopGame) return;
 
       window.waitWhilePaused().then(() => {
-        const delaySeconds = delay / 1000;
-        const remaining = window.getGameTimeRemaining?.();
-
-        if (remaining !== undefined && remaining < delaySeconds) {
-          const extension = delaySeconds - remaining;
-          if (typeof window.extendGameTimer === "function") {
-            window.extendGameTimer(extension);
-          }
-        }
-
         const num = getRandomNumber(1, rangeMax);
         const displayNum = padZeros && num < 10 ? "0" + num : num;
         currentSequence.push(displayNum);
@@ -233,31 +225,32 @@
   }
 
   function initGameLogic() {
-    const startBtn = document.getElementById("startButton");
+  const startBtn = document.getElementById("startButton");
 
-    preloadVoices().then(() => {
-      console.log("Voice preloading complete!");
-    }).catch(err => {
-      console.error("Voice preload error", err);
-    });
+  // Start preloading voices quietly in the background
+  preloadVoices().then(() => {
+    console.log("Voice preloading complete!");
+  }).catch(err => {
+    console.error("Voice preload error", err);
+  });
 
-    if (startBtn) {
-      startBtn.onclick = () => {
-        if (window.speechSynthesis) {
-          const dummy = new SpeechSynthesisUtterance('');
-          window.speechSynthesis.speak(dummy);
-        }
-        startCountdown(beginGame);
-      };
-    }
-
-    document.getElementById("pause")?.addEventListener("click", togglePause);
-    document.getElementById("pause-mobile")?.addEventListener("click", togglePause);
-    document.getElementById("end-early")?.addEventListener("click", endEarly);
-    document.getElementById("end-early-mobile")?.addEventListener("click", endEarly);
-    document.getElementById("give-up")?.addEventListener("click", giveUp);
-    document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
+  if (startBtn) {
+    startBtn.onclick = () => {
+      if (window.speechSynthesis) {
+        let dummy = new SpeechSynthesisUtterance('');
+        window.speechSynthesis.speak(dummy);
+      }
+      startCountdown(beginGame);
+    };
   }
+
+  document.getElementById("pause")?.addEventListener("click", togglePause);
+  document.getElementById("pause-mobile")?.addEventListener("click", togglePause);
+  document.getElementById("end-early")?.addEventListener("click", endEarly);
+  document.getElementById("end-early-mobile")?.addEventListener("click", endEarly);
+  document.getElementById("give-up")?.addEventListener("click", giveUp);
+  document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
+}
 
   window.togglePause = togglePause;
   window.endEarly = endEarly;
