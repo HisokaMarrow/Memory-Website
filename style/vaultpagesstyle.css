@@ -1,83 +1,66 @@
-/* Vault Pages Base Layout */
-.vault-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-.vault-section {
-  margin-bottom: 4rem;
-}
-
-.center {
-  text-align: center;
-}
-
-.vault-main-title {
-  font-size: 2.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.vault-section-description {
-  font-size: 1.2rem;
-  color: var(--text-secondary);
-}
-
-/* Arch Separator */
-.vault-arch-separator {
-  width: 100%;
-  height: 80px;
-  background: radial-gradient(circle at center top, #1a1a1a 0%, transparent 70%);
-  margin: 3rem 0;
-}
-
-/* Steps Layout */
-.vault-step-section {
+/* Vault Pillars */
+.vault-pillars-section {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   justify-content: center;
-  padding: 2rem 0;
+  gap: 2rem;
+  padding: 3rem 1rem;
+  background-color: #1b1f27;
+  border-radius: 16px;
+  margin-bottom: 3rem;
 }
 
-.vault-step-section.reverse {
-  flex-direction: row-reverse;
-}
-
-.vault-step-image {
-  flex: 1 1 300px;
-  max-width: 400px;
-  padding: 1rem;
+.vault-pillar {
+  background-color: #252a34;
+  padding: 2rem;
+  border-radius: 12px;
+  flex: 1 1 280px;
+  max-width: 340px;
   text-align: center;
+  box-shadow: 0 0 12px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
 }
 
-.vault-step-text {
-  flex: 1 1 300px;
-  max-width: 500px;
-  padding: 1rem;
+.vault-pillar:hover {
+  transform: scale(1.03);
 }
 
-.vault-divider {
-  height: 2px;
-  background-color: #333;
-  margin: 2rem 0;
+.pillar-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 1rem;
+  opacity: 0.9;
 }
 
-/* Tables */
+/* Tables Section */
+.vault-tables-section {
+  background-color: #14171f;
+  padding: 3rem 1rem;
+  border-radius: 12px;
+}
+
 .vault-memory-table {
   width: 100%;
+  max-width: 600px;
+  margin: 1.5rem auto;
   border-collapse: collapse;
-  margin-bottom: 2rem;
+  background-color: #1f232e;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  color: #ddd;
 }
 
-.vault-memory-table th, .vault-memory-table td {
-  border: 1px solid #333;
-  padding: 0.75rem;
+.vault-memory-table thead {
+  background-color: #2b303b;
+  color: #fff;
+}
+
+.vault-memory-table th,
+.vault-memory-table td {
+  padding: 0.75rem 1rem;
   text-align: center;
+  border-bottom: 1px solid #333;
 }
 
-.vault-memory-table th {
-  background-color: #1a1a1a;
+.vault-memory-table tbody tr:nth-child(even) {
+  background-color: #22252e;
 }
-
