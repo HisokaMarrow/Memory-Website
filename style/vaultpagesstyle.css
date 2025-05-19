@@ -1,110 +1,177 @@
-/* Vault Pillars Section */
-.vault-pillars-section {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  padding: 3rem 1rem;
-  background-color: #1b1f27;
-  border-radius: 16px;
-  margin-bottom: 3rem;
-}
-
-.vault-pillar {
-  background-color: #252a34;
-  padding: 2rem;
-  border-radius: 12px;
-  flex: 1 1 280px;
-  max-width: 340px;
-  text-align: center;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
-}
-
-.vault-pillar:hover {
-  transform: scale(1.03);
-}
-
-.pillar-icon {
-  width: 48px;
-  height: 48px;
-  margin-bottom: 1rem;
-  opacity: 0.9;
-}
-
-/* Tables Section */
-.vault-tables-section {
-  background-color: #14171f;
-  padding: 3rem 1rem;
-  border-radius: 12px;
-}
-
-.vault-memory-table {
-  width: 100%;
-  max-width: 600px;
-  margin: 1.5rem auto;
-  border-collapse: collapse;
-  background-color: #1f232e;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  color: #ddd;
-}
-
-.vault-memory-table thead {
-  background-color: #2b303b;
-  color: #fff;
-}
-
-.vault-memory-table th,
-.vault-memory-table td {
-  padding: 0.75rem 1rem;
-  text-align: center;
-  border-bottom: 1px solid #333;
-}
-
-.vault-memory-table tbody tr:nth-child(even) {
-  background-color: #22252e;
-}
-
-/* Instruction Box (Modular Content Area) */
-.vault-instruction-box {
-  max-width: 720px;
-  margin: 0 auto;
-  text-align: center;
-  background-color: #1b1f27;
-  padding: 2.5rem;
-  border-radius: 16px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.vault-instruction-box h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-  color: var(--accent-color);
-}
-
-.vault-instruction-box h3 {
-  margin-top: 2rem;
-  margin-bottom: 0.5rem;
-  color: var(--accent-color);
-}
-
-.vault-instruction-box h4 {
-  margin-top: 1.5rem;
-  margin-bottom: 0.25rem;
-  font-size: 1.1rem;
-  color: #fff;
-}
-
-.vault-instruction-box p {
-  margin: 0.5rem 0 1rem;
+/* Container and Base Styles */
+.doomsday-page {
+  --doomsday-bg: #121212;
+  --doomsday-text: #EEEEEE;
+  --doomsday-accent: #4db6ac;        /* Teal accent (light shade) */
+  --doomsday-accent-alt: #9575cd;    /* Purple accent for gradient mix */
+  --doomsday-spacing: 1rem;
+  background: var(--doomsday-bg);
+  color: var(--doomsday-text);
+  font-size: 16px;
   line-height: 1.6;
-  color: #ccc;
+  padding: 2rem 1rem;
+}
+.doomsday-page h1, .doomsday-page h2, .doomsday-page h3, 
+.doomsday-page h4, .doomsday-page h5, .doomsday-page h6 {
+  color: var(--doomsday-text);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.doomsday-page p {
+  margin-bottom: 1rem;
+}
+.doomsday-page a {
+  color: var(--doomsday-accent);
+  text-decoration: none;
+}
+.doomsday-page a:hover {
+  text-decoration: underline;
 }
 
-.vault-instruction-box ul {
-  list-style-type: disc;
-  margin: 1rem 0 1.5rem 1.5rem;
-  padding-left: 1rem;
+/* Header Section */
+.doomsday-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.doomsday-title {
+  font-size: 2rem;
+  font-weight: 700;
+  /* Gradient text effect for main title */
+  background: linear-gradient(90deg, var(--doomsday-accent), var(--doomsday-accent-alt));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.doomsday-tagline {
+  font-size: 1.2rem;
+  color: #CCCCCC;
+  margin-top: 0.5rem;
+}
+
+/* Highlights (Benefit Cards) */
+.doomsday-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.doomsday-card {
+  background: #1e1e1e;  /* slightly lighter gray for contrast */
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.doomsday-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.doomsday-highlight-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+.doomsday-highlight-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Section Styles */
+.doomsday-section {
+  margin-bottom: 2rem;
+}
+.doomsday-section h2, .doomsday-section h3 {
+  border-left: 4px solid var(--doomsday-accent);
+  padding-left: 0.5rem;
+}
+.doomsday-section h2 {
+  font-size: 1.5rem;
+  margin-top: 0;  /* allow h2 to be closer to previous content if needed */
+}
+.doomsday-section h3 {
+  font-size: 1.25rem;
+  margin-top: 0;
+}
+
+/* Doomsday Dates Table */
+.doomsday-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+.doomsday-table th, .doomsday-table td {
+  border: 1px solid #444;
+  padding: 0.5rem 0.75rem;
   text-align: left;
+}
+.doomsday-table th {
+  background: #2a2a2a;
+}
+.doomsday-table tr:nth-child(even) td {
+  background: #181818;
+}
+
+/* Anchor Days List */
+.doomsday-anchor-list {
+  list-style: none;
+  padding-left: 1em;
+  margin-bottom: 1rem;
+}
+.doomsday-anchor-list li::before {
+  content: "➤";
+  color: var(--doomsday-accent);
+  margin-right: 0.5em;
+}
+.doomsday-anchor-list li {
+  margin: 0.25rem 0;
+}
+
+/* Steps List */
+.doomsday-steps {
+  counter-reset: step;
+  margin-left: 1.25rem;
+}
+.doomsday-steps li {
+  margin: 0.75rem 0;
+}
+.doomsday-steps li::marker {
+  /* Style the list number */
+  font-weight: bold;
+  color: var(--doomsday-accent);
+}
+
+/* Example Box */
+.doomsday-example {
+  background: #1b1b1b;
+  border-left: 4px solid var(--doomsday-accent);
+  padding: 1rem 1.25rem;
+  border-radius: 4px;
+}
+.doomsday-example p {
+  margin-bottom: 0.5rem;
+}
+.doomsday-example em {
   color: #ccc;
+}
+.doomsday-example strong {
+  color: var(--doomsday-accent);
+}
+.doomsday-example u {
+  text-decoration: none;
+  border-bottom: 2px dotted var(--doomsday-accent);
+}
+
+/* Responsive Typography Adjustments (larger screens) */
+@media (min-width: 768px) {
+  .doomsday-title {
+    font-size: 2.5rem;
+  }
+  .doomsday-tagline {
+    font-size: 1.25rem;
+  }
+  .doomsday-page {
+    font-size: 17px;
+  }
 }
