@@ -64,103 +64,159 @@
 
 </script>
 
-<main class="vault-container">
+<div class="doomsday-page">
 
-  <!-- Introduction -->
-<section class="vault-section center">
-  <div class="daily-box vault-instruction-box">
+  <!-- Header / Title Section -->
+  <header class="doomsday-header">
+    <h1 class="doomsday-title">Doomsday Calculation Method</h1>
+    <p class="doomsday-tagline">Learn how to find the weekday for any date <strong>in your head</strong> within seconds.</p>
+  </header>
 
-    <h2 class="vault-main-title">Leap-Adjusted Doomsday Method</h2>
-    <p>This version of the Doomsday rule uses a simplified modular approach with leap year correction. Follow the steps below to determine the day of the week for any date.</p>
-
-    <h3>Step 1: Add Base Values</h3>
-    <p>Add together:</p>
-    <ul>
-      <li>The <strong>day of the month</strong></li>
-      <li>The <strong>month code</strong> from the table below</li>
-      <li>The <strong>century code</strong> from the table below</li>
-    </ul>
-
-    <h4>Month Code Table</h4>
-    <table class="vault-memory-table">
-      <thead><tr><th>Month</th><th>Code</th></tr></thead>
-      <tbody>
-        <tr><td>January</td><td>0</td></tr>
-        <tr><td>February</td><td>3</td></tr>
-        <tr><td>March</td><td>3</td></tr>
-        <tr><td>April</td><td>6</td></tr>
-        <tr><td>May</td><td>1</td></tr>
-        <tr><td>June</td><td>4</td></tr>
-        <tr><td>July</td><td>6</td></tr>
-        <tr><td>August</td><td>2</td></tr>
-        <tr><td>September</td><td>5</td></tr>
-        <tr><td>October</td><td>0</td></tr>
-        <tr><td>November</td><td>3</td></tr>
-        <tr><td>December</td><td>5</td></tr>
-      </tbody>
-    </table>
-
-    <h4>Century Code Table</h4>
-    <table class="vault-memory-table">
-      <thead><tr><th>Century</th><th>Code</th></tr></thead>
-      <tbody>
-        <tr><td>1600s</td><td>6</td></tr>
-        <tr><td>1700s</td><td>4</td></tr>
-        <tr><td>1800s</td><td>2</td></tr>
-        <tr><td>1900s</td><td>0</td></tr>
-        <tr><td>2000s</td><td>6</td></tr>
-        <tr><td>2100s</td><td>4</td></tr>
-        <tr><td>2200s</td><td>2</td></tr>
-        <tr><td>2300s</td><td>0</td></tr>
-      </tbody>
-    </table>
-
-    <h3>Step 2: Add Year Values</h3>
-    <p>From the last two digits of the year:</p>
-    <ul>
-      <li>Add the year itself</li>
-      <li>Add the integer part of the year divided by 4 (i.e., <code>Math.floor(year / 4)</code>)</li>
-    </ul>
-
-    <h3>Step 3: Modulo 7</h3>
-    <p>Add all values from Step 1 and Step 2, then take the result <strong>modulo 7</strong>. This gives the weekday code:</p>
-
-    <table class="vault-memory-table">
-      <thead><tr><th>Remainder</th><th>Day</th></tr></thead>
-      <tbody>
-        <tr><td>0</td><td>Sunday</td></tr>
-        <tr><td>1</td><td>Monday</td></tr>
-        <tr><td>2</td><td>Tuesday</td></tr>
-        <tr><td>3</td><td>Wednesday</td></tr>
-        <tr><td>4</td><td>Thursday</td></tr>
-        <tr><td>5</td><td>Friday</td></tr>
-        <tr><td>6</td><td>Saturday</td></tr>
-      </tbody>
-    </table>
-
-    <h3>Step 4: Leap Year Adjustment</h3>
-    <p>If the date is in <strong>January or February</strong> <em>and</em> the year is a <strong>leap year</strong>, subtract <strong>1</strong> from your result.</p>
-
-    <p><strong>Leap Year Rule:</strong> A year is a leap year if it is divisible by 4 — except century years, which must be divisible by 400.</p>
-
-    <p>If your adjusted result is <code>-1</code>, treat it as <code>6</code> (wraparound).</p>
-
-    <h3>Example</h3>
-    <p><strong>Date:</strong> February 10, 1996</p>
-    <ul>
-      <li>Day = 10</li>
-      <li>Month Code = 3</li>
-      <li>Century Code = 0 (1900s)</li>
-      <li>Year = 96</li>
-      <li>96 ÷ 4 = 24</li>
-      <li>Sum = 10 + 3 + 0 + 96 + 24 = 133</li>
-      <li>133 mod 7 = <strong>0</strong> → Sunday</li>
-      <li>Leap Year + February = Subtract 1 → <strong>Saturday</strong></li>
-    </ul>
-
+  <!-- Highlights / Benefits Section -->
+  <div class="doomsday-highlights">
+    <div class="doomsday-card doomsday-highlight">
+      <div class="doomsday-highlight-icon">🏆</div>
+      <h3 class="doomsday-highlight-title">Challenge Yourself</h3>
+      <p>Practice calculating weekdays quickly and consistently to sharpen your mind.</p>
+    </div>
+    <div class="doomsday-card doomsday-highlight">
+      <div class="doomsday-highlight-icon">🌐</div>
+      <h3 class="doomsday-highlight-title">Apply Anywhere</h3>
+      <p>Determine the weekday of any date, anytime, without relying on a calendar.</p>
+    </div>
+    <div class="doomsday-card doomsday-highlight">
+      <div class="doomsday-highlight-icon">🧠</div>
+      <h3 class="doomsday-highlight-title">Stimulate the Brain</h3>
+      <p>Boost your mental agility by mastering quick date-to-weekday conversion.</p>
+    </div>
+    <div class="doomsday-card doomsday-highlight">
+      <div class="doomsday-highlight-icon">🎉</div>
+      <h3 class="doomsday-highlight-title">Impress Your Friends</h3>
+      <p>Be the person who can casually tell what day any historic or future date falls on.</p>
+    </div>
   </div>
-</section>
 
+  <!-- What is the Doomsday Algorithm -->
+  <section class="doomsday-section">
+    <h2>What is the Doomsday Algorithm?</h2>
+    <p>The <strong>Doomsday Algorithm</strong> is a mental technique for calculating the day of the week for any given date. It works by using so-called "<em>Doomsday</em>" dates that fall on the same weekday every year, and a few easy-to-remember rules to adjust for the year and month. By memorizing these anchor points and doing some quick arithmetic, you can figure out any date’s weekday without a calendar.</p>
+  </section>
+
+  <!-- Doomsday Dates Table -->
+  <section class="doomsday-section">
+    <h3>Key Doomsday Dates Each Year</h3>
+    <p>Memorize these <em>doomsday</em> dates for each month – they all share the **same weekday** every year (the “doomsday” of that year). In even-numbered months (except February), the doomsday date is simply the month number doubled (e.g. 4/4, 6/6, 8/8, 10/10, 12/12). For odd months, use the mnemonic “<strong>Work 9 to 5 at 7-11</strong>” to remember 9→5 and 7→11 (May 9, September 5, July 11, November 7). January and February are special cases because of leap years.</p>
+    <table class="doomsday-table">
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th>Doomsday Date</th>
+          <th>Mnemonic</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>January</td>
+          <td>3 (4 in leap years)</td>
+          <td>“3 years out of 4 it’s Jan 3, then Jan 4 in the 4th year.”</td>
+        </tr>
+        <tr>
+          <td>February</td>
+          <td>28 (29 in leap years)</td>
+          <td>Last day of Feb. (Feb 28, or Feb 29 in a leap year)</td>
+        </tr>
+        <tr>
+          <td>March</td>
+          <td>"0th" (Feb 28/29) or 14</td>
+          <td>The day before Mar 1 is Feb 28 (think of it as Mar 0). Also, Mar 14 (Pi Day).</td>
+        </tr>
+        <tr>
+          <td>April</td>
+          <td>4</td>
+          <td>4/4 (April 4th)</td>
+        </tr>
+        <tr>
+          <td>May</td>
+          <td>9</td>
+          <td>"9-to-5" (May 9th, 5th month)</td>
+        </tr>
+        <tr>
+          <td>June</td>
+          <td>6</td>
+          <td>6/6 (June 6th)</td>
+        </tr>
+        <tr>
+          <td>July</td>
+          <td>11</td>
+          <td>"7-11" (July 11th)</td>
+        </tr>
+        <tr>
+          <td>August</td>
+          <td>8</td>
+          <td>8/8 (August 8th)</td>
+        </tr>
+        <tr>
+          <td>September</td>
+          <td>5</td>
+          <td>"9-to-5" (Sept 5th, 9th month)</td>
+        </tr>
+        <tr>
+          <td>October</td>
+          <td>10</td>
+          <td>10/10 (October 10th)</td>
+        </tr>
+        <tr>
+          <td>November</td>
+          <td>7</td>
+          <td>"7-11" (November 7th)</td>
+        </tr>
+        <tr>
+          <td>December</td>
+          <td>12</td>
+          <td>12/12 (December 12th)</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Century Anchor Days -->
+  <section class="doomsday-section">
+    <h3>Century Anchor Days</h3>
+    <p>For each century, the Doomsday falls on a specific weekday (known as the <strong>anchor day</strong> for that century). The Gregorian calendar repeats every 400 years, so there are only four anchor days to remember:</p>
+    <ul class="doomsday-anchor-list">
+      <li><strong>1800s:</strong> Friday (weekday #5)</li>
+      <li><strong>1900s:</strong> Wednesday (weekday #3)</li>
+      <li><strong>2000s:</strong> Tuesday (weekday #2)</li>
+      <li><strong>2100s:</strong> Sunday (weekday #0)</li>
+    </ul>
+    <p>Knowing the century’s anchor day lets you start the calculation for any year in that century.</p>
+  </section>
+
+  <!-- Step-by-Step Calculation Instructions -->
+  <section class="doomsday-section">
+    <h3>Steps to Calculate the Weekday</h3>
+    <ol class="doomsday-steps">
+      <li><strong>Find the century’s anchor day:</strong> Use the list above to get the anchor weekday for the target date’s century.</li>
+      <li><strong>Calculate the year’s Doomsday:</strong> Using the last two digits of the year, calculate that year’s own “doomsday” weekday. (There is a formula: divide by 12, take remainder, divide remainder by 4, and add them up with the century anchor, mod 7 – or use a memorized table.) This gives the weekday for all the anchor dates in that year.</li>
+      <li><strong>Find the nearest Doomsday date:</strong> From the target date’s month, pick the known doomsday date (see table above). This will have the same weekday as the year’s doomsday.</li>
+      <li><strong>Count to the target date:</strong> Calculate the difference in days between the known doomsday date and the target date. Move forward or backward that many days from the known weekday.</li>
+      <li><strong>Adjust for January/February of leap years:</strong> If your date is in Jan or Feb *and* the year is a leap year, subtract one day from your final count (since in leap years the doomsday shifts one day earlier for those months).</li>
+    </ol>
+  </section>
+
+  <!-- Example Calculation -->
+  <section class="doomsday-section doomsday-example">
+    <h3>Example: Einstein’s Birthday</h3>
+    <p><em>What day of the week was March 14, 1879?</em></p>
+    <p><strong>1.</strong> The year 1879 falls in the 1800s, so the century’s anchor day is **Friday**.</p>
+    <p><strong>2.</strong> For 1879, a quick calculation shows the year’s Doomsday is also Friday (no offset from the anchor).<br>
+       <small>(Using Conway’s formula: 79 ÷ 12 = 6, remainder 7; 7 ÷ 4 = 1; sum = 6+7+1 = 14; 14 mod 7 = 0, meaning 1879’s Doomsday shares the anchor weekday.)</small></p>
+    <p><strong>3.</strong> From the table, March’s doomsday can be taken as Feb 28 (the “0th” of March). In 1879, Feb 28 was a Friday, the same as the year’s Doomsday.</p>
+    <p><strong>4.</strong> March 14 is two weeks after Feb 28. Advancing two weeks from Friday keeps the day at **Friday**.</p>
+    <p>**Answer:** March 14, 1879 was a <u>Friday</u>.</p>
+  </section>
+
+</div>
 
 <!-- Footer -->
 <div id="site-footer"></div>
