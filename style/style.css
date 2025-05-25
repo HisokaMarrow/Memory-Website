@@ -757,7 +757,73 @@ input[type=number] {
 }
 
 /* =======================================================
-   16 - Media Queries (Responsive Adjustments)
+   16 - Vault: Doomsday Method Styling
+   ======================================================= */
+
+.vault-section {
+  background: var(--main-box);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.vault-section h2 {
+  font-size: 2rem;
+  text-align: center;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 2rem;
+}
+
+.vault-step {
+  margin-bottom: 2rem;
+}
+
+.vault-step h3 {
+  font-size: 1.3rem;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.vault-step p {
+  font-size: 1rem;
+  color: var(--color-subtext);
+  line-height: 1.6;
+  text-align: left;
+}
+
+.vault-divider {
+  height: 2px;
+  background-color: #fff;
+  border-radius: 2px;
+  margin: 2rem 0;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .vault-section {
+    padding: 1.5rem;
+  }
+
+  .vault-section h2 {
+    font-size: 1.6rem;
+  }
+
+  .vault-step h3 {
+    font-size: 1.15rem;
+  }
+
+  .vault-step p {
+    font-size: 0.95rem;
+  }
+}
+
+/* =======================================================
+   17 - Media Queries (Responsive Adjustments)
    ======================================================= */
 
 /* Hide carousel arrows on small screens */
