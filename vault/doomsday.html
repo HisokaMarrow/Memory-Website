@@ -64,71 +64,39 @@
 
 </script>
 
-<div class="doomsday-tutorial">
-  <!-- Introduction Section -->
-  <section class="doomsday-section doomsday-intro">
-    <h1 class="doomsday-title">Master the Doomsday Method</h1>
-    <p class="doomsday-tagline">
-      Learn how to calculate the day of the week for any date in seconds using the Doomsday algorithm.
-    </p>
-    <a href="/doomsday-game" class="doomsday-btn">Start Practice</a>
-  </section>
+<main class="main-content">
+  <section class="vault-box">
+    <h2 class="vault-title">How to Use the Doomsday Method</h2>
 
-  <!-- Method Section -->
-  <section class="doomsday-section doomsday-method">
-    <h2 class="doomsday-section-title">The Doomsday Method</h2>
-    <p class="doomsday-section-desc">Follow these steps to compute any date's weekday:</p>
-    <div class="doomsday-steps">
-      <div class="doomsday-step-card" data-aos="fade-up">
-        <div class="doomsday-step-icon">🗓️</div>
-        <h3 class="doomsday-step-title">Step 1: Anchor Day</h3>
-        <p class="doomsday-step-text">Find the base weekday (Doomsday) for the year.</p>
-      </div>
-      <div class="doomsday-step-card" data-aos="fade-up" data-aos-delay="100">
-        <div class="doomsday-step-icon">🔢</div>
-        <h3 class="doomsday-step-title">Step 2: Calculate Offsets</h3>
-        <p class="doomsday-step-text">Calculate year, month, and day offsets from the anchor.</p>
-      </div>
-      <div class="doomsday-step-card" data-aos="fade-up" data-aos-delay="200">
-        <div class="doomsday-step-icon">📅</div>
-        <h3 class="doomsday-step-title">Step 3: Sum Up</h3>
-        <p class="doomsday-step-text">Add the offsets to the anchor day and adjust modulo 7.</p>
-      </div>
-      <div class="doomsday-step-card" data-aos="fade-up" data-aos-delay="300">
-        <div class="doomsday-step-icon">✅</div>
-        <h3 class="doomsday-step-title">Step 4: Result</h3>
-        <p class="doomsday-step-text">Determine the final weekday for the given date.</p>
-      </div>
+    <div class="vault-step">
+      <h3>Step 1: Learn the Anchor Days</h3>
+      <p>
+        Each month has a "doomsday" date that falls on the same weekday as the last day of February. 
+        For example, 4/4, 6/6, 8/8, 10/10 are easy to remember. These are key dates to anchor your calculations.
+      </p>
+    </div>
+
+    <div class="vault-divider"></div>
+
+    <div class="vault-step">
+      <h3>Step 2: Find the Century Code</h3>
+      <p>
+        Each century has a code. For example, 1900s = Tuesday (2), 2000s = Tuesday (2), 1800s = Friday (5). 
+        You can memorize these or calculate them with a simple formula.
+      </p>
+    </div>
+
+    <div class="vault-divider"></div>
+
+    <div class="vault-step">
+      <h3>Step 3: Calculate the Year Code</h3>
+      <p>
+        Take the last two digits of the year, divide by 12, add the remainder, and add the number of leap years. 
+        Add this to the century code and the anchor day, then mod by 7 to get the weekday.
+      </p>
     </div>
   </section>
-
-  <!-- Reference Section -->
-  <section class="doomsday-section doomsday-reference">
-    <h2 class="doomsday-section-title">Reference &amp; Mnemonics</h2>
-    <p class="doomsday-section-desc">
-      Memorize key anchor dates ("Doomsdays") for each year and use mnemonics for tricky months. 
-      For example, remember <em>"March 0"</em> as the day before March 1 (Feb 28 or 29) – 
-      it always falls on the same weekday as that year's Doomsday.
-    </p>
-  </section>
-
-  <!-- Example Section -->
-  <section class="doomsday-section doomsday-example">
-    <h2 class="doomsday-section-title">Example Calculation</h2>
-    <p class="doomsday-section-desc">
-      <strong>Example:</strong> Find the weekday for <em>July 4, 2025</em>.<br>
-      The anchor Doomsday for 2025 is Friday. July's Doomsday (7/11) falls on a Saturday that year. 
-      July 4 is 7 days before July 11, so it lands on the same weekday as the previous Saturday – 
-      yielding <u>Friday</u> as the answer.
-    </p>
-  </section>
-
-  <!-- Call-to-Action Section -->
-  <section class="doomsday-section doomsday-cta">
-    <p class="doomsday-cta-text">Ready to test your skills?</p>
-    <a href="/doomsday-game" class="doomsday-btn doomsday-btn-primary">Start Practice</a>
-  </section>
-</div>
+</main>
 
 <!-- Footer -->
 <div id="site-footer"></div>
