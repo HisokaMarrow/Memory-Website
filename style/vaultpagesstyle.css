@@ -1,140 +1,73 @@
-/* Container layout and global settings */
-.doomsday-tutorial {
-  max-width: 800px;
+/* === VAULT DOOMSDAY PAGE STYLES === */
+
+main.main-content {
+  padding: 2rem;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 0 1rem;
-}
-body {
-  background: #000000;  /* page background outside the container (black/dark) */
-}
-.doomsday-section {
-  padding: 4rem 2rem;
-  color: #FFFFFF;  /* white text on dark backgrounds */
+  box-sizing: border-box;
 }
 
-/* Introduction (Hero) Section */
-.doomsday-intro {
-  background: #1E1B2E;       /* dark purple background */
-  text-align: center;
-  position: relative;
+/* Main container for the technique box */
+.vault-box {
+  background-color: var(--primary-dark);
+  border: 2px solid white;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-top: 2rem;
+  color: white;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
-.doomsday-intro::after {
-  /* Angled divider at bottom of intro */
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 80px;
-  background: #272142;      /* fills with the next section's background color */
-  clip-path: polygon(0 100%, 100% 0, 100% 100%);
-}
-.doomsday-title {
+
+/* Title at the top of the box */
+.vault-title {
   font-size: 2rem;
-  margin-bottom: 1rem;
-}
-.doomsday-tagline {
-  font-size: 1.2rem;
+  text-align: center;
   margin-bottom: 2rem;
-}
-.doomsday-btn {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  color: #FFFFFF;
-  background-color: #8E44AD; /* vibrant purple for buttons */
-  border: none;
-  border-radius: 5px;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-}
-.doomsday-btn:hover {
-  background-color: #A56EDC; /* lighter purple on hover */
+  font-weight: bold;
+  color: var(--accent);
 }
 
-/* Method Section & Step Cards */
-.doomsday-method {
-  background: #272142;  /* slightly lighter purple background */
+/* Individual step section inside the box */
+.vault-step {
+  margin-bottom: 1.5rem;
 }
-.doomsday-section-title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-.doomsday-section-desc {
-  font-size: 1rem;
-  max-width: 600px;
-  margin: 0 auto 2rem auto;
-  text-align: center;
-}
-.doomsday-steps {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-}
-.doomsday-step-card {
-  background: #1E1B2E;  /* dark card background contrasting with section */
-  border-radius: 8px;
-  padding: 1.5rem;
-  flex: 1 1 250px;
-  max-width: 250px;
-  text-align: center;
-  /* initial state for animation (hidden) */
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.doomsday-step-card.aos-animate {
-  /* class added by AOS or JS when element is in view */
-  opacity: 1;
-  transform: translateY(0);
-}
-.doomsday-step-icon {
-  font-size: 2rem;
+
+.vault-step h3 {
+  font-size: 1.4rem;
   margin-bottom: 0.5rem;
-}
-.doomsday-step-title {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-}
-.doomsday-step-text {
-  font-size: 0.95rem;
+  color: var(--text-light);
 }
 
-/* Reference & Example Sections */
-.doomsday-reference {
-  background: #1E1B2E;  /* back to dark purple background */
-}
-.doomsday-example {
-  background: #272142;  /* alternate purple background */
+.vault-step p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-light);
 }
 
-/* Call-to-Action Section */
-.doomsday-cta {
-  background: #1E1B2E;
-  text-align: center;
-}
-.doomsday-cta-text {
-  font-size: 1.3rem;
-  margin-bottom: 1rem;
-}
-.doomsday-btn-primary {
-  font-size: 1.1rem;
-  padding: 1rem 2rem;
-  /* (inherits other styles from .doomsday-btn) */
+/* Divider between steps (not before step 1) */
+.vault-divider {
+  height: 2px;
+  background-color: white;
+  width: 100%;
+  margin: 2rem 0;
+  border-radius: 2px;
 }
 
-/* Responsive Design: larger screens */
-@media (min-width: 768px) {
-  .doomsday-title {
-    font-size: 2.5rem;
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .vault-box {
+    padding: 1.5rem;
   }
-  .doomsday-tagline {
-    font-size: 1.5rem;
+
+  .vault-title {
+    font-size: 1.6rem;
   }
-  .doomsday-steps .doomsday-step-card {
-    flex: 1 1 200px;
-    max-width: 200px;
+
+  .vault-step h3 {
+    font-size: 1.2rem;
+  }
+
+  .vault-step p {
+    font-size: 0.95rem;
   }
 }
