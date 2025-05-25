@@ -63,88 +63,72 @@
 <main class="main-container">
   <section class="text-box-content">
     <h2 class="main-title">Doomsday Method – Classic Calculation</h2>
-    <p class="main-subtitle">A mental algorithm to find any day of the week — no calendar needed!</p>
+    <p class="main-subtitle">Let’s learn how to calculate any day of the week using mental math!</p>
+
+    <div class="vault-step">
+      <p><strong>Example:</strong> We will calculate the day of the week for <strong>19.05.1985</strong> (19th May 1985)</p>
+    </div>
+
+    <div class="vault-divider"></div>
 
     <div class="vault-step">
       <h3>Step 1: Get the Last Two Digits of the Year <span>📅</span></h3>
-      <p>
-        Take the last two digits of the year.  
-        <br />
-        Example: <strong>1995 → 95</strong>
-      </p>
+      <p>1985 → <strong>85</strong></p>
     </div>
 
     <div class="vault-divider"></div>
 
     <div class="vault-step">
       <h3>Step 2: Divide by 4 <span>➗</span></h3>
-      <p>
-        Divide 95 by 4 and keep the whole number only:  
-        <strong>95 ÷ 4 = 23</strong>
-      </p>
+      <p>85 ÷ 4 = <strong>21</strong> (keep only the integer)</p>
     </div>
 
     <div class="vault-divider"></div>
 
     <div class="vault-step">
       <h3>Step 3: Add Year + Quotient <span>➕</span></h3>
-      <p>
-        Add both numbers together:  
-        <strong>95 + 23 = 118</strong>
-      </p>
+      <p>85 + 21 = <strong>106</strong></p>
     </div>
 
     <div class="vault-divider"></div>
 
     <div class="vault-step">
       <h3>Step 4: Add the Century Code <span>🧭</span></h3>
-      <p>
-        Use the century code based on the century of the year:  
-        <strong>1900s = 0</strong> → <strong>118 + 0 = 118</strong>
-      </p>
+      <p>For the 1900s, the code is <strong>0</strong> → Total = <strong>106</strong></p>
     </div>
 
     <div class="vault-divider"></div>
 
     <div class="vault-step">
       <h3>Step 5: Add the Month Code <span>🗓️</span></h3>
-      <p>
-        Look up the month code (see table below).  
-        <br />
-        Example: <strong>May = 1</strong> → 118 + 1 = <strong>119</strong>
-      </p>
+      <p>May = <strong>1</strong> → 106 + 1 = <strong>107</strong></p>
     </div>
 
     <div class="vault-divider"></div>
 
     <div class="vault-step">
       <h3>Step 6: Add the Day <span>📆</span></h3>
-      <p>
-        For May 10:  
-        <strong>119 + 10 = 129</strong>
-      </p>
+      <p>Day = 19 → 107 + 19 = <strong>126</strong></p>
     </div>
 
     <div class="vault-divider"></div>
 
     <div class="vault-step">
       <h3>Step 7: Divide by 7 and Find the Remainder <span>7️⃣</span></h3>
-      <p>
-        <strong>129 ÷ 7 = 18 R 3</strong>  
-        <br />
-        The remainder tells you the weekday!
-      </p>
+      <p>126 ÷ 7 = 18 remainder <strong>0</strong></p>
+      <p>The remainder tells you the weekday!</p>
+      <p><strong>0 = Sunday → So 19.05.1985 was a Sunday</strong></p>
     </div>
 
     <div class="vault-divider"></div>
 
     <div class="vault-step">
       <h3>🧠 Weekday Codes</h3>
-      <table style="width:100%; margin-top: 1rem; color: var(--color-subtext); border-collapse: collapse;">
+      <table style="width:100%; margin-top: 1rem; color: var(--color-subtext); border-collapse: collapse; text-align: center;">
         <thead>
           <tr>
-            <th style="text-align:left; padding: 0.5rem;">Remainder</th>
-            <th style="text-align:left; padding: 0.5rem;">Day of the Week</th>
+            <th style="text-align: center; padding: 0.5rem;">Remainder</th>
+            <th style="text-align: center; padding: 0.5rem;">Day of the Week</th>
           </tr>
         </thead>
         <tbody>
@@ -163,11 +147,11 @@
 
     <div class="vault-step">
       <h3>📋 Month Codes</h3>
-      <table style="width:100%; margin-top: 1rem; color: var(--color-subtext); border-collapse: collapse;">
+      <table style="width:100%; margin-top: 1rem; color: var(--color-subtext); border-collapse: collapse; text-align: center;">
         <thead>
           <tr>
-            <th style="text-align:left; padding: 0.5rem;">Month</th>
-            <th style="text-align:left; padding: 0.5rem;">Code</th>
+            <th style="text-align: center; padding: 0.5rem;">Month</th>
+            <th style="text-align: center; padding: 0.5rem;">Code</th>
           </tr>
         </thead>
         <tbody>
@@ -186,11 +170,11 @@
 
     <div class="vault-step">
       <h3>🧭 Century Codes</h3>
-      <table style="width:100%; margin-top: 1rem; color: var(--color-subtext); border-collapse: collapse;">
+      <table style="width:100%; margin-top: 1rem; color: var(--color-subtext); border-collapse: collapse; text-align: center;">
         <thead>
           <tr>
-            <th style="text-align:left; padding: 0.5rem;">Century</th>
-            <th style="text-align:left; padding: 0.5rem;">Code</th>
+            <th style="text-align: center; padding: 0.5rem;">Century</th>
+            <th style="text-align: center; padding: 0.5rem;">Code</th>
           </tr>
         </thead>
         <tbody>
@@ -204,8 +188,8 @@
           <tr><td>2300s</td><td>0</td></tr>
         </tbody>
       </table>
-      <p style="margin-top: 1rem; font-size: 0.95rem; color: var(--color-subtext);">
-        <em>Note: These codes repeat every 400 years. You can extend backward or forward by subtracting or adding 400 to stay in sync.</em>
+      <p style="margin-top: 1rem; font-size: 0.95rem; color: var(--color-subtext); text-align: center;">
+        <em>Note: Century codes repeat every 400 years. Use the same pattern by adding or subtracting 400.</em>
       </p>
     </div>
   </section>
