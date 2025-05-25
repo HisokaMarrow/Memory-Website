@@ -62,30 +62,150 @@
 
 <main class="main-container">
   <section class="text-box-content">
-    <h2 class="main-title">How to Use the Doomsday Method</h2>
+    <h2 class="main-title">Doomsday Method – Classic Calculation</h2>
+    <p class="main-subtitle">A mental algorithm to find any day of the week — no calendar needed!</p>
 
     <div class="vault-step">
-      <h3>Step 1: Learn the Anchor Days</h3>
+      <h3>Step 1: Get the Last Two Digits of the Year <span>📅</span></h3>
       <p>
-        Each month has a memorable anchor date (like 4/4, 6/6, 8/8, 10/10). These always fall on the same weekday as the last day of February.
+        Take the last two digits of the year.  
+        <br />
+        Example: <strong>1995 → 95</strong>
       </p>
     </div>
 
     <div class="vault-divider"></div>
 
     <div class="vault-step">
-      <h3>Step 2: Find the Century Code</h3>
+      <h3>Step 2: Divide by 4 <span>➗</span></h3>
       <p>
-        Each century corresponds to a weekday code. For example: 1800s = Friday, 1900s = Wednesday, 2000s = Tuesday.
+        Divide 95 by 4 and keep the whole number only:  
+        <strong>95 ÷ 4 = 23</strong>
       </p>
     </div>
 
     <div class="vault-divider"></div>
 
     <div class="vault-step">
-      <h3>Step 3: Calculate the Year Code</h3>
+      <h3>Step 3: Add Year + Quotient <span>➕</span></h3>
       <p>
-        Use the last two digits of the year. Divide by 12, add the remainder, add the number of 4s in the remainder, then combine everything with the century code to get the weekday.
+        Add both numbers together:  
+        <strong>95 + 23 = 118</strong>
+      </p>
+    </div>
+
+    <div class="vault-divider"></div>
+
+    <div class="vault-step">
+      <h3>Step 4: Add the Century Code <span>🧭</span></h3>
+      <p>
+        Use the century code based on the century of the year:  
+        <strong>1900s = 0</strong> → <strong>118 + 0 = 118</strong>
+      </p>
+    </div>
+
+    <div class="vault-divider"></div>
+
+    <div class="vault-step">
+      <h3>Step 5: Add the Month Code <span>🗓️</span></h3>
+      <p>
+        Look up the month code (see table below).  
+        <br />
+        Example: <strong>May = 1</strong> → 118 + 1 = <strong>119</strong>
+      </p>
+    </div>
+
+    <div class="vault-divider"></div>
+
+    <div class="vault-step">
+      <h3>Step 6: Add the Day <span>📆</span></h3>
+      <p>
+        For May 10:  
+        <strong>119 + 10 = 129</strong>
+      </p>
+    </div>
+
+    <div class="vault-divider"></div>
+
+    <div class="vault-step">
+      <h3>Step 7: Divide by 7 and Find the Remainder <span>7️⃣</span></h3>
+      <p>
+        <strong>129 ÷ 7 = 18 R 3</strong>  
+        <br />
+        The remainder tells you the weekday!
+      </p>
+    </div>
+
+    <div class="vault-divider"></div>
+
+    <div class="vault-step">
+      <h3>🧠 Weekday Codes</h3>
+      <table style="width:100%; margin-top: 1rem; color: var(--color-subtext); border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding: 0.5rem;">Remainder</th>
+            <th style="text-align:left; padding: 0.5rem;">Day of the Week</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>0</td><td>Sunday</td></tr>
+          <tr><td>1</td><td>Monday</td></tr>
+          <tr><td>2</td><td>Tuesday</td></tr>
+          <tr><td>3</td><td>Wednesday</td></tr>
+          <tr><td>4</td><td>Thursday</td></tr>
+          <tr><td>5</td><td>Friday</td></tr>
+          <tr><td>6</td><td>Saturday</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="vault-divider"></div>
+
+    <div class="vault-step">
+      <h3>📋 Month Codes</h3>
+      <table style="width:100%; margin-top: 1rem; color: var(--color-subtext); border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding: 0.5rem;">Month</th>
+            <th style="text-align:left; padding: 0.5rem;">Code</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>January, October</td><td>0</td></tr>
+          <tr><td>May</td><td>1</td></tr>
+          <tr><td>August</td><td>2</td></tr>
+          <tr><td>February, March, November</td><td>3</td></tr>
+          <tr><td>June</td><td>4</td></tr>
+          <tr><td>September, December</td><td>5</td></tr>
+          <tr><td>April, July</td><td>6</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="vault-divider"></div>
+
+    <div class="vault-step">
+      <h3>🧭 Century Codes</h3>
+      <table style="width:100%; margin-top: 1rem; color: var(--color-subtext); border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding: 0.5rem;">Century</th>
+            <th style="text-align:left; padding: 0.5rem;">Code</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1600s</td><td>6</td></tr>
+          <tr><td>1700s</td><td>4</td></tr>
+          <tr><td>1800s</td><td>2</td></tr>
+          <tr><td>1900s</td><td>0</td></tr>
+          <tr><td>2000s</td><td>6</td></tr>
+          <tr><td>2100s</td><td>4</td></tr>
+          <tr><td>2200s</td><td>2</td></tr>
+          <tr><td>2300s</td><td>0</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top: 1rem; font-size: 0.95rem; color: var(--color-subtext);">
+        <em>Note: These codes repeat every 400 years. You can extend backward or forward by subtracting or adding 400 to stay in sync.</em>
       </p>
     </div>
   </section>
