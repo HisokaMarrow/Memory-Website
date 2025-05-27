@@ -101,35 +101,6 @@
 
 </main>
 
-
-<script>
-  document.querySelector('.game-start-button').addEventListener('click', () => {
-    const delay = document.getElementById("delay").value;
-    const rangeMax = document.getElementById("rangeMax").value;
-    const testTime = document.getElementById("testTime").value;
-    const padZeros = document.getElementById("padZeros").checked;
-    const enableVoice = document.getElementById("enableVoice").checked;
-    const speakIndividually = document.getElementById("speakIndividually").checked;
-
-    localStorage.setItem("delay", delay);
-    localStorage.setItem("rangeMax", rangeMax);
-    localStorage.setItem("testTime", testTime);
-    localStorage.setItem("padZeros", padZeros);
-    localStorage.setItem("enableVoice", enableVoice);
-    localStorage.setItem("speakIndividually", speakIndividually);
-
-    // Preload speech synthesis
-    if (enableVoice) {
-      const dummy = new SpeechSynthesisUtterance('');
-      window.speechSynthesis.speak(dummy);
-    }
-
-    setTimeout(() => {
-      window.location.href = "game.html";
-    }, 100);
-  });
-</
-
 <script>
   const settingIds = [
     'delay',
@@ -139,10 +110,9 @@
     'enableVoice',
     'speakIndividually'
   ];
+  const gameKey = 'numbers'; // Change this for other games
 
-  const gameKey = 'numbers'; // Change this per game, e.g. 'cards', 'words', etc.
-
-  // Restore saved settings
+  // Restore saved settings on load
   window.addEventListener('DOMContentLoaded', () => {
     settingIds.forEach(id => {
       const el = document.getElementById(id);
@@ -164,6 +134,26 @@
       const value = el.type === 'checkbox' ? el.checked : el.value;
       localStorage.setItem(`${gameKey}-${id}`, value);
     });
+  });
+
+  // Save again and start game on button click
+  document.querySelector('.game-start-button').addEventListener('click', () => {
+    settingIds.forEach(id => {
+      const el = document.getElementById(id);
+      const value = el.type === 'checkbox' ? el.checked : el.value;
+      localStorage.setItem(`${gameKey}-${id}`, value);
+    });
+
+    // Preload speech synthesis if enabled
+    if (document.getElementById("enableVoice").checked) {
+      const dummy = new SpeechSynthesisUtterance('');
+      window.speechSynthesis.speak(dummy);
+    }
+
+    // Navigate to game
+    setTimeout(() => {
+      window.location.href = "game.html";
+    }, 100);
   });
 </script>
 
