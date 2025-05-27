@@ -128,6 +128,43 @@
       window.location.href = "game.html";
     }, 100);
   });
+</
+
+<script>
+  const settingIds = [
+    'delay',
+    'rangeMax',
+    'testTime',
+    'padZeros',
+    'enableVoice',
+    'speakIndividually'
+  ];
+
+  const gameKey = 'numbers'; // Change this per game, e.g. 'cards', 'words', etc.
+
+  // Restore saved settings
+  window.addEventListener('DOMContentLoaded', () => {
+    settingIds.forEach(id => {
+      const el = document.getElementById(id);
+      const saved = localStorage.getItem(`${gameKey}-${id}`);
+      if (saved !== null) {
+        if (el.type === 'checkbox') {
+          el.checked = saved === 'true';
+        } else {
+          el.value = saved;
+        }
+      }
+    });
+  });
+
+  // Save on change
+  settingIds.forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('change', () => {
+      const value = el.type === 'checkbox' ? el.checked : el.value;
+      localStorage.setItem(`${gameKey}-${id}`, value);
+    });
+  });
 </script>
 
 <!-- Footer -->
