@@ -684,6 +684,7 @@ input[type=number] {
    ======================================================= */
 /* Style the progress filter buttons */
 #progress-filter-buttons {
+  justify-content: center;
   margin: 0 auto;
   margin-top: 1rem;
   overflow-x: auto;
