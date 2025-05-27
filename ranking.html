@@ -60,77 +60,82 @@
 <main class="page-content">
   <h1 class="main-title">Your Progress</h1>
 
+  <!-- Game selector carousel -->
   <div class="games-carousel-wrapper">
     <div id="game-buttons" class="games-carousel">
-      <!-- Buttons will be dynamically generated here -->
+      <!-- Buttons dynamically generated here -->
     </div>
   </div>
 
+  <!-- Chart and no-data message -->
   <div class="chart-container">
     <canvas id="progressChart"></canvas>
     <div id="noDataMessageWrapper" class="no-data-wrapper">
       <div class="additional-message">Please play and finish a game to start tracking and analyzing your progress.</div>
     </div>
-  </div> <!-- CLOSE chart-container properly -->
+  </div>
+
+  <!-- Progress filter carousel -->
+  <div class="games-carousel-wrapper">
+    <div id="progress-filter-buttons" class="games-carousel">
+      <button class="progress-filter-button active" data-range="today">Today's Progress</button>
+      <button class="progress-filter-button" data-range="week">Week's Progress</button>
+      <button class="progress-filter-button" data-range="month">Monthly Progress</button>
+      <button class="progress-filter-button" data-range="year">Yearly Progress</button>
+    </div>
+  </div>
 </main>
 
-<!-- Chart.js CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script>
-let chartInstance = null; // Chart instance global
-let filteredSessions = []; // To use inside tooltip
+let chartInstance = null;
+let filteredSessions = [];
+let allSessions = JSON.parse(localStorage.getItem("gameSessions") || "[]");
 
-document.addEventListener('DOMContentLoaded', () => {
-  loadGameButtons();
-});
-
-// Load game buttons dynamically
-async function loadGameButtons() {
-  const gameButtonsContainer = document.getElementById('game-buttons');
-
-  try {
-    const response = await fetch('/gamescollection/games.json');
-    const gamesData = await response.json();
-
-    const playableGames = gamesData.filter(game => game.category !== "Vault");
-    gameButtonsContainer.innerHTML = '';
-
-    playableGames.forEach(game => {
-      const button = document.createElement('button');
-      button.classList.add('game-results-buttons');
-      button.textContent = game.title;
-      button.onclick = () => {
-        updateGraph(game.id);
-        highlightActiveButton(button);
-      };
-      gameButtonsContainer.appendChild(button);
-    });
-
-    if (playableGames.length > 0) {
-      updateGraph(playableGames[0].id);
-      highlightActiveButton(gameButtonsContainer.querySelector('button'));
+function filterByDateRange(range) {
+  const now = new Date();
+  return allSessions.filter(session => {
+    const sessionDate = new Date(session.timestamp || `${session.date}T${session.time}`);
+    switch (range) {
+      case 'today':
+        return sessionDate.toDateString() === now.toDateString();
+      case 'week': {
+        const weekAgo = new Date(now);
+        weekAgo.setDate(now.getDate() - 7);
+        return sessionDate >= weekAgo;
+      }
+      case 'month': {
+        const monthAgo = new Date(now);
+        monthAgo.setMonth(now.getMonth() - 1);
+        return sessionDate >= monthAgo;
+      }
+      case 'year': {
+        const yearAgo = new Date(now);
+        yearAgo.setFullYear(now.getFullYear() - 1);
+        return sessionDate >= yearAgo;
+      }
+      default:
+        return true;
     }
-  } catch (error) {
-    console.error('Failed to load game list:', error);
-    gameButtonsContainer.innerHTML = '<p style="color: #aaa; text-align: center;">Failed to load games.</p>';
-  }
+  });
 }
 
-// Update the graph when a game button is clicked
-function updateGraph(selectedGameId) {
-  const allSessions = JSON.parse(localStorage.getItem("gameSessions") || "[]");
-  filteredSessions = allSessions.filter(session => session.gameType === selectedGameId);
+function highlightProgressFilter(button) {
+  document.querySelectorAll('.progress-filter-button').forEach(btn => btn.classList.remove('active'));
+  button.classList.add('active');
+}
 
+function updateGraph(gameId, range = 'all') {
   const canvas = document.getElementById('progressChart');
   const ctx = canvas.getContext('2d');
   const noDataMessageWrapper = document.getElementById('noDataMessageWrapper');
 
-  if (chartInstance) {
-    chartInstance.destroy();
-  }
+  let sessions = allSessions.filter(session => session.gameType === gameId);
+  if (range !== 'all') sessions = filterByDateRange(range).filter(s => s.gameType === gameId);
+  filteredSessions = sessions;
 
-  if (filteredSessions.length === 0) {
+  if (chartInstance) chartInstance.destroy();
+
+  if (sessions.length === 0) {
     canvas.style.display = 'none';
     noDataMessageWrapper.style.display = 'block';
     return;
@@ -139,13 +144,13 @@ function updateGraph(selectedGameId) {
   canvas.style.display = 'block';
   noDataMessageWrapper.style.display = 'none';
 
-  const labels = filteredSessions.map(s => `${s.date} ${s.time}`);
-  const dataPoints = filteredSessions.map(s => s.scorePercent);
+  const labels = sessions.map(s => `${s.date} ${s.time}`);
+  const dataPoints = sessions.map(s => s.scorePercent);
 
   chartInstance = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: labels,
+      labels,
       datasets: [{
         label: 'Score %',
         data: dataPoints,
@@ -156,7 +161,7 @@ function updateGraph(selectedGameId) {
         tension: 0.3,
         pointBackgroundColor: 'white',
         pointBorderColor: 'rgba(124, 58, 237, 1)',
-        pointRadius: 4,
+        pointRadius: 4
       }]
     },
     options: {
@@ -199,15 +204,67 @@ function updateGraph(selectedGameId) {
   });
 }
 
-// Highlight active button
 function highlightActiveButton(activeButton) {
-  const allButtons = document.querySelectorAll('.game-results-buttons');
-  allButtons.forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.game-results-buttons').forEach(btn => btn.classList.remove('active'));
+  if (activeButton) activeButton.classList.add('active');
+}
 
-  if (activeButton) {
-    activeButton.classList.add('active');
+// Load buttons and default graph
+async function loadGameButtons() {
+  const container = document.getElementById('game-buttons');
+  try {
+    const res = await fetch('/gamescollection/games.json');
+    const games = (await res.json()).filter(g => g.category !== "Vault");
+    container.innerHTML = '';
+    games.forEach(game => {
+      const btn = document.createElement('button');
+      btn.classList.add('game-results-buttons');
+      btn.textContent = game.title;
+      btn.onclick = () => {
+        updateGraph(game.id, getCurrentRange());
+        highlightActiveButton(btn);
+      };
+      container.appendChild(btn);
+    });
+    if (games.length > 0) {
+      updateGraph(games[0].id, getCurrentRange());
+      highlightActiveButton(container.querySelector('button'));
+    }
+  } catch (e) {
+    console.error('Failed to load games:', e);
+    container.innerHTML = '<p style="color: #aaa; text-align: center;">Failed to load games.</p>';
   }
 }
+
+function getCurrentRange() {
+  const active = document.querySelector('.progress-filter-button.active');
+  return active ? active.dataset.range : 'all';
+}
+
+// Handle filter range selection
+function setupRangeButtons() {
+  document.querySelectorAll('.progress-filter-button').forEach(button => {
+    button.addEventListener('click', () => {
+      highlightProgressFilter(button);
+      const activeGameBtn = document.querySelector('.game-results-buttons.active');
+      if (activeGameBtn) {
+        const gameTitle = activeGameBtn.textContent;
+        fetch('/gamescollection/games.json')
+          .then(res => res.json())
+          .then(games => {
+            const selectedGame = games.find(g => g.title === gameTitle);
+            if (selectedGame) updateGraph(selectedGame.id, button.dataset.range);
+          });
+      }
+    });
+  });
+}
+
+// Initialize
+window.addEventListener('DOMContentLoaded', () => {
+  loadGameButtons();
+  setupRangeButtons();
+});
 </script>
 
 <!-- Footer -->
