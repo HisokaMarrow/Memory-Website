@@ -733,6 +733,20 @@ input[type=number] {
   font-weight: bold;
 }
 
+.games-carousel-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.games-carousel-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(200,200,200,0.6); /* Subtle color or adjust as desired */
+  border-radius: 10px;
+}
+
+.games-carousel-wrapper::-webkit-scrollbar {
+  height: 8px; /* adjust scrollbar height if necessary */
+  background-color: transparent;
+}
+
 /* No data messages */
 .no-data-wrapper {
   display: flex;
