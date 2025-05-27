@@ -1,0 +1,57 @@
+[
+  {
+    "title": "Association",
+    "description": "Link new information to something you already know. Helps anchor new memories to existing ones.",
+    "link": "/vault/techniques/association.html"
+  },
+  {
+    "title": "Memory Palace",
+    "description": "Visualize a familiar location and place items along a mental path to recall them spatially.",
+    "link": "/vault/techniques/memory-palace.html"
+  },
+  {
+    "title": "Story Method",
+    "description": "Create a vivid and bizarre story that connects each item you want to remember in sequence.",
+    "link": "/vault/techniques/story-method.html"
+  },
+  {
+    "title": "Chunking",
+    "description": "Break down long information into manageable chunks. Especially useful for numbers or lists.",
+    "link": "/vault/techniques/chunking.html"
+  },
+  {
+    "title": "Number Shapes",
+    "description": "Associate numbers with shapes they resemble to create vivid visual anchors.",
+    "link": "/vault/techniques/number-shapes.html"
+  },
+  {
+    "title": "Peg System",
+    "description": "Use a pre-memorized list of 'pegs' (like rhyming words or shapes) to hang new information onto.",
+    "link": "/vault/techniques/peg-system.html"
+  },
+  {
+    "title": "Major System",
+    "description": "Translate numbers into consonant sounds and form memorable words or images.",
+    "link": "/vault/techniques/major-system.html"
+  },
+  {
+    "title": "Visualization",
+    "description": "Create clear and exaggerated mental images to represent information. Use senses and movement.",
+    "link": "/vault/techniques/visualization.html"
+  },
+  {
+    "title": "Method of Loci",
+    "description": "Similar to the Memory Palace, this ancient technique maps items onto real-world paths.",
+    "link": "/vault/techniques/method-of-loci.html"
+  },
+  {
+    "title": "Link Method",
+    "description": "Form a chain where each item is connected to the next with a strong visual or conceptual link.",
+    "link": "/vault/techniques/link-method.html"
+  },
+  {
+    "title": "Coming Soon",
+    "description": "New techniques and examples will be added to expand your memory toolkit.",
+    "link": ""
+  }
+]
