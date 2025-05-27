@@ -179,16 +179,34 @@ function updateGraph(gameId, range = 'all') {
       responsive: true,
       maintainAspectRatio: false,
       scales: {
-        y: {
-          min: 0,
-          max: 100,
-          ticks: { stepSize: 10 },
-          grid: { color: 'rgba(255,255,255,0.1)' }
-        },
-        x: {
-          grid: { color: 'rgba(255,255,255,0.05)' }
+  y: {
+    min: 0,
+    max: 100,
+    ticks: { stepSize: 10 },
+    grid: { color: 'rgba(255,255,255,0.1)' }
+  },
+  x: {
+    ticks: {
+      callback: function(value, index) {
+        const range = getCurrentRange();
+        if (range === 'today') return `${index}`; // hourly
+        if (range === 'week' || range === 'month') return `Day ${index + 1}`;
+        if (range === 'year') {
+          const session = filteredSessions[index];
+          if (!session || !session.date) return '';
+          const [day, month, year] = session.date.split("/");
+          return `${month}/${year}`; // MM/YYYY
         }
+        return '';
       },
+      color: '#ccc',
+      font: { size: 10 },
+      maxRotation: 0,
+      minRotation: 0
+    },
+    grid: { color: 'rgba(255,255,255,0.05)' }
+  }
+},
       plugins: {
         legend: {
           labels: {
