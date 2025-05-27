@@ -94,7 +94,15 @@ let allSessions = JSON.parse(localStorage.getItem("gameSessions") || "[]");
 function filterByDateRange(range) {
   const now = new Date();
   return allSessions.filter(session => {
-    const sessionDate = new Date(session.timestamp || `${session.date}T${session.time}`);
+    let sessionDate;
+    try {
+      const [day, month, year] = session.date.split("/");
+      const [hour, minute] = session.time.split(":");
+      sessionDate = new Date(year, month - 1, day, hour, minute);
+    } catch (e) {
+      return false;
+    }
+
     switch (range) {
       case 'today':
         return sessionDate.toDateString() === now.toDateString();
