@@ -186,17 +186,30 @@ function updateGraph(gameId, range = 'all') {
     grid: { color: 'rgba(255,255,255,0.1)' }
   },
   x: {
+    type: 'category',
+    labels: (() => {
+      const range = getCurrentRange();
+      switch (range) {
+        case 'today':
+          return ["00:00", "04:00", "08:00", "12:00", "16:00", "20:00", "23:59"];
+        case 'week':
+          return ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7"];
+        case 'month':
+          return ["Week 1", "Week 2", "Week 3", "Week 4"];
+        case 'year':
+          return ["01.2025", "02.2025", "03.2025", "04.2025", "05.2025", "06.2025", "07.2025", "08.2025", "09.2025", "10.2025", "11.2025", "12.2025"];
+        default:
+          return [];
+      }
+    })(),
     ticks: {
-      display: false
+      color: '#ccc',
+      font: { size: 10 },
+      maxRotation: 0,
+      minRotation: 0
     },
-    grid: {
-      display: false
-    },
-    title: {
-      display: false
-    }
+    grid: { color: 'rgba(255,255,255,0.05)' }
   }
-}
 },
 
       plugins: {
@@ -302,4 +315,3 @@ window.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
-
