@@ -682,6 +682,39 @@ input[type=number] {
 /* =======================================================
    15 - Progression Page
    ======================================================= */
+/* Style the progress filter buttons */
+#progress-filter-buttons {
+  margin-top: 1rem;
+  overflow-x: auto;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.progress-filter-button {
+  background-color: #1f2937;
+  color: #e6e8eb;
+  border: 1px solid #4b5563;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  scroll-snap-align: start;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.progress-filter-button:hover {
+  background-color: #4b5563;
+}
+
+.progress-filter-button.active {
+  background-color: #7c3aed;
+  color: #fff;
+  border-color: #7c3aed;
+}
 .chart-container {
   width: 100%;
   max-width: 1200px;
