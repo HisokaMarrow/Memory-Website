@@ -89,6 +89,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
 let chartInstance = null;
 let filteredSessions = [];
@@ -155,7 +157,7 @@ function updateGraph(gameId, range = 'all') {
   canvas.style.display = 'block';
   noDataMessageWrapper.style.display = 'none';
 
-  const labels = sessions.map(s => `${s.date} ${s.time}`);
+  const labels = sessions.map((_, i) => i + 1);
   const dataPoints = sessions.map(s => s.scorePercent);
 
   chartInstance = new Chart(ctx, {
@@ -179,28 +181,26 @@ function updateGraph(gameId, range = 'all') {
       responsive: true,
       maintainAspectRatio: false,
       scales: {
-  y: {
-    min: 0,
-    max: 100,
-    ticks: { stepSize: 10 },
-    grid: { color: 'rgba(255,255,255,0.1)' }
-  },
-  x: {
-    type: 'linear',
-    position: 'bottom',
-    ticks: {
-      display: false // Hide labels to keep it clean
-    },
-    grid: {
-      display: false // No vertical lines
-    },
-    title: {
-      display: false
-    }
-  }
-}
-
-
+        y: {
+          min: 0,
+          max: 100,
+          ticks: { stepSize: 10 },
+          grid: { color: 'rgba(255,255,255,0.1)' }
+        },
+        x: {
+          type: 'linear',
+          position: 'bottom',
+          ticks: {
+            display: false
+          },
+          grid: {
+            display: false
+          },
+          title: {
+            display: false
+          }
+        }
+      },
       plugins: {
         legend: {
           labels: {
@@ -217,7 +217,8 @@ function updateGraph(gameId, range = 'all') {
                 `Score: ${session.scorePercent}%`,
                 `Correct: ${session.correctCount}`,
                 `Incorrect: ${session.incorrectCount}`,
-                `Time: ${session.timeSpent}s`
+                `Time: ${session.timeSpent}s`,
+                `${session.date} ${session.time}`
               ];
             }
           }
@@ -232,7 +233,6 @@ function highlightActiveButton(activeButton) {
   if (activeButton) activeButton.classList.add('active');
 }
 
-// Load buttons and default graph
 async function loadGameButtons() {
   const container = document.getElementById('game-buttons');
   try {
@@ -264,7 +264,6 @@ function getCurrentRange() {
   return active ? active.dataset.range : 'all';
 }
 
-// Handle filter range selection
 function setupRangeButtons() {
   document.querySelectorAll('.progress-filter-button').forEach(button => {
     button.addEventListener('click', () => {
@@ -283,12 +282,12 @@ function setupRangeButtons() {
   });
 }
 
-// Initialize
 window.addEventListener('DOMContentLoaded', () => {
   loadGameButtons();
   setupRangeButtons();
 });
 </script>
+
 
 <!-- Footer -->
 <div id="site-footer"></div>
