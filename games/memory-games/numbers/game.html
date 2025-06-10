@@ -86,12 +86,17 @@
   let countdownValue = 5;
   let voiceCache = {}; // Preloaded voices stored here
 
-  const delay = (parseFloat(localStorage.getItem("delay")) || 2) * 1000;
-  const rangeMax = parseInt(localStorage.getItem("rangeMax")) || 99;
-  const testTime = (parseInt(localStorage.getItem("testTime")) || 30) * 1000;
-  const padZeros = localStorage.getItem("padZeros") === "true";
-  const enableVoice = localStorage.getItem("enableVoice") === "true";
-  const speakIndividually = localStorage.getItem("speakIndividually") === "true";
+  const gameKey = "numbers"; // Match the key used on the settings page
+
+  const delay = (parseFloat(localStorage.getItem(`${gameKey}-delay`)) || 2) * 1000;
+  const rangeMax = parseInt(localStorage.getItem(`${gameKey}-rangeMax`)) || 99;
+  const testTime = (parseInt(localStorage.getItem(`${gameKey}-testTime`)) || 30) * 1000;
+  const padZeros = localStorage.getItem(`${gameKey}-padZeros`) === "true";
+  const enableVoice = localStorage.getItem(`${gameKey}-enableVoice`) === "true";
+  const speakIndividually = localStorage.getItem(`${gameKey}-speakIndividually`) === "true";
+
+  console.log("Game Settings:", { delay, rangeMax, testTime, padZeros, enableVoice, speakIndividually });
+  
 
   function preloadVoices() {
     if (!enableVoice || !window.speechSynthesis) return Promise.resolve();
