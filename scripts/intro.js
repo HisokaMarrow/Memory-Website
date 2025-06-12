@@ -16,11 +16,16 @@ window.addEventListener("load", () => {
         overlay.style.animation = "fadeOverlayOut 1s forwards";
 
         setTimeout(() => {
-          overlay.style.display = "none";
-          document.body.classList.remove("intro-active");
-        }, 1000);
-      }, 2500);
-    });
+        overlay.style.display = "none";
+        document.body.classList.remove("intro-active");
+
+        const mainContent = document.querySelector(".page-content");
+        if (mainContent) {
+          mainContent.classList.add("fade-in");
+        }
+      }, 1000);
+    }, 2500);
+
   } else {
     overlay.style.display = "none";
     overlay.style.opacity = "0";
