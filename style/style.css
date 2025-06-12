@@ -4,6 +4,7 @@
 :root {
   --color-bg: #FFFFFF;
   --color-text: #e6e8eb;
+  --color-text-v2: #323438;
   --color-subtext: #8a8f98;
   --color-border: #2a2d33;
 
@@ -54,15 +55,21 @@ body.no-gradient {
 .page-content h1,
 .page-content h2,
 .page-content h3,
-.main-title,
-.main-quotes,
-.main-subtitle,
 .section-title,
 .section-description {
   color: var(--color-text);
   font-weight: 600;
   text-align: center;
 }
+
+.main-title,
+.main-quotes,
+.main-subtitle {
+  color: var(--color-text-v2);
+  font-weight: 600;
+  text-align: center;
+}
+
 
 .main-title {
   font-size: 2.5rem;
