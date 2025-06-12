@@ -3,22 +3,30 @@
    ======================================================= */
 :root {
   --color-bg: #FFFFFF;
-  --color-text: #e6e8eb;
-  --color-text-v2: #323438;
-  --color-subtext: #8a8f98;
+
+  /* Text colors */
+  --color-text-heading: #e6e8eb;         /* For main H1 titles */
+  --color-text-subheading: #323438;      /* For subtitles */
+  --color-text-block-title: #e6e8eb;     /* For section or block titles */
+  --color-text-block-description: #8a8f98; /* For small supportive descriptions */
+  --color-text-body: #8a8f98;            /* Regular paragraphs */
+
   --color-border: #2a2d33;
 
+  /* Backgrounds */
   --color-bg-card: #181a1f;
   --main-box: #252931;
   --main-game-card: #272c38;
   --main-option-box-hover: #1d2026;
 
+  /* Utility colors */
   --color-secondary: #7c3aed;
   --color-secondary-hover: #7f5af0;
   --color-success: #2dd4bf;
   --color-error: #f43f5e;
   --color-border-select: #ffa500;
 }
+
 
 /* =======================================================
    02 - Base Reset & Box Model
@@ -42,60 +50,66 @@ body.no-gradient {
   background: var(--color-bg);
 }
 
-/* =======================================================
+/* =======================================
    03 - Font & Typography
-   ======================================================= */
+   ======================================= */
+
+/* General paragraph / body text */
 .page-content p {
-  color: var(--color-subtext);
+  color: var(--color-text-body);
   max-width: 700px;
   margin: 0 auto;
   text-align: center;
-}
-
-.page-content h1,
-.page-content h2,
-.page-content h3,
-.section-title,
-.section-description {
-  color: var(--color-text);
-  font-weight: 600;
-  text-align: center;
-}
-
-.main-title,
-.main-quotes,
-.main-subtitle {
-  color: var(--color-text-v2);
-  font-weight: 600;
-  text-align: center;
-}
-
-
-.main-title {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.main-quotes {
-  font-size: 1.65rem;
-  margin-bottom: 1rem;
-}
-
-.main-subtitle {
-  font-size: 1.125rem;
-  color: var(--color-subtext);
-}
-
-.section-title {
-  font-size: 1.75rem;
-  margin-bottom: 1rem;
-}
-
-.section-description {
   font-size: 1rem;
-  color: var(--color-subtext);
+  line-height: 1.6;
+}
+
+/* === Headings and Subheadings === */
+.main-title,
+.page-content h1 {
+  color: var(--color-text-heading);
+  font-weight: 600;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.main-subtitle,
+.page-content h2 {
+  color: var(--color-text-subheading);
+  font-weight: 600;
+  font-size: 1.125rem;
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+
+/* === Block titles and descriptions === */
+.section-title,
+.page-content h3 {
+  color: var(--color-text-block-title);
+  font-weight: 600;
+  font-size: 1.75rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.section-description {
+  color: var(--color-text-block-description);
+  font-weight: 400;
+  font-size: 1rem;
+  text-align: center;
   margin-bottom: 1.5rem;
 }
+
+/* Optional: Quotes or highlights */
+.main-quotes {
+  color: var(--color-text-subheading);
+  font-weight: 600;
+  font-size: 1.65rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
 
 /* =======================================================
    04 - Layout Containers
