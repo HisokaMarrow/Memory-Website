@@ -593,7 +593,7 @@ input[type=number] {
   flex: 0 0 auto;
   width: 36px;
   height: 140px;
-  background: rgba(128, 128, 128, 0.15);
+  background: rgb(0 0 0 / 77%);
   color: white;
   font-size: 1.6rem;
   display: flex;
