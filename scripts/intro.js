@@ -11,21 +11,23 @@ window.addEventListener("load", () => {
 
     document.body.classList.add("intro-active");
 
-    requestAnimationFrame(() => {
+    // Force repaint to ensure CSS animations fire correctly
+    void overlay.offsetHeight;
+
+    // Wait before starting fade-out
+    setTimeout(() => {
+      overlay.style.animation = "fadeOverlayOut 1s forwards";
+
       setTimeout(() => {
-        overlay.style.animation = "fadeOverlayOut 1s forwards";
+        overlay.style.display = "none";
+        document.body.classList.remove("intro-active");
 
-        setTimeout(() => {
-          overlay.style.display = "none";
-          document.body.classList.remove("intro-active");
-
-          const mainContent = document.querySelector(".page-content");
-          if (mainContent) {
-            mainContent.classList.add("fade-in");
-          }
-        }, 1000);
-      }, 2500);
-    });
+        const mainContent = document.querySelector(".page-content");
+        if (mainContent) {
+          mainContent.classList.add("fade-in");
+        }
+      }, 1000);
+    }, 2500);
   } else {
     overlay.style.display = "none";
     overlay.style.opacity = "0";
