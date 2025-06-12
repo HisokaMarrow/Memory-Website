@@ -2,7 +2,7 @@
    Root Variables for Header Theme
 ------------------------------ */
 :root {
-  --header-bg: #1c1f26;
+  --header-bg: #222326;
   --header-surface: #252931;
   --header-text: #f2f2f3;
   --header-subtext: #9ca3af;
