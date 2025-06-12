@@ -34,15 +34,8 @@ html, body {
   width: 100%;
   min-height: 100%;
   font-family: 'Poppins', sans-serif;
-  color: var(--color-text);
+  color: var(--color-bg);
   line-height: 1.6;
-  background: #000 radial-gradient(
-    ellipse 80% 80% at center,
-    rgba(255, 255, 255, 0.2) 0%,
-    rgba(255, 230, 180, 0.15) 40%,
-    rgba(0, 0, 0, 0.9) 60%
-  ) no-repeat center/100% 100%;
-}
 
 body.no-gradient {
   background: var(--color-bg);
