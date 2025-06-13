@@ -1,10 +1,7 @@
-// global-fade-in.js
-
+// global-fade.js
 window.addEventListener("load", () => {
-  const mainContent = document.querySelector(".page-content") || document.querySelector("main") || document.body;
-
-  // Always apply fade-in class when page loads
-  if (mainContent) {
-    mainContent.classList.add("fade-in");
+  const main = document.querySelector("main");
+  if (main) {
+    main.classList.add("fade-in-on-load", "visible");
   }
 });
