@@ -3,62 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Memoro</title>
+  <title>Memoro - Vault</title>
 
   <!-- Global styles -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/style.css" />
-
-  <!-- Header-specific styles -->
   <link rel="stylesheet" href="/style/header.css" />
-
-  <!-- Footer-specific styles -->
   <link rel="stylesheet" href="/style/footer.css" />
+
+  <!-- Global fade-in -->
+  <script defer src="/scripts/global-fade-in.js"></script>
 </head>
 <body>
 
 <script>
-  // Load reusable header from components/header.html
-  fetch('components/header.html')
-    .then(res => res.text())
-    .then(data => {
-      // Inject the header at the top of the body
-      document.body.insertAdjacentHTML('afterbegin', data);
+  document.addEventListener("DOMContentLoaded", () => {
+    fetch('components/header.html')
+      .then(res => res.text())
+      .then(data => {
+        document.body.insertAdjacentHTML('afterbegin', data);
 
-      // === After header is injected ===
+        const backdropEl = document.createElement('div');
+        backdropEl.classList.add('nav-backdrop');
+        document.body.appendChild(backdropEl);
 
-      // Create and insert backdrop
-      const backdropEl = document.createElement('div');
-      backdropEl.classList.add('nav-backdrop');
-      document.body.appendChild(backdropEl);
+        const toggleBtn = document.querySelector('.mobile-nav-toggle');
+        const menu = document.querySelector('.header-menu');
 
-      // Query the toggle button and the nav drawer
-      const toggleBtn = document.querySelector('.mobile-nav-toggle');
-      const menu = document.querySelector('.header-menu');
+        if (!toggleBtn || !menu) return;
 
-      // Safety check
-      if (!toggleBtn || !menu) {
-        console.warn("Header elements not found. Check class names in header.html");
-        return;
-      }
+        const toggleMenu = () => {
+          toggleBtn.classList.toggle('open');
+          menu.classList.toggle('open');
+          backdropEl.classList.toggle('active');
+        };
 
-      // Toggle drawer and backdrop visibility
-      const toggleMenu = () => {
-        toggleBtn.classList.toggle('open');    // Animate hamburger to X
-        menu.classList.toggle('open');         // Slide drawer open/closed
-        backdropEl.classList.toggle('active'); // Dim background
-      };
-
-      // Event listeners
-      toggleBtn.addEventListener('click', toggleMenu);
-      backdropEl.addEventListener('click', toggleMenu); // close menu when clicking outside
-    })
-    .catch(err => console.error('Failed to load header:', err));
+        toggleBtn.addEventListener('click', toggleMenu);
+        backdropEl.addEventListener('click', toggleMenu);
+      })
+      .catch(err => console.error('Failed to load header:', err));
+  });
 </script>
 
-
-<main>
-  <section class="page-content hero">
+<main class="page-content fade-in-on-load">
+  <section class="hero">
     <h1 class="main-title">Memory Vault</h1>
     <p class="main-subtitle">Explore ancient memory systems, mental math tricks, and proven mind techniques.</p>
   </section>
@@ -69,7 +57,6 @@
 </main>
 
 <script>
-  // Load and display vault content from games.json
   fetch('/gamescollection/games.json')
     .then(res => res.json())
     .then(games => {
@@ -97,19 +84,18 @@
     .catch(err => console.error("Failed to load vault content:", err));
 </script>
 
-
 <!-- Footer -->
 <div id="site-footer"></div>
 <script>
-  // Load reusable footer after its CSS is already in place
-  fetch('/components/footer.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('site-footer').innerHTML = html;
-    })
-    .catch(err => console.error('Failed to load footer:', err));
+  document.addEventListener("DOMContentLoaded", () => {
+    fetch('/components/footer.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('site-footer').innerHTML = html;
+      })
+      .catch(err => console.error('Failed to load footer:', err));
+  });
 </script>
-  
+
 </body>
 </html>
-
