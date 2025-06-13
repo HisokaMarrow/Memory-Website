@@ -674,3 +674,117 @@ input[type=number] {
   font-weight: bold;
 }
 
+/* =============================================
+   15 - Vault: Doomsday Method Styling
+============================================= */
+.vault-divider {
+  height: 2px;
+  background-color: #ffffff;
+  width: 100%;
+  border-radius: 2px;
+  margin: 2rem 0;
+}
+
+.vault-step h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.vault-step p {
+  font-size: 1rem;
+  color: var(--color-subtext);
+  text-align: left;
+  line-height: 1.6;
+}
+
+/* =============================================
+   16 - Utility & Responsive Media Queries
+============================================= */
+.no-data-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4rem;
+  gap: 1rem;
+  color: var(--color-subtext);
+  text-align: center;
+}
+
+.no-data-message {
+  font-size: 1.5rem;
+  color: #e6e8eb;
+  margin-bottom: 1rem;
+}
+
+.additional-message {
+  font-size: 1.2rem;
+  color: #b0b3b8;
+}
+
+/* Scrollbar for games carousel */
+.games-carousel-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.games-carousel-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(200, 200, 200, 0.6);
+  border-radius: 10px;
+}
+
+.games-carousel-wrapper::-webkit-scrollbar {
+  height: 8px;
+  background-color: transparent;
+}
+
+/* Responsive Fixes */
+@media (max-width: 768px) {
+  .carousel-arrow {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  #progressChart {
+    transform: scaleY(1.1);
+    transform-origin: top center;
+  }
+}
+// Global fade-in effect for all pages (excluding header/footer)
+window.addEventListener("load", () => {
+  const overlay = document.getElementById("memory-lock-overlay");
+  const mainContent = document.querySelector(".page-content");
+  const hasPlayed = sessionStorage.getItem("memorySiteIntroPlayed");
+
+  if (!overlay || !mainContent) return;
+
+  if (!hasPlayed) {
+    sessionStorage.setItem("memorySiteIntroPlayed", "true");
+
+    overlay.style.display = "flex";
+    overlay.style.opacity = "1";
+    overlay.style.visibility = "visible";
+    document.body.classList.add("intro-active");
+
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        overlay.style.animation = "fadeOverlayOut 1s forwards";
+
+        setTimeout(() => {
+          overlay.style.display = "none";
+          document.body.classList.remove("intro-active");
+          mainContent.classList.add("fade-in");
+        }, 1000);
+      }, 2500);
+    });
+  } else {
+    overlay.style.display = "none";
+    overlay.style.opacity = "0";
+    overlay.style.visibility = "hidden";
+    document.body.classList.remove("intro-active");
+    mainContent.classList.add("fade-in");
+  }
+});
+
