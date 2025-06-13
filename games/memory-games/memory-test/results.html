@@ -4,71 +4,49 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Memoro</title>
-
-  <!-- Global styles -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/style.css" />
-
-  <!-- Header-specific styles -->
   <link rel="stylesheet" href="/style/header.css" />
-
-  <!-- Footer-specific styles -->
   <link rel="stylesheet" href="/style/footer.css" />
 </head>
-<body>
+<body class="fade-in-on-load">
 
 <script>
-  // Load reusable header from components/header.html
   fetch('/components/header.html')
     .then(res => res.text())
     .then(data => {
-      // Inject the header at the top of the body
       document.body.insertAdjacentHTML('afterbegin', data);
-
-      // === After header is injected ===
-
-      // Create and insert backdrop
       const backdropEl = document.createElement('div');
       backdropEl.classList.add('nav-backdrop');
       document.body.appendChild(backdropEl);
 
-      // Query the toggle button and the nav drawer
       const toggleBtn = document.querySelector('.mobile-nav-toggle');
       const menu = document.querySelector('.header-menu');
+      if (!toggleBtn || !menu) return;
 
-      // Safety check
-      if (!toggleBtn || !menu) {
-        console.warn("Header elements not found. Check class names in header.html");
-        return;
-      }
-
-      // Toggle drawer and backdrop visibility
       const toggleMenu = () => {
-        toggleBtn.classList.toggle('open');    // Animate hamburger to X
-        menu.classList.toggle('open');         // Slide drawer open/closed
-        backdropEl.classList.toggle('active'); // Dim background
+        toggleBtn.classList.toggle('open');
+        menu.classList.toggle('open');
+        backdropEl.classList.toggle('active');
       };
 
-      // Event listeners
       toggleBtn.addEventListener('click', toggleMenu);
-      backdropEl.addEventListener('click', toggleMenu); // close menu when clicking outside
+      backdropEl.addEventListener('click', toggleMenu);
     })
     .catch(err => console.error('Failed to load header:', err));
 </script>
 
-<main>
-  <div class="main-container">
-    <div class="results-display">
-      <h2 class="main-title">Memory Results</h2>
-      <h3 class="main-subtitle">Write all the words you can remember</h3>
+<main class="main-container">
+  <div class="results-display">
+    <h2 class="main-title">Memory Results</h2>
+    <h3 class="main-subtitle">Write all the words you can remember</h3>
 
-      <div id="resultsArea" class="results-grid"></div>
-      <div id="summary" class="result-summary"></div>
+    <div id="resultsArea" class="results-grid"></div>
+    <div id="summary" class="result-summary"></div>
 
-      <div class="game-results-buttons-block">
-        <button class="game-results-buttons" onclick="checkAnswers()">Check Answers</button>
-        <button class="game-results-buttons" onclick="goToTechnique()">Try Memory Technique</button>
-      </div>
+    <div class="game-results-buttons-block">
+      <button class="game-results-buttons" onclick="checkAnswers()">Check Answers</button>
+      <button class="game-results-buttons" onclick="goToTechnique()">Try Memory Technique</button>
     </div>
   </div>
 </main>
@@ -80,7 +58,7 @@
     const container = document.getElementById("resultsArea");
     container.innerHTML = "";
 
-    for (let i = 0; i < shownWords.length; i++) {
+    shownWords.forEach(() => {
       const wrapper = document.createElement("div");
       wrapper.className = "input-wrapper";
 
@@ -96,7 +74,21 @@
       wrapper.appendChild(input);
       wrapper.appendChild(correctLabel);
       container.appendChild(wrapper);
-    }
+    });
+
+    const inputBoxes = document.querySelectorAll(".input-box-test");
+    inputBoxes.forEach((input, index) => {
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          const nextInput = inputBoxes[index + 1];
+          if (nextInput) {
+            nextInput.focus();
+            nextInput.select();
+          }
+        }
+      });
+    });
   }
 
   function checkAnswers() {
@@ -138,51 +130,24 @@
   }
 
   function goToTechnique() {
-    window.location.href = "/games/memory-games/memory-test/memorytechnique.html"; // this should be memory-technique.html if that's the final name
+    localStorage.setItem("hasVisitedMemoryTechnique", "true");
+    window.location.href = "/games/memory-games/memory-test/memorytechnique.html";
   }
 
- renderInputs();
+  renderInputs();
 
-  // === Add keyboard navigation with Enter ===
-const inputBoxes = document.querySelectorAll(".input-box-test");
-inputBoxes.forEach((input, index) => {
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const nextInput = inputBoxes[index + 1];
-      if (nextInput) {
-        nextInput.focus();
-        nextInput.select();
-      }
-    }
-  });
-});
-
-// Show Back to Home button only if user has visited memory technique page
-// Show Back to Home button only if user has visited memory technique page
-if (localStorage.getItem("hasVisitedMemoryTechnique") === "true") {
-  const btn = document.createElement("button");
-  btn.className = "game-results-buttons";
-  btn.textContent = "Back to Home";
-  btn.onclick = () => window.location.href = "/index.html";
-  document.querySelector(".game-results-buttons-block").appendChild(btn);
-
-  // Clear the flag so it only shows once per cycle
-  localStorage.removeItem("hasVisitedMemoryTechnique");
-}
-
-// Set this flag only when they click through to memory technique
-function goToTechnique() {
-  localStorage.setItem("hasVisitedMemoryTechnique", "true");
-  window.location.href = "/games/memory-games/memory-test/memorytechnique.html";
-}
+  if (localStorage.getItem("hasVisitedMemoryTechnique") === "true") {
+    const btn = document.createElement("button");
+    btn.className = "game-results-buttons";
+    btn.textContent = "Back to Home";
+    btn.onclick = () => window.location.href = "/index.html";
+    document.querySelector(".game-results-buttons-block").appendChild(btn);
+    localStorage.removeItem("hasVisitedMemoryTechnique");
+  }
 </script>
 
-
-<!-- Footer -->
 <div id="site-footer"></div>
 <script>
-  // Load reusable footer after its CSS is already in place
   fetch('/components/footer.html')
     .then(res => res.text())
     .then(html => {
