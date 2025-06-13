@@ -415,7 +415,6 @@ main {
 }
 
 .input-box,
-.input-box-login,
 .input-box-test {
   padding: 0.75rem 1rem;
   border-radius: 8px;
@@ -425,6 +424,18 @@ main {
   font-size: clamp(1.5rem, 5vw, 1.25rem);
   width: 100%;
   text-align: center;
+}
+
+.input-box-login {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 2px solid var(--color-border);
+  background: var(--main-box);
+  color: var(--color-text);
+  font-size: clamp(1.5rem, 5vw, 1.25rem);
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.85);
 }
 
 .input-box.correct,
