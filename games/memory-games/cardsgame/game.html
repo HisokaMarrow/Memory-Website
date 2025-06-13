@@ -3,70 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Memoro</title>
+  <title>Memoro - Card Memory Game</title>
 
   <!-- Global styles -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/style.css" />
+  <link rel="stylesheet" href="/style/gameheader.css" />
 
-  <!-- Game header styles -->
-  <link rel="stylesheet" href="/style/gameheader.css" /> <!-- Added this line -->
-
+  <!-- Fade-in effect -->
+  <script defer src="/scripts/global-fade-in.js"></script>
   <script src="/scripts/timer.js"></script>
 </head>
 <body>
 
 <script>
-  // Load reusable game header
-  fetch('/components/gameheader.html')
-    .then(res => res.text())
-    .then(function (data) {
-      document.body.insertAdjacentHTML('afterbegin', data);
+  document.addEventListener("DOMContentLoaded", () => {
+    fetch('/components/gameheader.html')
+      .then(res => res.text())
+      .then(data => {
+        document.body.insertAdjacentHTML('afterbegin', data);
 
-      // Backdrop for mobile
-      var backdrop = document.createElement('div');
-      backdrop.classList.add('nav-backdrop');
-      document.body.appendChild(backdrop);
+        const backdrop = document.createElement('div');
+        backdrop.classList.add('nav-backdrop');
+        document.body.appendChild(backdrop);
 
-      var toggleBtn = document.querySelector('.game-mobile-toggle');
-      var menu = document.querySelector('.game-menu');
+        const toggleBtn = document.querySelector('.game-mobile-toggle');
+        const menu = document.querySelector('.game-menu');
 
-      var toggleMenu = function () {
-        toggleBtn.classList.toggle('open');
-        menu.classList.toggle('open');
-        backdrop.classList.toggle('active');
-      };
+        const toggleMenu = () => {
+          toggleBtn.classList.toggle('open');
+          menu.classList.toggle('open');
+          backdrop.classList.toggle('active');
+        };
 
-      if (toggleBtn && menu) {
-        toggleBtn.addEventListener('click', toggleMenu);
-        backdrop.addEventListener('click', toggleMenu);
-      }
-
-      // Define the button hook function
-      function bindHeaderButtons() {
-        if (typeof window.togglePause === 'function') {
-          document.getElementById('pause')?.addEventListener('click', window.togglePause);
-          document.getElementById('pause-mobile')?.addEventListener('click', window.togglePause);
+        if (toggleBtn && menu) {
+          toggleBtn.addEventListener('click', toggleMenu);
+          backdrop.addEventListener('click', toggleMenu);
         }
-        if (typeof window.endEarly === 'function') {
-          document.getElementById('end-early')?.addEventListener('click', window.endEarly);
-          document.getElementById('end-early-mobile')?.addEventListener('click', window.endEarly);
-        }
-        if (typeof window.giveUp === 'function') {
-          document.getElementById('give-up')?.addEventListener('click', window.giveUp);
-          document.getElementById('give-up-mobile')?.addEventListener('click', window.giveUp);
-        }
-      }
 
-      // Delay just enough for game.js to load and attach window methods
-      setTimeout(bindHeaderButtons, 300);
-    })
-    .catch(function (err) {
-      console.error('Failed to load game header:', err);
-    });
+        setTimeout(() => {
+          if (typeof window.togglePause === 'function') {
+            document.getElementById('pause')?.addEventListener('click', window.togglePause);
+            document.getElementById('pause-mobile')?.addEventListener('click', window.togglePause);
+          }
+          if (typeof window.endEarly === 'function') {
+            document.getElementById('end-early')?.addEventListener('click', window.endEarly);
+            document.getElementById('end-early-mobile')?.addEventListener('click', window.endEarly);
+          }
+          if (typeof window.giveUp === 'function') {
+            document.getElementById('give-up')?.addEventListener('click', window.giveUp);
+            document.getElementById('give-up-mobile')?.addEventListener('click', window.giveUp);
+          }
+        }, 300);
+      })
+      .catch(err => console.error('Failed to load game header:', err));
+  });
 </script>
 
-<main class="main-container">
+<main class="main-container fade-in-on-load">
   <div class="game-display">
     <button id="startButton" class="game-gamestart-button">Start Game</button>
     <a id="countdownLabel" class="main-title" style="display: none;">Starting in...</a>
@@ -112,21 +106,9 @@
     return array;
   }
 
-  function getShuffledCards() {
-    let fullDeck = [];
-    for (let i = 0; i < deckCount; i++) {
-      fullDeck = fullDeck.concat(generateDeck());
-    }
-    return shuffle(fullDeck).slice(0, 52);
-  }
-
   function getCardFilename(code) {
     const suits = { C: 'clubs', D: 'diamonds', H: 'hearts', S: 'spades' };
-    const ranks = {
-      A: 'ace', J: 'jack', Q: 'queen', K: 'king',
-      '10': '10', '9': '9', '8': '8', '7': '7',
-      '6': '6', '5': '5', '4': '4', '3': '3', '2': '2'
-    };
+    const ranks = { A: 'ace', J: 'jack', Q: 'queen', K: 'king', '10': '10', '9': '9', '8': '8', '7': '7', '6': '6', '5': '5', '4': '4', '3': '3', '2': '2' };
     const match = code.match(/^([0-9]{1,2}|[AJQK])([CDHS])$/);
     if (!match) return null;
     const [_, rank, suit] = match;
@@ -140,8 +122,7 @@
 
     const card = cardSequence[index];
     const img = document.createElement('img');
-    const filename = getCardFilename(card);
-    img.src = `/assets/png/${filename}`;
+    img.src = `/assets/png/${getCardFilename(card)}`;
     img.alt = card;
     img.className = 'memory-card';
 
@@ -157,7 +138,7 @@
   }
 
   async function beginGame() {
-    cardSequence = getShuffledCards();
+    cardSequence = shuffle(generateDeck().flatMap(deck => Array(deckCount).fill().map(() => deck)).flat()).slice(0, 52);
     output.style.display = 'block';
 
     startGameTimer(timeLimit, onTimeExpired);
@@ -197,13 +178,12 @@
 
   function togglePause() {
     togglePauseTimer();
-    const pauseBtnDesktop = document.getElementById("pause");
-    const pauseBtnMobile = document.getElementById("pause-mobile");
-    const currentLabel = pauseBtnDesktop?.textContent || "Pause";
-    const isNowPaused = currentLabel === "Pause";
-    const newLabel = isNowPaused ? "Resume" : "Pause";
-    if (pauseBtnDesktop) pauseBtnDesktop.textContent = newLabel;
-    if (pauseBtnMobile) pauseBtnMobile.textContent = newLabel;
+    const pauseBtn = document.getElementById("pause");
+    const pauseMobile = document.getElementById("pause-mobile");
+    const label = pauseBtn?.textContent || "Pause";
+    const newLabel = label === "Pause" ? "Resume" : "Pause";
+    if (pauseBtn) pauseBtn.textContent = newLabel;
+    if (pauseMobile) pauseMobile.textContent = newLabel;
   }
 
   function endEarly() {
@@ -229,50 +209,36 @@
     setTimeout(() => window.location.href = "results.html", 2000);
   }
 
-  function preloadCardImages(cardCodes) {
-    const promises = cardCodes.map(code => {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.src = `/assets/png/${getCardFilename(code)}`;
-        img.onload = resolve;
-        img.onerror = reject;
-      });
-    });
-    return Promise.all(promises);
-  }
-
-  function initGameLogic() {
-    if (startBtn) {
-      startBtn.disabled = true;
-      startBtn.textContent = "Loading Cards...";
-
-      const preloadDeck = generateDeck();
-      preloadCardImages(preloadDeck).then(() => {
-        console.log("All cards preloaded!");
-        startBtn.disabled = false;
-        startBtn.textContent = "Start Game";
-      }).catch(err => {
-        console.error("Error preloading cards", err);
-        startBtn.disabled = false;
-        startBtn.textContent = "Start Game (Some images missing)";
-      });
-
-      startBtn.addEventListener('click', () => startCountdown(beginGame));
-    }
-
-    document.getElementById("pause")?.addEventListener("click", togglePause);
-    document.getElementById("pause-mobile")?.addEventListener("click", togglePause);
-    document.getElementById("end-early")?.addEventListener("click", endEarly);
-    document.getElementById("end-early-mobile")?.addEventListener("click", endEarly);
-    document.getElementById("give-up")?.addEventListener("click", giveUp);
-    document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
+  function preloadCardImages(cards) {
+    return Promise.all(cards.map(code => new Promise((res, rej) => {
+      const img = new Image();
+      img.src = `/assets/png/${getCardFilename(code)}`;
+      img.onload = res;
+      img.onerror = rej;
+    })));
   }
 
   window.togglePause = togglePause;
   window.endEarly = endEarly;
   window.giveUp = giveUp;
 
-  window.onload = initGameLogic;
+  window.onload = () => {
+    startBtn.disabled = true;
+    startBtn.textContent = "Loading Cards...";
+
+    const preloadDeck = generateDeck();
+    preloadCardImages(preloadDeck)
+      .then(() => {
+        startBtn.disabled = false;
+        startBtn.textContent = "Start Game";
+      })
+      .catch(() => {
+        startBtn.disabled = false;
+        startBtn.textContent = "Start Game (Some images missing)";
+      });
+
+    startBtn.addEventListener('click', () => startCountdown(beginGame));
+  };
 })();
 </script>
 
