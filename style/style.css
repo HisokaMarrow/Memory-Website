@@ -1,15 +1,15 @@
-/* =======================================================
+/* =============================================
    01 - Root Variables
-   ======================================================= */
+============================================= */
 :root {
   --color-bg: #FFFFFF;
 
   /* Text colors */
-  --color-text-heading: #323438;         /* For main H1 titles */
-  --color-text-subheading: #323438;      /* For subtitles */
-  --color-text-block-title: #e6e8eb;     /* For section or block titles */
-  --color-text-block-description: #8a8f98; /* For small supportive descriptions */
-  --color-text-body: #8a8f98;            /* Regular paragraphs */
+  --color-text-heading: #323438;
+  --color-text-subheading: #323438;
+  --color-text-block-title: #e6e8eb;
+  --color-text-block-description: #8a8f98;
+  --color-text-body: #8a8f98;
 
   --color-border: #2a2d33;
 
@@ -27,13 +27,10 @@
   --color-border-select: #ffa500;
 }
 
-
-/* =======================================================
-   02 - Base Reset & Box Model
-   ======================================================= */
-*,
-*::before,
-*::after {
+/* =============================================
+   02 - Reset & Base Typography
+============================================= */
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -45,16 +42,15 @@ html, body {
   font-family: 'Poppins', sans-serif;
   color: var(--color-bg);
   line-height: 1.6;
+}
 
 body.no-gradient {
   background: var(--color-bg);
 }
 
-/* =======================================
-   03 - Font & Typography
-   ======================================= */
-
-/* General paragraph / body text */
+/* =============================================
+   03 - Global Typography
+============================================= */
 .page-content p {
   color: var(--color-text-body);
   max-width: 700px;
@@ -64,9 +60,8 @@ body.no-gradient {
   line-height: 1.6;
 }
 
-/* === Headings and Subheadings === */
-.main-title,
-.page-content h1 {
+.page-content h1,
+.main-title {
   color: var(--color-text-heading);
   font-weight: 600;
   font-size: 2.5rem;
@@ -74,8 +69,8 @@ body.no-gradient {
   margin-bottom: 1rem;
 }
 
-.main-subtitle,
-.page-content h2 {
+.page-content h2,
+.main-subtitle {
   color: var(--color-text-subheading);
   font-weight: 600;
   font-size: 1.125rem;
@@ -83,9 +78,8 @@ body.no-gradient {
   margin-bottom: 0.75rem;
 }
 
-/* === Block titles and descriptions === */
-.section-title,
-.page-content h3 {
+.page-content h3,
+.section-title {
   color: var(--color-text-block-title);
   font-weight: 600;
   font-size: 1.75rem;
@@ -101,7 +95,6 @@ body.no-gradient {
   margin-bottom: 1.5rem;
 }
 
-/* Optional: Quotes or highlights */
 .main-quotes {
   color: var(--color-text-subheading);
   font-weight: 600;
@@ -110,10 +103,33 @@ body.no-gradient {
   margin-bottom: 1rem;
 }
 
+/* =============================================
+   04 - Fade-In Animation
+============================================= */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-/* =======================================================
-   04 - Layout Containers
-   ======================================================= */
+.fade-in-on-load {
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: opacity, transform;
+}
+
+.fade-in-on-load.visible {
+  animation: fadeInUp 0.8s ease-out forwards;
+  animation-delay: 0.2s;
+}
+/* =============================================
+   05 - Layout Containers
+============================================= */
 main {
   padding: 4rem 1.5rem;
   max-width: 960px;
@@ -134,9 +150,9 @@ main {
   text-align: center;
 }
 
-/* =======================================================
-   05 - Grid Systems
-   ======================================================= */
+/* =============================================
+   06 - Grid Systems
+============================================= */
 .daily-grid,
 #gamecardgrid {
   display: grid;
@@ -163,9 +179,9 @@ main {
   width: 100%;
 }
 
-/* =======================================================
-   06 - Buttons
-   ======================================================= */
+/* =============================================
+   07 - Buttons
+============================================= */
 .main-button,
 .game-start-button,
 .game-gamestart-button,
@@ -214,9 +230,9 @@ main {
   margin-top: 2rem;
 }
 
-/* =======================================================
-   07 - Cards & Boxes
-   ======================================================= */
+/* =============================================
+   08 - Cards & Boxes
+============================================= */
 .trial-test,
 .daily-practice,
 .text-box-content,
@@ -228,20 +244,18 @@ main {
   padding: 2rem;
   text-align: center;
 }
+
 .game-display {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   width: 90vw;
   max-width: 700px;
   height: 50vh;
   min-height: 40vh;
-
   margin: 0 auto;
   padding: 2rem;
-
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: 12px;
@@ -254,8 +268,8 @@ main {
   padding: 1.5rem;
   border-radius: 10px;
   border: 1px solid var(--color-border);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.85);
   display: flex;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.85); /* soft shadow below */
   flex-direction: column;
   align-items: center;
   gap: 1rem;
@@ -264,109 +278,85 @@ main {
   margin: 0 auto;
   text-align: center;
   flex: 0 0 auto;
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .game-cards:hover {
   transform: scale(1.03);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 1.00);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 1);
 }
 
 .game-cards h3 {
   font-size: 1.25rem;
   color: var(--color-text);
 }
-
-/* =======================================================
-   08 - Game Elements
-   ======================================================= */
-#countdown,
-#problem,
-#output {
-  font-size: clamp(3rem, 5vw, 4rem);
-  font-weight: 700;
-  margin-top: 1rem;
-}
-
-#countdown {
-  font-weight: 700;
-}
-
-#output {
-  font-weight: 800;
-  margin-top: 1.5rem;
-  letter-spacing: 2px;
-}
-
-#countdownLabel {
-  font-size: clamp(3rem, 5vw, 4rem);
-  font-weight: 600;
-  color: var(--header-subtext);
-}
-
-#memory-word-problem,
-#memory-word-output {
-  font-size: clamp(1.5rem, 6vw, 3rem);
-  font-weight: 700;
-  margin-top: 1rem;
-  letter-spacing: 2px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  width: 100%;
-  max-width: 90%;
-  margin: 1rem auto 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#riddles-logic-problem,
-#riddles-logic-output {
-  font-size: clamp(1.2rem, 4vw, 2.2rem);
-  font-weight: 700;
-  line-height: 1.5;
-  white-space: normal;
-  overflow-wrap: break-word;
+/* =============================================
+   08 - Cards & Boxes
+============================================= */
+.trial-test,
+.daily-practice,
+.text-box-content,
+.games-settings-container,
+.results-display {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 2rem;
   text-align: center;
-  max-width: 90%;
-  max-height: 40vh;
-  overflow-y: auto;
-  margin: 2rem auto 0;
-  padding: 0 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
-/* Drop slots */
-.drop-slot {
-  width: 80px;
-  height: 120px;
-  border: 2px dashed #999;
-  border-radius: 8px;
-  margin: 0.5rem;
+.game-display {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 90vw;
+  max-width: 700px;
+  height: 50vh;
+  min-height: 40vh;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  text-align: center;
 }
 
-.drop-slot.selected {
-  border: 2px solid var(--color-border-select);
+.game-cards {
+  background: var(--main-game-card);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  text-align: center;
+  flex: 0 0 auto;
+  transition:
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.drop-slot.correct {
-  border: 2px solid var(--color-success);
+.game-cards:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 1);
 }
 
-.drop-slot.incorrect {
-  border: 2px solid var(--color-error);
+.game-cards h3 {
+  font-size: 1.25rem;
+  color: var(--color-text);
 }
-
-/* =======================================================
-   09 - Inputs & Forms
-   ======================================================= */
+/* =============================================
+   10 - Inputs & Forms
+============================================= */
 .radio-group {
   display: flex;
   justify-content: center;
@@ -381,7 +371,7 @@ main {
 
 .radio-group label {
   position: relative;
-  padding: 0.8rem 1.2rem 0.8rem 1.2rem;
+  padding: 0.8rem 1.2rem;
   padding-right: 2.5rem;
   background: #1e1e2f;
   border: 2px solid #444;
@@ -424,7 +414,6 @@ main {
   border-color: #9c4dff;
 }
 
-/* Shared input boxes */
 .input-box,
 .input-box-login,
 .input-box-test {
@@ -448,14 +437,12 @@ main {
   border-color: var(--color-error);
 }
 
-/* Drop input wrapper */
 .drop-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Correct answer labels */
 .correct-answer-label {
   font-size: 0.85rem;
   color: red;
@@ -465,7 +452,7 @@ main {
   text-align: center;
 }
 
-/* Remove spinners in number input */
+/* Hide number input spinners */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -475,10 +462,9 @@ input[type=number]::-webkit-outer-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
-
-/* =======================================================
-   10 - Log-in
-   ======================================================= */
+/* =============================================
+   11 - Login Forms
+============================================= */
 .login-container {
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
@@ -523,9 +509,9 @@ input[type=number] {
   margin-bottom: 1.5rem;
 }
 
-/* =======================================================
-   11 - Results Page Styling
-   ======================================================= */
+/* =============================================
+   12 - Results Page
+============================================= */
 .input-wrapper {
   width: 20vw;
   max-width: 300px;
@@ -557,10 +543,9 @@ input[type=number] {
   gap: 10px;
   margin-bottom: 2rem;
 }
-
-/* =======================================================
-   12 - Carousel / Scrollable UI
-   ======================================================= */
+/* =============================================
+   13 - Carousel & Scrollable UI
+============================================= */
 .carousel-wrapper,
 .cards-carousel-wrapper {
   display: flex;
@@ -594,7 +579,7 @@ input[type=number] {
   flex: 0 0 auto;
   width: 36px;
   height: 140px;
-  background: rgb(0 0 0 / 77%);
+  background: rgba(0, 0, 0, 0.77);
   color: white;
   font-size: 1.6rem;
   display: flex;
@@ -615,89 +600,9 @@ input[type=number] {
   height: 50px;
 }
 
-/* =======================================================
-   13 - Settings and Results
-   ======================================================= */
-.main-section-link {
-  color: var(--color-secondary);
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.3s ease;
-}
-
-.main-section-link:hover {
-  color: var(--color-secondary-hover);
-}
-
-.checkbox-complete,
-.checkbox-settings {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  color: var(--color-subtext);
-}
-
-.checkbox-complete input[type="checkbox"],
-.checkbox-settings input[type="checkbox"] {
-  accent-color: var(--color-success);
-  width: 16px;
-  height: 16px;
-}
-
-/* Reuse input-row for form groups */
-.form-group,
-.checkbox-settings {
-  flex: 1 1 200px;
-}
-
-/* =======================================================
-   14 - Carousel and Cards
-   ======================================================= */
-#carousel {
-  display: flex;
-  overflow-x: auto;
-  gap: 10px;
-  padding: 1rem;
-  border-top: 2px solid #444;
-  margin-top: 1rem;
-}
-
-.memory-card.small {
-  width: 80px;
-  height: auto;
-}
-
-.card-container,
-.card-wrapper {
-  background: white;
-  border-radius: 8px;
-}
-
-.card-container {
-  padding: 8px;
-}
-
-.card-wrapper {
-  padding: 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  display: inline-block;
-  max-width: 100%;
-}
-
-.memory-card {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 6px;
-  touch-action: pan-x;
-  -webkit-user-drag: none;
-}
-
-/* =======================================================
-   15 - Progression Page
-   ======================================================= */
-/* Style the progress filter buttons */
+/* =============================================
+   14 - Filter Buttons & Games Carousel
+============================================= */
 #progress-filter-buttons {
   justify-content: center;
   margin: 0 auto;
@@ -732,21 +637,7 @@ input[type=number] {
   color: #fff;
   border-color: #7c3aed;
 }
-.chart-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-}
 
-#progressChart {
-  width: 100% !important;
-  height: auto !important;
-  display: block;
-  transition: transform 0.3s ease;
-}
-
-/* Games carousel */
 .games-carousel-wrapper {
   width: 100%;
   overflow-x: auto;
@@ -783,47 +674,9 @@ input[type=number] {
   font-weight: bold;
 }
 
-.games-carousel-wrapper::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.games-carousel-wrapper::-webkit-scrollbar-thumb {
-  background-color: rgba(200,200,200,0.6); /* Subtle color or adjust as desired */
-  border-radius: 10px;
-}
-
-.games-carousel-wrapper::-webkit-scrollbar {
-  height: 8px; /* adjust scrollbar height if necessary */
-  background-color: transparent;
-}
-
-/* No data messages */
-.no-data-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 4rem;
-  gap: 1rem;
-  color: var(--color-subtext);
-  text-align: center;
-}
-
-.no-data-message {
-  font-size: 1.5rem;
-  color: #e6e8eb;
-  margin-bottom: 1rem;
-}
-
-.additional-message {
-  font-size: 1.2rem;
-  color: #b0b3b8;
-}
-
-/* =======================================================
-   16 - Vault: Doomsday Method Styling
-   ======================================================= */
-
+/* =============================================
+   15 - Vault: Doomsday Method Styling
+============================================= */
 .vault-divider {
   height: 2px;
   background-color: #ffffff;
@@ -846,18 +699,53 @@ input[type=number] {
   line-height: 1.6;
 }
 
-/* =======================================================
-   17 - Media Queries (Responsive Adjustments)
-   ======================================================= */
+/* =============================================
+   16 - Utility & Responsive Media Queries
+============================================= */
+.no-data-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4rem;
+  gap: 1rem;
+  color: var(--color-subtext);
+  text-align: center;
+}
 
-/* Hide carousel arrows on small screens */
+.no-data-message {
+  font-size: 1.5rem;
+  color: #e6e8eb;
+  margin-bottom: 1rem;
+}
+
+.additional-message {
+  font-size: 1.2rem;
+  color: #b0b3b8;
+}
+
+/* Scrollbar for games carousel */
+.games-carousel-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.games-carousel-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(200, 200, 200, 0.6);
+  border-radius: 10px;
+}
+
+.games-carousel-wrapper::-webkit-scrollbar {
+  height: 8px;
+  background-color: transparent;
+}
+
+/* Responsive Fixes */
 @media (max-width: 768px) {
   .carousel-arrow {
     display: none;
   }
 }
 
-/* Stretch Y axis of the progress chart on very small screens */
 @media (max-width: 600px) {
   #progressChart {
     transform: scaleY(1.1);
