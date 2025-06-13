@@ -5,165 +5,137 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Memoro</title>
 
-  <!-- Global styles -->
+  <!-- Fonts & Global styles -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/style.css" />
-
-  <!-- Header-specific styles -->
   <link rel="stylesheet" href="/style/header.css" />
-
-  <!-- Footer-specific styles -->
   <link rel="stylesheet" href="/style/footer.css" />
+
+  <!-- Fade-in animation -->
+  <link rel="stylesheet" href="/style/intro.css" />
+  <script defer src="/scripts/global-fade-in.js"></script>
 </head>
 <body>
+  <div style="min-height: 80px"></div> <!-- Prevent header shift -->
 
-<script>
-  // Load reusable header from components/header.html
-  fetch('components/header.html')
-    .then(res => res.text())
-    .then(data => {
-      // Inject the header at the top of the body
-      document.body.insertAdjacentHTML('afterbegin', data);
+  <!-- Inject Header -->
+  <script>
+    fetch('components/header.html')
+      .then(res => res.text())
+      .then(data => {
+        document.body.insertAdjacentHTML('afterbegin', data);
+        const backdropEl = document.createElement('div');
+        backdropEl.classList.add('nav-backdrop');
+        document.body.appendChild(backdropEl);
 
-      // === After header is injected ===
+        const toggleBtn = document.querySelector('.mobile-nav-toggle');
+        const menu = document.querySelector('.header-menu');
 
-      // Create and insert backdrop
-      const backdropEl = document.createElement('div');
-      backdropEl.classList.add('nav-backdrop');
-      document.body.appendChild(backdropEl);
+        if (!toggleBtn || !menu) return;
 
-      // Query the toggle button and the nav drawer
-      const toggleBtn = document.querySelector('.mobile-nav-toggle');
-      const menu = document.querySelector('.header-menu');
+        const toggleMenu = () => {
+          toggleBtn.classList.toggle('open');
+          menu.classList.toggle('open');
+          backdropEl.classList.toggle('active');
+        };
 
-      // Safety check
-      if (!toggleBtn || !menu) {
-        console.warn("Header elements not found. Check class names in header.html");
-        return;
-      }
+        toggleBtn.addEventListener('click', toggleMenu);
+        backdropEl.addEventListener('click', toggleMenu);
+      })
+      .catch(err => console.error('Failed to load header:', err));
+  </script>
 
-      // Toggle drawer and backdrop visibility
-      const toggleMenu = () => {
-        toggleBtn.classList.toggle('open');    // Animate hamburger to X
-        menu.classList.toggle('open');         // Slide drawer open/closed
-        backdropEl.classList.toggle('active'); // Dim background
+  <!-- Main Content -->
+  <main class="main-games-wrapper fade-in-on-load">
+
+    <!-- Memory Games -->
+    <section class="game-section memory">
+      <h2><a href="/memory.html" class="main-section-link">Memory Games ></a></h2>
+      <div class="carousel-wrapper">
+        <button class="carousel-arrow left" data-target="memory-carousel">&lt;</button>
+        <div class="main-carousel" id="memory-carousel"></div>
+        <button class="carousel-arrow right" data-target="memory-carousel">&gt;</button>
+      </div>
+    </section>
+
+    <!-- Math Games -->
+    <section class="game-section math">
+      <h2><a href="/maths.html" class="main-section-link">Math Games ></a></h2>
+      <div class="carousel-wrapper">
+        <button class="carousel-arrow left" data-target="math-carousel">&lt;</button>
+        <div class="main-carousel" id="math-carousel"></div>
+        <button class="carousel-arrow right" data-target="math-carousel">&gt;</button>
+      </div>
+    </section>
+
+    <!-- Riddle Games -->
+    <section class="game-section riddles">
+      <h2><a href="/riddles.html" class="main-section-link">Riddle Games ></a></h2>
+      <div class="carousel-wrapper">
+        <button class="carousel-arrow left" data-target="riddle-carousel">&lt;</button>
+        <div class="main-carousel" id="riddle-carousel"></div>
+        <button class="carousel-arrow right" data-target="riddle-carousel">&gt;</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Game Loader Script -->
+  <script>
+    function createGameBox(game) {
+      const box = document.createElement("div");
+      box.className = "game-cards";
+      box.innerHTML = `
+        <h3>${game.title}</h3>
+        <p>${game.description}</p>
+        ${game.link?.trim() ? `<a href="${game.link}" class="main-button">Play</a>` : `<a class="main-button disabled">Coming Soon</a>`}
+      `;
+      return box;
+    }
+
+    function renderGames(games) {
+      const containers = {
+        Memory: document.getElementById("memory-carousel"),
+        Math: document.getElementById("math-carousel"),
+        Riddles: document.getElementById("riddle-carousel")
       };
 
-      // Event listeners
-      toggleBtn.addEventListener('click', toggleMenu);
-      backdropEl.addEventListener('click', toggleMenu); // close menu when clicking outside
-    })
-    .catch(err => console.error('Failed to load header:', err));
-</script>
-
-<main class="main-games-wrapper">
-
-  <!-- Memory Games -->
-  <section class="game-section memory">
-    <h2><a href="/memory.html" class="main-section-link">Memory Games ></a></h2>
-    <div class="carousel-wrapper">
-      <button class="carousel-arrow left" data-target="memory-carousel">&lt;</button>
-      <div class="main-carousel" id="memory-carousel"></div>
-      <button class="carousel-arrow right" data-target="memory-carousel">&gt;</button>
-    </div>
-  </section>
-
-  <!-- Math Games -->
-  <section class="game-section math">
-    <h2><a href="/maths.html" class="main-section-link">Math Games ></a></h2>
-    <div class="carousel-wrapper">
-      <button class="carousel-arrow left" data-target="math-carousel">&lt;</button>
-      <div class="main-carousel" id="math-carousel"></div>
-      <button class="carousel-arrow right" data-target="math-carousel">&gt;</button>
-    </div>
-  </section>
-
-  <!-- Riddle Games -->
-  <section class="game-section riddles">
-    <h2><a href="/riddles.html" class="main-section-link">Riddle Games ></a></h2>
-    <div class="carousel-wrapper">
-      <button class="carousel-arrow left" data-target="riddle-carousel">&lt;</button>
-      <div class="main-carousel" id="riddle-carousel"></div>
-      <button class="carousel-arrow right" data-target="riddle-carousel">&gt;</button>
-    </div>
-  </section>
-
-</main>
-
-<script>
-  // Create a single game card element
-  function createGameBox(game) {
-    const box = document.createElement("div");
-    box.className = "game-cards";
-    box.innerHTML = `
-      <h3>${game.title}</h3>
-      <p>${game.description}</p>
-      ${
-        game.link?.trim()
-          ? `<a href="${game.link}" class="main-button">Play</a>`
-          : `<a class="main-button disabled">Coming Soon</a>`
-      }
-    `;
-    return box;
-  }
-
-  // Render all games by category
-  function renderGames(games) {
-    const containers = {
-      Memory: document.getElementById("memory-carousel"),
-      Math: document.getElementById("math-carousel"),
-      Riddles: document.getElementById("riddle-carousel")
-    };
-
-    games.forEach(game => {
-      const section = containers[game.category];
-      if (section) {
-        section.appendChild(createGameBox(game));
-      }
-    });
-  }
-
-  // Load games from updated JSON path
-  fetch('/gamescollection/games.json')
-    .then(res => res.json())
-    .then(renderGames)
-    .catch(err => console.error("Failed to load games:", err));
-</script>
-
-<script>
-  // Carousel scroll logic
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
-      const carousel = wrapper.querySelector('.main-carousel');
-      const left = wrapper.querySelector('.carousel-arrow.left');
-      const right = wrapper.querySelector('.carousel-arrow.right');
-
-      const scrollAmount = 320;
-
-      left?.addEventListener('click', () => {
-        carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      games.forEach(game => {
+        const section = containers[game.category];
+        if (section) section.appendChild(createGameBox(game));
       });
+    }
 
-      right?.addEventListener('click', () => {
-        carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    fetch('/gamescollection/games.json')
+      .then(res => res.json())
+      .then(renderGames)
+      .catch(err => console.error("Failed to load games:", err));
+  </script>
+
+  <!-- Carousel Controls -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
+        const carousel = wrapper.querySelector('.main-carousel');
+        const left = wrapper.querySelector('.carousel-arrow.left');
+        const right = wrapper.querySelector('.carousel-arrow.right');
+        const scrollAmount = 320;
+
+        left?.addEventListener('click', () => carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' }));
+        right?.addEventListener('click', () => carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' }));
       });
     });
-  });
-</script>
+  </script>
 
-
-<!-- Footer -->
-<div id="site-footer"></div>
-<script>
-  // Load reusable footer after its CSS is already in place
-  fetch('/components/footer.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('site-footer').innerHTML = html;
-    })
-    .catch(err => console.error('Failed to load footer:', err));
-</script>
-
+  <!-- Footer -->
+  <div id="site-footer"></div>
+  <script>
+    fetch('/components/footer.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('site-footer').innerHTML = html;
+      })
+      .catch(err => console.error('Failed to load footer:', err));
+  </script>
 </body>
 </html>
-
