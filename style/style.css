@@ -230,6 +230,50 @@ main {
   margin-top: 2rem;
 }
 
+/* Minimal custom bright green checkbox style */
+
+input[type="checkbox"].custom-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  margin: 0;
+  font: inherit;
+  width: 1.15em;
+  height: 1.15em;
+  border: 2px solid #2dd4bf;
+  border-radius: 0.15em;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+input[type="checkbox"].custom-checkbox::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  transform: scale(0);
+  transition: transform 0.15s ease-in-out;
+  background-color: #2dd4bf;
+  border-radius: 0.1em;
+}
+
+input[type="checkbox"].custom-checkbox:checked::before {
+  transform: scale(1);
+}
+
+/* Optional label styling for alignment */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+}
+
+.checkbox-label input {
+  margin: 0;
+}
+
 /* =============================================
    08 - Cards & Boxes
 ============================================= */
