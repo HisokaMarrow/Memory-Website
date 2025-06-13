@@ -9,246 +9,103 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/style.css" />
 
-  <!-- Game header styles -->
-  <link rel="stylesheet" href="/style/gameheader.css" /> <!-- Added this line -->
+  <!-- Header-specific styles -->
+  <link rel="stylesheet" href="/style/header.css" />
 
-  <script src="/scripts/timer.js"></script>
-
+  <!-- Footer-specific styles -->
+  <link rel="stylesheet" href="/style/footer.css" />
 </head>
-<body>
+<body class="fade-in-on-load">
 
 <script>
-  // Load reusable game header
-  fetch('/components/gameheader.html')
+  // Load reusable header
+  fetch('/components/header.html')
     .then(res => res.text())
-    .then(function (data) {
+    .then(data => {
       document.body.insertAdjacentHTML('afterbegin', data);
 
-      // Backdrop for mobile
-      var backdrop = document.createElement('div');
-      backdrop.classList.add('nav-backdrop');
-      document.body.appendChild(backdrop);
+      const backdropEl = document.createElement('div');
+      backdropEl.classList.add('nav-backdrop');
+      document.body.appendChild(backdropEl);
 
-      var toggleBtn = document.querySelector('.game-mobile-toggle');
-      var menu = document.querySelector('.game-menu');
+      const toggleBtn = document.querySelector('.mobile-nav-toggle');
+      const menu = document.querySelector('.header-menu');
 
-      var toggleMenu = function () {
+      if (!toggleBtn || !menu) return;
+
+      const toggleMenu = () => {
         toggleBtn.classList.toggle('open');
         menu.classList.toggle('open');
-        backdrop.classList.toggle('active');
+        backdropEl.classList.toggle('active');
       };
 
-      if (toggleBtn && menu) {
-        toggleBtn.addEventListener('click', toggleMenu);
-        backdrop.addEventListener('click', toggleMenu);
-      }
-
-      // Define the button hook function
-      function bindHeaderButtons() {
-        if (typeof window.togglePause === 'function') {
-          document.getElementById('pause')?.addEventListener('click', window.togglePause);
-          document.getElementById('pause-mobile')?.addEventListener('click', window.togglePause);
-        }
-        if (typeof window.endEarly === 'function') {
-          document.getElementById('end-early')?.addEventListener('click', window.endEarly);
-          document.getElementById('end-early-mobile')?.addEventListener('click', window.endEarly);
-        }
-        if (typeof window.giveUp === 'function') {
-          document.getElementById('give-up')?.addEventListener('click', window.giveUp);
-          document.getElementById('give-up-mobile')?.addEventListener('click', window.giveUp);
-        }
-      }
-
-      // Delay just enough for game.js to load and attach window methods
-      setTimeout(bindHeaderButtons, 300);
+      toggleBtn.addEventListener('click', toggleMenu);
+      backdropEl.addEventListener('click', toggleMenu);
     })
-    .catch(function (err) {
-      console.error('Failed to load game header:', err);
-    });
+    .catch(err => console.error('Failed to load header:', err));
 </script>
 
 <main class="main-container">
-  <div class="game-display">
-    <button id="startButton" class="game-gamestart-button">Start Riddle Game</button>
+  <h1 class="main-title" style="text-align: center;">Word Memory Settings</h1>
 
-    <a id="countdownLabel" class="main-title" style="display: none;">Starting in...</a>
-    <div id="countdown" class="main-countdown" style="display: none;"></div>
+  <section class="games-settings-container">
+    <!-- Difficulty Selection -->
+    <div class="radio-group">
+      <input type="radio" id="beginner" name="difficulty" value="beginner" checked>
+      <label for="beginner">Beginner</label>
 
-    <div id="riddles-logic-problem" style="display: none;"></div>
+      <input type="radio" id="intermediate" name="difficulty" value="intermediate">
+      <label for="intermediate">Intermediate</label>
 
-    <input 
-      type="text" 
-      id="answerInput" 
-      class="input-box" 
-      placeholder="Type your answer..." 
-      style="display: none; margin-top: 2rem;"
-      autocomplete="off"
-    />
-  </div>
+      <input type="radio" id="master" name="difficulty" value="master">
+      <label for="master">Master</label>
+    </div>
+
+    <!-- Time Limit Input -->
+    <div class="input-row">
+      <div class="form-group">
+        <label for="testTime">Test Duration (sec)</label>
+        <input type="number" id="testTime" value="60" min="10">
+      </div>
+
+      <!-- Word Interval -->
+      <div class="form-group">
+        <label for="wordInterval">Word Interval (sec)</label>
+        <input type="number" id="wordInterval" value="5" min="1">
+      </div>
+    </div>
+
+    <div class="button-wrapper">
+      <button class="game-start-button">Start Game</button>
+    </div>
+  </section>
 </main>
 
-<script src="/gamescollection/logicriddles.js"></script>
-
 <script>
-(function() {
-  const difficulty = localStorage.getItem("riddleDifficulty") || "beginner";
+  document.querySelector('.game-start-button').addEventListener('click', () => {
+    const difficulty = document.querySelector('input[name="difficulty"]:checked').value;
+    const testTime = document.getElementById("testTime").value;
+    const wordInterval = document.getElementById("wordInterval").value;
 
-  const difficultyCountMap = {
-    beginner: 3,
-    advanced: 5,
-    expert: 7
-  };
+    localStorage.setItem("wordDifficulty", difficulty);
+    localStorage.setItem("testTime", testTime);
+    localStorage.setItem("wordInterval", wordInterval);
 
-  const totalCount = difficultyCountMap[difficulty];
-  let shouldStopGame = false;
-  let countdownValue = 5;
-  let riddles = [];
-  let current = 0;
-  let totalStartTime;
-  let riddleStartTime;
-  let riddleTimes = [];
-  let userAnswers = [];
+    setTimeout(() => {
+      window.location.href = "game.html";
+    }, 100);
+  });
+</script>
 
-  const startBtn = document.getElementById("startButton");
-  const label = document.getElementById("countdownLabel");
-  const countdownEl = document.getElementById("countdown");
-  const problemBox = document.getElementById("riddles-logic-problem");
-  const input = document.getElementById("answerInput");
-
-  function togglePause() {
-    togglePauseTimer();
-
-    const pauseBtnDesktop = document.getElementById("pause");
-    const pauseBtnMobile = document.getElementById("pause-mobile");
-
-    const isPaused = (pauseBtnDesktop?.textContent === "Pause");
-    const newLabel = isPaused ? "Resume" : "Pause";
-
-    if (pauseBtnDesktop) pauseBtnDesktop.textContent = newLabel;
-    if (pauseBtnMobile) pauseBtnMobile.textContent = newLabel;
-  }
-
-  function endEarly() {
-    shouldStopGame = true;
-    stopGameTimer();
-
-    localStorage.setItem("riddleQuestions", JSON.stringify(riddles.slice(0, userAnswers.length)));
-    localStorage.setItem("riddleUserAnswers", JSON.stringify(userAnswers.slice(0, userAnswers.length)));
-    localStorage.setItem("riddleTimes", JSON.stringify(riddleTimes.slice(0, userAnswers.length)));
-
-    problemBox.textContent = "Done!";
-    input.style.display = "none";
-    setTimeout(() => window.location.href = "results.html", 2000);
-  }
-
-  function giveUp() {
-    shouldStopGame = true;
-    stopGameTimer();
-    window.location.href = "settings.html";
-  }
-
-  function onTimeExpired() {
-    shouldStopGame = true;
-    stopGameTimer();
-
-    localStorage.setItem("riddleQuestions", JSON.stringify(riddles));
-    localStorage.setItem("riddleUserAnswers", JSON.stringify(userAnswers));
-    localStorage.setItem("riddleTimes", JSON.stringify(riddleTimes));
-
-    problemBox.textContent = "Time’s Up!";
-    input.style.display = "none";
-    setTimeout(() => window.location.href = "results.html", 2000);
-  }
-
-  function getRandomRiddles(list, count) {
-    const shuffled = [...list].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
-  }
-
-  function showNextRiddle() {
-    if (current >= riddles.length || shouldStopGame) return endGame();
-    const riddle = riddles[current];
-    problemBox.textContent = riddle.riddle;
-    input.value = "";
-    input.focus();
-    riddleStartTime = Date.now();
-  }
-
-  function endGame() {
-    stopGameTimer();
-
-    localStorage.setItem("riddleQuestions", JSON.stringify(riddles));
-    localStorage.setItem("riddleUserAnswers", JSON.stringify(userAnswers));
-    localStorage.setItem("riddleTimes", JSON.stringify(riddleTimes));
-    localStorage.setItem("riddleTotalTime", Math.floor((Date.now() - totalStartTime) / 1000));
-
-    problemBox.textContent = "Challenge Complete!";
-    input.style.display = "none";
-    setTimeout(() => window.location.href = "results.html", 2000);
-  }
-
-  function startCountdown(callback) {
-    startBtn.style.display = "none";
-    label.style.display = "block";
-    countdownEl.style.display = "block";
-
-    const interval = setInterval(() => {
-      countdownEl.textContent = countdownValue;
-      countdownValue--;
-
-      if (countdownValue < 0) {
-        clearInterval(interval);
-        label.style.display = "none";
-        countdownEl.style.display = "none";
-        callback();
-      }
-    }, 1000);
-  }
-
-  function beginGame() {
-    problemBox.style.display = "flex";
-    input.style.display = "block";
-    input.focus();
-    riddles = getRandomRiddles(riddleslist[difficulty], totalCount);
-    totalStartTime = Date.now();
-
-    const totalTimeLimit = parseInt(localStorage.getItem("riddleTimeLimit") || "120");
-    startGameTimer(totalTimeLimit, () => onTimeExpired());
-
-    showNextRiddle();
-
-    input.addEventListener("keyup", async function (e) {
-      if (e.key === "Enter" && input.value.trim() !== "") {
-        const timeTaken = Math.floor((Date.now() - riddleStartTime) / 1000);
-        riddleTimes.push(timeTaken);
-        userAnswers.push(input.value.trim());
-        await window.waitWhilePaused();
-        current++;
-        showNextRiddle();
-      }
-    });
-  }
-
-  function initGame() {
-    if (startBtn) startBtn.onclick = () => startCountdown(beginGame);
-
-    document.getElementById("pause")?.addEventListener("click", togglePause);
-    document.getElementById("pause-mobile")?.addEventListener("click", togglePause);
-    document.getElementById("end-early")?.addEventListener("click", endEarly);
-    document.getElementById("end-early-mobile")?.addEventListener("click", endEarly);
-    document.getElementById("give-up")?.addEventListener("click", giveUp);
-    document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
-  }
-
-  window.togglePause = togglePause;
-  window.endEarly = endEarly;
-  window.giveUp = giveUp;
-
-  window.onload = initGame;
-})();
+<div id="site-footer"></div>
+<script>
+  fetch('/components/footer.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('site-footer').innerHTML = html;
+    })
+    .catch(err => console.error('Failed to load footer:', err));
 </script>
 
 </body>
 </html>
-
-
