@@ -423,6 +423,28 @@ input[type=number]::-webkit-outer-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.checkbox-complete,
+.checkbox-settings {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-subtext);
+}
+
+.checkbox-complete input[type="checkbox"],
+.checkbox-settings input[type="checkbox"] {
+  accent-color: var(--color-success);
+  width: 16px;
+  height: 16px;
+}
+
+/* Reuse input-row for form groups */
+.form-group,
+.checkbox-settings {
+  flex: 1 1 200px;
+}
 /* =============================================
    11 - Login Forms
 ============================================= */
