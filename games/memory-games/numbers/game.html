@@ -3,73 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Memoro</title>
+  <title>Memoro - Number Memory Game</title>
 
   <!-- Global styles -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/style.css" />
-
-  <!-- Game header styles -->
-  <link rel="stylesheet" href="/style/gameheader.css" /> <!-- Added this line -->
-
+  <link rel="stylesheet" href="/style/gameheader.css" />
   <script src="/scripts/timer.js"></script>
-
+  <script defer src="/scripts/global-fade-in.js"></script>
 </head>
 <body>
 
 <script>
-  // Load reusable game header
-  fetch('/components/gameheader.html')
-    .then(res => res.text())
-    .then(function (data) {
-      document.body.insertAdjacentHTML('afterbegin', data);
+  document.addEventListener("DOMContentLoaded", () => {
+    fetch('/components/gameheader.html')
+      .then(res => res.text())
+      .then(data => {
+        document.body.insertAdjacentHTML('afterbegin', data);
 
-      // Backdrop for mobile
-      var backdrop = document.createElement('div');
-      backdrop.classList.add('nav-backdrop');
-      document.body.appendChild(backdrop);
+        const backdrop = document.createElement('div');
+        backdrop.classList.add('nav-backdrop');
+        document.body.appendChild(backdrop);
 
-      var toggleBtn = document.querySelector('.game-mobile-toggle');
-      var menu = document.querySelector('.game-menu');
+        const toggleBtn = document.querySelector('.game-mobile-toggle');
+        const menu = document.querySelector('.game-menu');
 
-      var toggleMenu = function () {
-        toggleBtn.classList.toggle('open');
-        menu.classList.toggle('open');
-        backdrop.classList.toggle('active');
-      };
+        const toggleMenu = () => {
+          toggleBtn.classList.toggle('open');
+          menu.classList.toggle('open');
+          backdrop.classList.toggle('active');
+        };
 
-      if (toggleBtn && menu) {
-        toggleBtn.addEventListener('click', toggleMenu);
-        backdrop.addEventListener('click', toggleMenu);
-      }
-
-      // Define the button hook function
-      function bindHeaderButtons() {
-        if (typeof window.togglePause === 'function') {
-          document.getElementById('pause')?.addEventListener('click', window.togglePause);
-          document.getElementById('pause-mobile')?.addEventListener('click', window.togglePause);
+        if (toggleBtn && menu) {
+          toggleBtn.addEventListener('click', toggleMenu);
+          backdrop.addEventListener('click', toggleMenu);
         }
-        if (typeof window.endEarly === 'function') {
-          document.getElementById('end-early')?.addEventListener('click', window.endEarly);
-          document.getElementById('end-early-mobile')?.addEventListener('click', window.endEarly);
-        }
-        if (typeof window.giveUp === 'function') {
-          document.getElementById('give-up')?.addEventListener('click', window.giveUp);
-          document.getElementById('give-up-mobile')?.addEventListener('click', window.giveUp);
-        }
-      }
 
-      // Delay just enough for game.js to load and attach window methods
-      setTimeout(bindHeaderButtons, 300);
-    })
-    .catch(function (err) {
-      console.error('Failed to load game header:', err);
-    });
+        function bindHeaderButtons() {
+          if (typeof window.togglePause === 'function') {
+            document.getElementById('pause')?.addEventListener('click', window.togglePause);
+            document.getElementById('pause-mobile')?.addEventListener('click', window.togglePause);
+          }
+          if (typeof window.endEarly === 'function') {
+            document.getElementById('end-early')?.addEventListener('click', window.endEarly);
+            document.getElementById('end-early-mobile')?.addEventListener('click', window.endEarly);
+          }
+          if (typeof window.giveUp === 'function') {
+            document.getElementById('give-up')?.addEventListener('click', window.giveUp);
+            document.getElementById('give-up-mobile')?.addEventListener('click', window.giveUp);
+          }
+        }
+
+        setTimeout(bindHeaderButtons, 300);
+      })
+      .catch(err => console.error('Failed to load game header:', err));
+  });
 </script>
 
-
-
-<main class="main-container">
+<main class="main-container page-content fade-in-on-load">
   <div class="game-display">
     <button id="startButton" class="game-gamestart-button">Start Game</button>
     <a id="countdownLabel" class="main-title" style="display: none;">Starting in...</a>
@@ -77,16 +68,14 @@
     <div id="output" class="main-word" style="display: none;"></div>
   </div>
 </main>
-  
 
 <script>
 (function () {
   let shouldStopGame = false;
   let currentSequence = [];
   let countdownValue = 5;
-  let voiceCache = {}; // Preloaded voices stored here
-
-  const gameKey = "numbers"; // Match the key used on the settings page
+  let voiceCache = {};
+  const gameKey = "numbers";
 
   const delay = (parseFloat(localStorage.getItem(`${gameKey}-delay`)) || 2) * 1000;
   const rangeMax = parseInt(localStorage.getItem(`${gameKey}-rangeMax`)) || 99;
@@ -95,12 +84,8 @@
   const enableVoice = localStorage.getItem(`${gameKey}-enableVoice`) === "true";
   const speakIndividually = localStorage.getItem(`${gameKey}-speakIndividually`) === "true";
 
-  console.log("Game Settings:", { delay, rangeMax, testTime, padZeros, enableVoice, speakIndividually });
-  
-
   function preloadVoices() {
     if (!enableVoice || !window.speechSynthesis) return Promise.resolve();
-
     const preloadPromises = [];
     for (let i = 1; i <= rangeMax; i++) {
       const text = speakIndividually ? i.toString().split('').join(' ') : i.toString();
@@ -108,9 +93,9 @@
       utter.lang = 'en-US';
       voiceCache[i] = utter;
       preloadPromises.push(new Promise(resolve => {
-        utter.onstart = resolve; // Hack to preload
+        utter.onstart = resolve;
         window.speechSynthesis.speak(utter);
-        window.speechSynthesis.cancel(); // Immediately cancel after starting
+        window.speechSynthesis.cancel();
       }));
     }
     return Promise.all(preloadPromises);
@@ -118,14 +103,12 @@
 
   function speak(text) {
     if (!enableVoice || !window.speechSynthesis) return;
-
     const num = parseInt(text);
     const utter = voiceCache[num];
     if (utter) {
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(utter);
     } else {
-      // fallback if not preloaded
       const fallback = new SpeechSynthesisUtterance(
         speakIndividually ? text.toString().split('').join(' ') : text
       );
@@ -137,13 +120,10 @@
 
   function togglePause() {
     togglePauseTimer();
-
     const pauseBtnDesktop = document.getElementById("pause");
     const pauseBtnMobile = document.getElementById("pause-mobile");
     const currentLabel = pauseBtnDesktop?.textContent || "Pause";
-    const isNowPaused = currentLabel === "Pause";
-    const newLabel = isNowPaused ? "Resume" : "Pause";
-
+    const newLabel = currentLabel === "Pause" ? "Resume" : "Pause";
     if (pauseBtnDesktop) pauseBtnDesktop.textContent = newLabel;
     if (pauseBtnMobile) pauseBtnMobile.textContent = newLabel;
   }
@@ -153,9 +133,7 @@
     stopGameTimer();
     localStorage.setItem("generatedNumbers", JSON.stringify(currentSequence));
     document.getElementById("output").innerText = "Done!";
-    setTimeout(() => {
-      window.location.href = "results.html";
-    }, 2000);
+    setTimeout(() => window.location.href = "results.html", 2000);
   }
 
   function giveUp() {
@@ -170,9 +148,7 @@
     stopGameTimer();
     localStorage.setItem("generatedNumbers", JSON.stringify(currentSequence));
     document.getElementById("output").innerText = "Time’s Up!";
-    setTimeout(() => {
-      window.location.href = "results.html";
-    }, 2000);
+    setTimeout(() => window.location.href = "results.html", 2000);
   }
 
   function getRandomNumber(min, max) {
@@ -183,7 +159,6 @@
     const countdownEl = document.getElementById("countdown");
     const label = document.getElementById("countdownLabel");
     const startBtn = document.getElementById("startButton");
-
     countdownEl.style.display = "block";
     label.style.display = "block";
     startBtn.style.display = "none";
@@ -205,13 +180,10 @@
     const output = document.getElementById("output");
     output.style.display = "block";
 
-    const gameDuration = testTime / 1000;
+    startGameTimer(testTime / 1000, onTimeExpired);
 
-    startGameTimer(gameDuration, onTimeExpired);
-
-    (function generateNumberLoop() {
+    (function loop() {
       if (shouldStopGame) return;
-
       window.waitWhilePaused().then(() => {
         const num = getRandomNumber(1, rangeMax);
         const displayNum = padZeros && num < 10 ? "0" + num : num;
@@ -224,38 +196,24 @@
         }, 50);
 
         speak(displayNum);
-        setTimeout(generateNumberLoop, delay);
+        setTimeout(loop, delay);
       });
     })();
   }
 
   function initGameLogic() {
-  const startBtn = document.getElementById("startButton");
-
-  // Start preloading voices quietly in the background
-  preloadVoices().then(() => {
-    console.log("Voice preloading complete!");
-  }).catch(err => {
-    console.error("Voice preload error", err);
-  });
-
-  if (startBtn) {
-    startBtn.onclick = () => {
-      if (window.speechSynthesis) {
-        let dummy = new SpeechSynthesisUtterance('');
-        window.speechSynthesis.speak(dummy);
-      }
-      startCountdown(beginGame);
-    };
+    const startBtn = document.getElementById("startButton");
+    preloadVoices();
+    if (startBtn) {
+      startBtn.onclick = () => {
+        if (window.speechSynthesis) {
+          let dummy = new SpeechSynthesisUtterance('');
+          window.speechSynthesis.speak(dummy);
+        }
+        startCountdown(beginGame);
+      };
+    }
   }
-
-  document.getElementById("pause")?.addEventListener("click", togglePause);
-  document.getElementById("pause-mobile")?.addEventListener("click", togglePause);
-  document.getElementById("end-early")?.addEventListener("click", endEarly);
-  document.getElementById("end-early-mobile")?.addEventListener("click", endEarly);
-  document.getElementById("give-up")?.addEventListener("click", giveUp);
-  document.getElementById("give-up-mobile")?.addEventListener("click", giveUp);
-}
 
   window.togglePause = togglePause;
   window.endEarly = endEarly;
@@ -264,7 +222,6 @@
   window.onload = initGameLogic;
 })();
 </script>
-
 
 </body>
 </html>
