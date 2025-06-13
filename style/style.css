@@ -493,6 +493,65 @@ input[type=number] {
   margin-bottom: 1.5rem;
 }
 
+#countdown,
+#problem,
+#output {
+  font-size: clamp(3rem, 5vw, 4rem);
+  font-weight: 700;
+  margin-top: 1rem;
+}
+
+#countdown {
+  font-weight: 700;
+}
+
+#output {
+  font-weight: 800;
+  margin-top: 1.5rem;
+  letter-spacing: 2px;
+}
+
+#countdownLabel {
+  font-size: clamp(3rem, 5vw, 4rem);
+  font-weight: 600;
+  color: var(--header-subtext);
+}
+
+#memory-word-problem,
+#memory-word-output {
+  font-size: clamp(1.5rem, 6vw, 3rem);
+  font-weight: 700;
+  margin-top: 1rem;
+  letter-spacing: 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+  max-width: 90%;
+  margin: 1rem auto 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#riddles-logic-problem,
+#riddles-logic-output {
+  font-size: clamp(1.2rem, 4vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.5;
+  white-space: normal;
+  overflow-wrap: break-word;
+  text-align: center;
+  max-width: 90%;
+  max-height: 40vh;
+  overflow-y: auto;
+  margin: 2rem auto 0;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* =============================================
    12 - Results Page
 ============================================= */
