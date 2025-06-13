@@ -8,73 +8,47 @@
   <!-- Global styles -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/style.css" />
-
-  <!-- Header-specific styles -->
   <link rel="stylesheet" href="/style/header.css" />
-
-  <!-- Footer-specific styles -->
   <link rel="stylesheet" href="/style/footer.css" />
 </head>
-<body>
+<body class="fade-in-on-load">
 
 <script>
-  // Load reusable header from components/header.html
   fetch('/components/header.html')
     .then(res => res.text())
     .then(data => {
-      // Inject the header at the top of the body
       document.body.insertAdjacentHTML('afterbegin', data);
-
-      // === After header is injected ===
-
-      // Create and insert backdrop
       const backdropEl = document.createElement('div');
       backdropEl.classList.add('nav-backdrop');
       document.body.appendChild(backdropEl);
-
-      // Query the toggle button and the nav drawer
       const toggleBtn = document.querySelector('.mobile-nav-toggle');
       const menu = document.querySelector('.header-menu');
-
-      // Safety check
-      if (!toggleBtn || !menu) {
-        console.warn("Header elements not found. Check class names in header.html");
-        return;
-      }
-
-      // Toggle drawer and backdrop visibility
+      if (!toggleBtn || !menu) return;
       const toggleMenu = () => {
-        toggleBtn.classList.toggle('open');    // Animate hamburger to X
-        menu.classList.toggle('open');         // Slide drawer open/closed
-        backdropEl.classList.toggle('active'); // Dim background
+        toggleBtn.classList.toggle('open');
+        menu.classList.toggle('open');
+        backdropEl.classList.toggle('active');
       };
-
-      // Event listeners
       toggleBtn.addEventListener('click', toggleMenu);
-      backdropEl.addEventListener('click', toggleMenu); // close menu when clicking outside
+      backdropEl.addEventListener('click', toggleMenu);
     })
     .catch(err => console.error('Failed to load header:', err));
 </script>
 
-<main class="main-container">
+<main class="main-container fade-in-on-load">
   <section class="text-box-content">
     <h1 class="main-title">The 3 Pillars of a Powerful Memory</h1>
     <p>These three techniques fuel each other — working together in a continuous loop to supercharge your memory.</p>
 
     <div class="daily-grid">
-      <!-- Pillar 1: Imagination -->
       <div class="game-cards">
         <h2>Imagination</h2>
         <p>Create vivid, strange, and sensory-rich images. Use color, movement, sound, smell — the weirder the better.</p>
       </div>
-
-      <!-- Pillar 2: Attention -->
       <div class="game-cards">
         <h2>Attention</h2>
         <p>Focus like your life depends on it. Imagine being paid a million dollars to remember. Your brain rises to the challenge.</p>
       </div>
-
-      <!-- Pillar 3: Association -->
       <div class="game-cards">
         <h2>Association</h2>
         <p>Link each item to the next with imagination. Example: A cloud playing Beethoven on a piano raining music notes.</p>
@@ -87,11 +61,8 @@
   </section>
 </main>
 
-  
-<!-- Footer -->
 <div id="site-footer"></div>
 <script>
-  // Load reusable footer after its CSS is already in place
   fetch('/components/footer.html')
     .then(res => res.text())
     .then(html => {
@@ -99,6 +70,6 @@
     })
     .catch(err => console.error('Failed to load footer:', err));
 </script>
-  
+
 </body>
 </html>
