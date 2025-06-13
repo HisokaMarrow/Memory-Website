@@ -1,8 +1,10 @@
+// Shared Game Timer Module
+// ----------------------------------
 let timerInterval = null;
 let timeLeft = 0;
 let isPaused = false;
 let pauseCallback = null;
-let gameHasEnded = false; // NEW: global guard to prevent late callback
+let gameHasEnded = false; // Guard: prevent callback after game ends
 
 function formatTime(seconds) {
   const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -18,12 +20,12 @@ function startGameTimer(seconds, onEndCallback) {
 
   if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
 
-  clearInterval(timerInterval); // Clear existing interval before starting a new one
-
+  clearInterval(timerInterval);
   timerInterval = setInterval(() => {
     if (!isPaused) {
       timeLeft--;
       if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
+
       if (timeLeft <= 0) {
         clearInterval(timerInterval);
         timerInterval = null;
@@ -56,7 +58,7 @@ function waitWhilePaused() {
   });
 }
 
-// Expose functions globally
+// Global exposure
 window.startGameTimer = startGameTimer;
 window.stopGameTimer = stopGameTimer;
 window.togglePauseTimer = togglePauseTimer;
