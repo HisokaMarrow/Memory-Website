@@ -5,114 +5,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Memoro</title>
 
-  <!-- Global styles -->
+  <!-- Fonts & Global Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/style.css" />
-
-  <!-- Header-specific styles -->
   <link rel="stylesheet" href="/style/header.css" />
-
-  <!-- Footer-specific styles -->
   <link rel="stylesheet" href="/style/footer.css" />
-  <!-- Add fade-in script -->
-  <script src="/scripts/global-fade-in.js"></script>
-  
+
+  <!-- Fade-in animation -->
+  <script src="/scripts/global-fade-in.js" defer></script>
+
+  <style>
+    /* Prevent layout jump before header loads */
+    #site-header {
+      min-height: 80px;
+    }
+  </style>
 </head>
 <body>
 
-<script>
-  // Load reusable header from components/header.html
-  fetch('components/header.html')
-    .then(res => res.text())
-    .then(data => {
-      // Inject the header at the top of the body
-      document.body.insertAdjacentHTML('afterbegin', data);
+  <!-- Header will be injected here -->
+  <div id="site-header"></div>
 
-      // === After header is injected ===
+  <main class="page-content fade-in-on-load">
+    <section class="hero">
+      <h1 class="main-title">Log In</h1>
+      <p class="main-subtitle">Welcome back to Memoro. Log in to continue your training.</p>
+    </section>
 
-      // Create and insert backdrop
-      const backdropEl = document.createElement('div');
-      backdropEl.classList.add('nav-backdrop');
-      document.body.appendChild(backdropEl);
+    <section>
+      <div class="login-container">
+        <form class="login-form" id="loginForm">
+          <div class="form-group-login">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="input-box-login" required />
+          </div>
 
-      // Query the toggle button and the nav drawer
-      const toggleBtn = document.querySelector('.mobile-nav-toggle');
-      const menu = document.querySelector('.header-menu');
+          <div class="form-group-login">
+            <label for="password">Password</label>
+            <input type="password" id="password" class="input-box-login" required />
+          </div>
 
-      // Safety check
-      if (!toggleBtn || !menu) {
-        console.warn("Header elements not found. Check class names in header.html");
-        return;
-      }
+          <div class="button-wrapper">
+            <button type="submit" class="main-button">Log In</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
 
-      // Toggle drawer and backdrop visibility
-      const toggleMenu = () => {
-        toggleBtn.classList.toggle('open');    // Animate hamburger to X
-        menu.classList.toggle('open');         // Slide drawer open/closed
-        backdropEl.classList.toggle('active'); // Dim background
-      };
+  <!-- Header Script Injection -->
+  <script>
+    fetch('components/header.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('site-header').innerHTML = html;
 
-      // Event listeners
-      toggleBtn.addEventListener('click', toggleMenu);
-      backdropEl.addEventListener('click', toggleMenu); // close menu when clicking outside
-    })
-    .catch(err => console.error('Failed to load header:', err));
-</script>
+        const backdropEl = document.createElement('div');
+        backdropEl.classList.add('nav-backdrop');
+        document.body.appendChild(backdropEl);
 
-<main>
-  <section class="page-content hero">
-    <h1 class="main-title">Log In</h1>
-    <p class="main-subtitle">Welcome back to Memoro. Log in to continue your training.</p>
-  </section>
+        const toggleBtn = document.querySelector('.mobile-nav-toggle');
+        const menu = document.querySelector('.header-menu');
 
-  <section>
-    <div class="login-container">
-      <form class="login-form" id="loginForm">
-        <div class="form-group-login">
-          <label for="email">Email</label>
-          <input type="email" id="email" class="input-box-login" required />
-        </div>
+        if (!toggleBtn || !menu) return;
 
-        <div class="form-group-login">
-          <label for="password">Password</label>
-          <input type="password" id="password" class="input-box-login" required />
-        </div>
+        const toggleMenu = () => {
+          toggleBtn.classList.toggle('open');
+          menu.classList.toggle('open');
+          backdropEl.classList.toggle('active');
+        };
 
-        <div class="button-wrapper">
-          <a type="submit" class="main-button">Log In</a>
-        </div>
-      </form>
-    </div>
-  </section>
-</main>
+        toggleBtn.addEventListener('click', toggleMenu);
+        backdropEl.addEventListener('click', toggleMenu);
+      })
+      .catch(err => console.error('Failed to load header:', err));
+  </script>
 
-<script>
-  // Basic login form handler placeholder
-  const form = document.getElementById("loginForm");
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const email = form.email.value.trim();
-    const password = form.password.value.trim();
-    console.log("Logging in with:", { email, password });
+  <!-- Login Handler Placeholder -->
+  <script>
+    const form = document.getElementById("loginForm");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = form.email.value.trim();
+      const password = form.password.value.trim();
+      console.log("Logging in with:", { email, password });
 
-    // TODO: Hook up Firebase Auth or your login service here
-    alert("Login logic not implemented yet. But the form works!");
-  });
-</script>
+      alert("Login logic not implemented yet.");
+    });
+  </script>
 
-
-<!-- Footer -->
-<div id="site-footer"></div>
-<script>
-  // Load reusable footer after its CSS is already in place
-  fetch('/components/footer.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('site-footer').innerHTML = html;
-    })
-    .catch(err => console.error('Failed to load footer:', err));
-</script>
-
+  <!-- Footer will be injected here -->
+  <div id="site-footer"></div>
+  <script>
+    fetch('/components/footer.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('site-footer').innerHTML = html;
+      })
+      .catch(err => console.error('Failed to load footer:', err));
+  </script>
 
 </body>
 </html>
