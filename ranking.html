@@ -3,71 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Memoro</title>
+  <title>Memoro - Progress</title>
 
   <!-- Global styles -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/style.css" />
-
-  <!-- Header-specific styles -->
   <link rel="stylesheet" href="/style/header.css" />
-
-  <!-- Footer-specific styles -->
   <link rel="stylesheet" href="/style/footer.css" />
+
+  <!-- Global fade-in -->
+  <script defer src="/scripts/global-fade-in.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
 <script>
-  // Load reusable header from components/header.html
-  fetch('components/header.html')
-    .then(res => res.text())
-    .then(data => {
-      // Inject the header at the top of the body
-      document.body.insertAdjacentHTML('afterbegin', data);
+  // Load reusable header
+  document.addEventListener("DOMContentLoaded", () => {
+    fetch('components/header.html')
+      .then(res => res.text())
+      .then(data => {
+        document.body.insertAdjacentHTML('afterbegin', data);
 
-      // === After header is injected ===
+        const backdropEl = document.createElement('div');
+        backdropEl.classList.add('nav-backdrop');
+        document.body.appendChild(backdropEl);
 
-      // Create and insert backdrop
-      const backdropEl = document.createElement('div');
-      backdropEl.classList.add('nav-backdrop');
-      document.body.appendChild(backdropEl);
+        const toggleBtn = document.querySelector('.mobile-nav-toggle');
+        const menu = document.querySelector('.header-menu');
 
-      // Query the toggle button and the nav drawer
-      const toggleBtn = document.querySelector('.mobile-nav-toggle');
-      const menu = document.querySelector('.header-menu');
+        if (!toggleBtn || !menu) return;
 
-      // Safety check
-      if (!toggleBtn || !menu) {
-        console.warn("Header elements not found. Check class names in header.html");
-        return;
-      }
+        const toggleMenu = () => {
+          toggleBtn.classList.toggle('open');
+          menu.classList.toggle('open');
+          backdropEl.classList.toggle('active');
+        };
 
-      // Toggle drawer and backdrop visibility
-      const toggleMenu = () => {
-        toggleBtn.classList.toggle('open');    // Animate hamburger to X
-        menu.classList.toggle('open');         // Slide drawer open/closed
-        backdropEl.classList.toggle('active'); // Dim background
-      };
-
-      // Event listeners
-      toggleBtn.addEventListener('click', toggleMenu);
-      backdropEl.addEventListener('click', toggleMenu); // close menu when clicking outside
-    })
-    .catch(err => console.error('Failed to load header:', err));
+        toggleBtn.addEventListener('click', toggleMenu);
+        backdropEl.addEventListener('click', toggleMenu);
+      })
+      .catch(err => console.error('Failed to load header:', err));
+  });
 </script>
 
-
-<main class="page-content">
+<main class="page-content fade-in-on-load">
   <h1 class="main-title">Your Progress</h1>
 
-  <!-- Game selector carousel -->
   <div class="games-carousel-wrapper">
-    <div id="game-buttons" class="games-carousel">
-      <!-- Buttons dynamically generated here -->
-    </div>
+    <div id="game-buttons" class="games-carousel"></div>
   </div>
 
-  <!-- Chart and no-data message -->
   <div class="chart-container">
     <canvas id="progressChart"></canvas>
     <div id="noDataMessageWrapper" class="no-data-wrapper">
@@ -75,7 +61,6 @@
     </div>
   </div>
 
-  <!-- Progress filter carousel -->
   <div class="games-carousel-wrapper">
     <div id="progress-filter-buttons" class="games-carousel">
       <button class="progress-filter-button active" data-range="today">Today's Progress</button>
@@ -86,11 +71,6 @@
   </div>
 </main>
 
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script>
 let chartInstance = null;
 let filteredSessions = [];
@@ -99,35 +79,19 @@ let allSessions = JSON.parse(localStorage.getItem("gameSessions") || "[]");
 function filterByDateRange(range) {
   const now = new Date();
   return allSessions.filter(session => {
-    let sessionDate;
     try {
       const [day, month, year] = session.date.split("/");
       const [hour, minute] = session.time.split(":");
-      sessionDate = new Date(year, month - 1, day, hour, minute);
+      const sessionDate = new Date(year, month - 1, day, hour, minute);
+      switch (range) {
+        case 'today': return sessionDate.toDateString() === now.toDateString();
+        case 'week':  return sessionDate >= new Date(now.setDate(now.getDate() - 7));
+        case 'month': return sessionDate >= new Date(now.setMonth(now.getMonth() - 1));
+        case 'year':  return sessionDate >= new Date(now.setFullYear(now.getFullYear() - 1));
+        default: return true;
+      }
     } catch (e) {
       return false;
-    }
-
-    switch (range) {
-      case 'today':
-        return sessionDate.toDateString() === now.toDateString();
-      case 'week': {
-        const weekAgo = new Date(now);
-        weekAgo.setDate(now.getDate() - 7);
-        return sessionDate >= weekAgo;
-      }
-      case 'month': {
-        const monthAgo = new Date(now);
-        monthAgo.setMonth(now.getMonth() - 1);
-        return sessionDate >= monthAgo;
-      }
-      case 'year': {
-        const yearAgo = new Date(now);
-        yearAgo.setFullYear(now.getFullYear() - 1);
-        return sessionDate >= yearAgo;
-      }
-      default:
-        return true;
     }
   });
 }
@@ -190,15 +154,9 @@ function updateGraph(gameId, range = 'all') {
         x: {
           type: 'linear',
           position: 'bottom',
-          ticks: {
-            display: false
-          },
-          grid: {
-            display: false
-          },
-          title: {
-            display: false
-          }
+          ticks: { display: false },
+          grid: { display: false },
+          title: { display: false }
         }
       },
       plugins: {
@@ -211,8 +169,7 @@ function updateGraph(gameId, range = 'all') {
         tooltip: {
           callbacks: {
             label: function(context) {
-              const index = context.dataIndex;
-              const session = filteredSessions[index];
+              const session = filteredSessions[context.dataIndex];
               return [
                 `Score: ${session.scorePercent}%`,
                 `Correct: ${session.correctCount}`,
@@ -288,17 +245,17 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-
 <!-- Footer -->
 <div id="site-footer"></div>
 <script>
-  // Load reusable footer after its CSS is already in place
-  fetch('/components/footer.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('site-footer').innerHTML = html;
-    })
-    .catch(err => console.error('Failed to load footer:', err));
+  document.addEventListener("DOMContentLoaded", () => {
+    fetch('/components/footer.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('site-footer').innerHTML = html;
+      })
+      .catch(err => console.error('Failed to load footer:', err));
+  });
 </script>
 
 </body>
